@@ -5,7 +5,9 @@ export default function InfoScreen() {
   return (
     <div>
       <Header />
-      <h1>InfoScreen</h1>
+      <div className="flex flex-col justify-center items-center h-screen">
+        <h1>InfoScreen</h1>
+      </div>
     </div>
   );
 }

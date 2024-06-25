@@ -7,6 +7,7 @@ type Fabric = {
   attributes: {
     name: string;
     description: string;
+    picture_fabric: string;
   };
 };
 
@@ -37,7 +38,7 @@ const FabricScreen: React.FC = () => {
 
   const handleSearch = () => {
     console.log('search:', search);
-    fetch(`http://localhost:1337/api/fabrics?search=${search}`)
+    fetch(`http://localhost:1337/api/fabrics`)
       .then((res) => res.json())
       .then((data) => {
         if (!Array.isArray(data.data)) {
@@ -56,38 +57,44 @@ const FabricScreen: React.FC = () => {
   return (
     <div>
       <Header />
-      <h1>FabricScreen</h1>
-      <div>
-        <h2>Fabrics</h2>
-        <h3>Par tissus:</h3>
-        <input
-          type="text"
-          placeholder="Search"
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            console.log('Search value:', e.target.value);
-          }}
-        />
-        <button type="button" onClick={handleSearch}>
-          Search
-        </button>
-        <ul>
-          {fabrics.map((fabric: Fabric) => (
-            <li key={fabric.id}>
-              <p>{fabric.attributes.name}</p>
-              <p>{fabric.attributes.description}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <h2>Projects</h2>
-        <ul>
-          {projects.map((project: Project) => (
-            <li key={project.id}>{project.name}</li>
-          ))}
-        </ul>
+      <div className="flex flex-col justify-center items-center h-screen">
+        <h1>FabricScreen</h1>
+        <div>
+          <h2>Fabrics</h2>
+          <h3>Par tissus:</h3>
+          <input
+            type="text"
+            placeholder="Search"
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              console.log('Search value:', e.target.value);
+            }}
+          />
+          <button type="button" onClick={handleSearch}>
+            Search
+          </button>
+          <ul className="flex flex-row">
+            {fabrics.map((fabric: Fabric) => (
+              <li key={fabric.id} className=" w-100 h-100 border">
+                <p>{fabric.attributes.name}</p>
+                <img
+                  src={`http://localhost:1337${fabric.image.url}`}
+                  alt={fabric.attributes.name}
+                />{' '}
+                {/* <p>{fabric.attributes.picture_fabric}</p> */}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h2>Projects</h2>
+          <ul>
+            {projects.map((project: Project) => (
+              <li key={project.id}>{project.name}</li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

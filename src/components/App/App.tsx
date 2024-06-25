@@ -8,14 +8,16 @@ import ContactScreen from '@/pages/ContactScreen';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<HomeScreen />} />
-      <Route path="/fabrics" element={<FabricScreen />} />
-      <Route path="/products" element={<ProductScreen />} />
-      <Route path="/about" element={<InfoScreen />} />
-      <Route path="/contact" element={<ContactScreen />} />
-      <Route path="*" element={<h1>Not Found</h1>} />
-    </Routes>
+    <div className="bg-lightsage h-screen">
+      <Routes>
+        <Route path="/" element={<HomeScreen />} />
+        <Route path="/fabrics" element={<FabricScreen />} />
+        <Route path="/products" element={<ProductScreen />} />
+        <Route path="/about" element={<InfoScreen />} />
+        <Route path="/contact" element={<ContactScreen />} />
+        <Route path="*" element={<h1>Not Found</h1>} />
+      </Routes>
+    </div>
   );
 }
 

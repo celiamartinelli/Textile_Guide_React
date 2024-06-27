@@ -56,25 +56,34 @@ const FabricScreen: React.FC = () => {
   }, [search]);
 
   const fetchProjects = (fabricIds: number[]) => {
-    fetch(`http://localhost:1337/api/projects?fabricIds=${fabricIds.join(',')}`)
-      .then((res) => res.json())
+    fetch(`http://localhost:1337/api/products?fabricIds=${fabricIds.join(',')}`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then((data) => {
-        if (!Array.isArray(data)) {
+        if (data.error) {
+          console.error('API error:', data.error);
+          return;
+        }
+        if (!data || !Array.isArray(data.data)) {
           console.error('Expected an array for projects:', data);
           return;
         }
-        console.log('projects:', data);
-        setProjects(data);
+        console.log('projects:', data.data);
+        setProjects(data.data);
       })
       .catch((err) => {
-        console.error('err:', err);
+        console.error('Error fetching projects:', err);
       });
   };
 
   const handleSearch = () => {
     console.log('search:', search);
     fetch(
-      `http://localhost:1337/api/fabrics?populate[0]=picture_fabric&populate[1]=washes&populate[2]=washes.icone&filters[name][$contains]=${search}`
+      `http://localhost:1337/api/fabrics?populate[0]=picture_fabric&populate[1]=washes&populate[2]=washes.icone&filters[name][$containsi]=${search}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -85,11 +94,11 @@ const FabricScreen: React.FC = () => {
         console.log('data:', data.data);
         data.data.forEach((fabric: Fabric) => {
           console.log('Fabric:', fabric);
-          fabric.attributes.washes.data.forEach((wash) => {
+          fabric.attributes.washes?.data?.forEach((wash) => {
             console.log('Wash:', wash);
             console.log(
               'Icon URL:',
-              wash.attributes.icone.data[0]?.attributes.url
+              wash.attributes.icone?.data?.[0]?.attributes?.url
             );
           });
         });
@@ -104,28 +113,38 @@ const FabricScreen: React.FC = () => {
   return (
     <div>
       <Header />
-      <div className="flex flex-col justify-center items-center h-screen">
-        <h1>FabricScreen</h1>
+      <div className="flex flex-col h-screen border bg-pink">
+        <div className="flex flex-col justify-center items-center bg-lightPink">
+          <h1 className="bg-blue-200">FabricScreen</h1>
+
+          <h2 className="bg-green-200">Fabrics</h2>
+          <h3 className="bg-yellow-200">Par tissus:</h3>
+          <div>
+            <input
+              className="bg-gray-200"
+              type="text"
+              placeholder="Search"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                console.log('Search value:', e.target.value);
+              }}
+            />
+            <button
+              className="bg-violet-300"
+              type="button"
+              onClick={handleSearch}
+            >
+              Search
+            </button>
+          </div>
+        </div>
         <div>
-          <h2>Fabrics</h2>
-          <h3>Par tissus:</h3>
-          <input
-            type="text"
-            placeholder="Search"
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              console.log('Search value:', e.target.value);
-            }}
-          />
-          <button type="button" onClick={handleSearch}>
-            Search
-          </button>
           <ul className="flex flex-row">
             {fabrics.map((fabric: Fabric) => (
               <li key={fabric.id} className=" w-100 h-100 border">
                 <p>{fabric.attributes.name}</p>
-                {fabric.attributes.picture_fabric && (
+                {fabric.attributes.picture_fabric?.data && (
                   <img
                     src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
                     alt={fabric.attributes.name}
@@ -135,7 +154,7 @@ const FabricScreen: React.FC = () => {
                 {fabric.attributes.washes?.data?.map((wash) => (
                   <div key={wash.id}>
                     <p>{wash.attributes.description}</p>
-                    {wash.attributes.icone && (
+                    {wash.attributes.icone?.data?.[0] && (
                       <img
                         src={`http://localhost:1337${wash.attributes.icone.data[0]?.attributes.url}`}
                         alt={wash.attributes.wash_name}

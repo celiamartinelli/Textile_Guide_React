@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header/Header';
 
 type Fabric = {
@@ -7,39 +6,58 @@ type Fabric = {
   attributes: {
     name: string;
     description: string;
+    picture_fabric: string;
   };
 };
+
 interface Project {
   id: number;
   name: string;
 }
+
 const ProductScreen: React.FC = () => {
   const [search, setSearch] = useState('');
   const [projects, setProjects] = useState<Project[]>([]);
 
-  const fetchProjects = (fabricIds: number[]) => {
-    fetch(`http://localhost:1337/api/projects?fabricIds=${fabricIds.join(',')}`)
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (search.length >= 3) {
+        // Exécuter la recherche seulement si la longueur de la chaîne de recherche est de 3 caractères ou plus
+        handleSearch();
+      } else {
+        setProjects([]);
+      }
+    }, 300); // délai de 300ms avant d'envoyer la requête
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [search]);
+
+  const handleSearch = () => {
+    console.log('search:', search);
+    fetch(
+      `http://localhost:1337/api/projects?filters[name][$contains]=${search}`
+    )
       .then((res) => res.json())
       .then((data) => {
-        if (!Array.isArray(data)) {
+        if (!Array.isArray(data.data)) {
           console.error('Expected an array for projects:', data);
           return;
         }
-        console.log('projects:', data);
-        setProjects(data);
+        console.log('data:', data.data);
+        setProjects(data.data);
       })
       .catch((err) => {
         console.error('err:', err);
       });
   };
+
   return (
     <div>
       <Header />
       <div className="flex flex-col justify-center items-center h-screen">
         <h1>ProductScreen</h1>
         <div>
-          <h2>Fabrics</h2>
-          <h3>Par tissus:</h3>
+          <h3>Par produit:</h3>
           <input
             type="text"
             placeholder="Search"
@@ -49,16 +67,21 @@ const ProductScreen: React.FC = () => {
               console.log('Search value:', e.target.value);
             }}
           />
-          <button
-            onClick={() => {
-              console.log('Search:', search);
-            }}
-          >
-            Search
-          </button>
+        </div>
+        <button type="button" onClick={handleSearch}>
+          Search
+        </button>
+        <div>
+          <h2>Projects</h2>
+          <ul>
+            {projects.map((project: Project) => (
+              <li key={project.id}>{project.name}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
   );
 };
+
 export default ProductScreen;

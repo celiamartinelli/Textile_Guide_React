@@ -1,6 +1,7 @@
 import Header from '@/components/Header/Header';
 
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 type Wash = {
   id: number;
@@ -69,10 +70,10 @@ const FabricScreen: React.FC = () => {
           return;
         }
         if (!data || !Array.isArray(data.data)) {
-          console.error('Expected an array for projects:', data);
+          // console.error('Expected an array for projects:', data);
           return;
         }
-        console.log('projects:', data.data);
+        // console.log('projects:', data.data);
         setProjects(data.data);
       })
       .catch((err) => {
@@ -88,18 +89,18 @@ const FabricScreen: React.FC = () => {
       .then((res) => res.json())
       .then((data) => {
         if (!Array.isArray(data.data)) {
-          console.error('Expected an array for fabrics:', data);
+          // console.error('Expected an array for fabrics:', data);
           return;
         }
-        console.log('data:', data.data);
+        // console.log('data:', data.data);
         data.data.forEach((fabric: Fabric) => {
-          console.log('Fabric:', fabric);
+          // console.log('Fabric:', fabric);
           fabric.attributes.washes?.data?.forEach((wash) => {
-            console.log('Wash:', wash);
-            console.log(
-              'Icon URL:',
-              wash.attributes.icone?.data?.[0]?.attributes?.url
-            );
+            // console.log('Wash:', wash);
+            // console.log(
+            //   'Icon URL:',
+            //   wash.attributes.icone?.data?.[0]?.attributes?.url
+            // );
           });
         });
         setFabrics(data.data);
@@ -127,7 +128,7 @@ const FabricScreen: React.FC = () => {
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
-                console.log('Search value:', e.target.value);
+                // console.log('Search value:', e.target.value);
               }}
             />
             <button
@@ -140,29 +141,36 @@ const FabricScreen: React.FC = () => {
           </div>
         </div>
         <div>
-          <ul className="flex flex-row">
+          <ul className="flex flex-row flex-wrap">
             {fabrics.map((fabric: Fabric) => (
-              <li key={fabric.id} className=" w-100 h-100 border">
-                <p>{fabric.attributes.name}</p>
-                {fabric.attributes.picture_fabric?.data && (
-                  <img
-                    src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
-                    alt={fabric.attributes.name}
-                    className="w-20 h-20"
-                  />
-                )}
-                {fabric.attributes.washes?.data?.map((wash) => (
-                  <div key={wash.id}>
-                    <p>{wash.attributes.description}</p>
+              <li key={fabric.id}>
+                <Link
+                  to={`/fabrics/${fabric.id}`}
+                  className="flex flex-col justify-center items-center border rounded-lg p-4 shadow-lg m-5 bg-lightPink"
+                >
+                  {fabric.attributes.picture_fabric?.data && (
+                    <img
+                      src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
+                      alt={fabric.attributes.name}
+                      className="w-20 h-20 rounded-lg"
+                    />
+                  )}
+                  <p className="justify-center items-center">
+                    {fabric.attributes.name}
+                  </p>
+                  {/* {fabric.attributes.washes?.data?.map((wash) => (
+                  <div key={wash.id} className="bg-brown w-20 h-20">
+                    <p className="bg-gray-200">{wash.attributes.description}</p>
                     {wash.attributes.icone?.data?.[0] && (
                       <img
                         src={`http://localhost:1337${wash.attributes.icone.data[0]?.attributes.url}`}
                         alt={wash.attributes.wash_name}
-                        className="w-20 h-20"
+                        className="w-10 h-10"
                       />
                     )}
                   </div>
-                ))}
+                ))} */}
+                </Link>
               </li>
             ))}
           </ul>

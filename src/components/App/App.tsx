@@ -5,6 +5,7 @@ import FabricScreen from '@/pages/FabricScreen';
 import ProductScreen from '@/pages/ProductScreen';
 import InfoScreen from '@/pages/InfoScreen';
 import ContactScreen from '@/pages/ContactScreen';
+import OneFabricScreen from '@/pages/OneFabricScreen';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/fabrics" element={<FabricScreen />} />
+        <Route path="/fabrics/:fabricId" element={<OneFabricScreen />} />
         <Route path="/products" element={<ProductScreen />} />
         <Route path="/about" element={<InfoScreen />} />
         <Route path="/contact" element={<ContactScreen />} />

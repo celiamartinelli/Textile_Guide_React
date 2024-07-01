@@ -21,14 +21,36 @@ type Wash = {
 interface Icone {
   data: { attributes: { url: string } }[];
 }
-
-type Project = {
+interface ProductIcon {
   id: number;
   attributes: {
-    project_name: string;
+    // alternativeText: string | null;
+    // caption: string | null;
+    // createdAt: string;
+    // ext: string;
+    // formats: any | null; // Remplacez `any` par un type plus spécifique si possible
+    // hash: string;
+    // height: number;
+    // mime: string;
+    // name: string;
+    // previewUrl: string | null;
+    // provider: string;
+    // provider_metadata: any | null; // Remplacez `any` par un type plus spécifique si possible
+    // size: number;
+    // updatedAt: string;
+    url: string;
+    // width: number;
+  };
+}
+
+type Products = {
+  id: number;
+  attributes: {
+    name: string;
+    category: string;
     description: string;
-    picture_project: {
-      data: { attributes: { url: string } }[];
+    icone_product: {
+      data: ProductIcon[];
     };
   };
 };
@@ -55,8 +77,8 @@ type Fabric = {
     washes: {
       data: Wash[];
     };
-    projects: {
-      data: Project[];
+    products: {
+      data: Products[];
     };
   };
 };
@@ -70,7 +92,7 @@ const FabricScreen: React.FC = () => {
       try {
         console.log(`Fetching fabric with ID: ${fabricId}`);
         const response = await fetch(
-          `http://localhost:1337/api/fabrics/${fabricId}?populate[0]=picture_fabric&populate[1]=washes&populate[2]=washes.icone&filters[name],projects.picture_projects`
+          `http://localhost:1337/api/fabrics/${fabricId}?populate[0]=picture_fabric&populate[1]=washes&populate[2]=washes.icone&populate[3]=products.icone_product`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -108,7 +130,7 @@ const FabricScreen: React.FC = () => {
         <div className="flex flex-col justify-center items-center bg-lightPink">
           <h1 className="bg-blue-200">{fabric.attributes.name}</h1>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col bg-lightPink">
           {fabric.attributes.picture_fabric?.data && (
             <img
               src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
@@ -143,27 +165,26 @@ const FabricScreen: React.FC = () => {
               ))}
             </ul>
           </div>
-          <div>
-            <h2>Projects</h2>
-            <ul>
-              {fabric.attributes.projects?.data?.map((project, index) => (
-                <li key={index}>
-                  <p>{project.attributes.project_name}</p>
-                  <p>{project.attributes.description}</p>
-                  {project.attributes.picture_project?.data?.map(
-                    (picture, picIndex) => (
-                      <img
-                        key={picIndex}
-                        src={`http://localhost:1337${picture.attributes.url}`}
-                        alt="project"
-                        className="w-10 h-10"
-                      />
-                    )
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
+        </div>
+        <div>
+          <h2>Projects</h2>
+          <ul>
+            {fabric.attributes.products?.data?.map((product, index) => (
+              <li key={index}>
+                <p>{product.attributes.name}</p>
+                {product.attributes.icone_product?.data?.map(
+                  (picture, picIndex) => (
+                    <img
+                      key={picIndex}
+                      src={`http://localhost:1337${picture.attributes.url}`}
+                      alt="project"
+                      className="w-10 h-10"
+                    />
+                  )
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

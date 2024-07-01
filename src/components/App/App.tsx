@@ -6,6 +6,7 @@ import ProductScreen from '@/pages/ProductScreen';
 import InfoScreen from '@/pages/InfoScreen';
 import ContactScreen from '@/pages/ContactScreen';
 import OneFabricScreen from '@/pages/OneFabricScreen';
+import OneProductScreen from '@/pages/OneProdutScreen';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/fabrics" element={<FabricScreen />} />
         <Route path="/fabrics/:fabricId" element={<OneFabricScreen />} />
         <Route path="/products" element={<ProductScreen />} />
+        <Route path="/products/:productId" element={<OneProductScreen />} />
         <Route path="/about" element={<InfoScreen />} />
         <Route path="/contact" element={<ContactScreen />} />
         <Route path="*" element={<h1>Not Found</h1>} />

@@ -7,6 +7,7 @@ interface RouteParams {
   productId: string;
 }
 
+//
 interface ProductIcon {
   id: string;
   attributes: {
@@ -14,34 +15,25 @@ interface ProductIcon {
   };
 }
 
-interface RelatedProject {
+interface WashIcon {
   id: string;
   attributes: {
-    name: string;
-    icone_project: {
-      data: ProductIcon[];
+    url: string;
+  };
+}
+
+interface Wash {
+  id: number;
+  attributes: {
+    wash_name: string;
+    description: string;
+    icone: {
+      data: WashIcon[];
     };
   };
 }
 
-interface ProductAttributes {
-  name: string;
-  category: string;
-  description: string;
-  icone_product: {
-    data: ProductIcon[];
-  };
-  relatedProjects?: {
-    data: RelatedProject[];
-  };
-}
-
-interface Product {
-  id: string;
-  attributes: ProductAttributes;
-}
-
-type Fabric = {
+interface Fabric {
   id: number;
   attributes: {
     name: string;
@@ -64,21 +56,27 @@ type Fabric = {
       data: Wash[];
     };
     products: {
-      data: Product[];
+      data: any[]; // Update based on actual structure
     };
   };
-};
+}
 
-type Wash = {
-  id: number;
-  attributes: {
-    wash_name: string;
-    description: string;
-    icone: {
-      data: { attributes: { url: string } }[];
-    };
+interface ProductAttributes {
+  name: string;
+  category: string;
+  description: string;
+  icone_product: {
+    data: ProductIcon[];
   };
-};
+  fabrics?: {
+    data: Fabric[];
+  };
+}
+
+interface Product {
+  id: string;
+  attributes: ProductAttributes;
+}
 
 interface Icone {
   data: { attributes: { url: string } }[];
@@ -93,8 +91,9 @@ const OneProductScreen: React.FC = () => {
       try {
         console.log(`Fetching product with ID: ${productId}`);
         const response = await fetch(
-          `http://localhost:1337/api/products/${productId}?populate[0]=icone_product&populate[1]=relatedProjects&populate[2]=fabrics`
+          `http://localhost:1337/api/products/${productId}?populate[icone_product][populate]=*&populate[fabrics][populate][0]=picture_fabric&populate[fabrics][populate][1]=washes.icone`
         );
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -147,19 +146,32 @@ const OneProductScreen: React.FC = () => {
 
           <h2>Tissus Associés</h2>
           <ul>
-            {product.attributes.relatedProjects?.data?.map((project) => (
-              <li key={project.id}>
-                <p>{project.attributes.name}</p>
-                {project.attributes.icone_project?.data?.map((picture) => (
-                  <img
-                    key={picture.id}
-                    src={`http://localhost:1337${picture.attributes.url}`}
-                    alt="project"
-                    className="w-10 h-10"
-                  />
-                ))}
-              </li>
-            ))}
+            {product.attributes.fabrics?.data?.map(
+              (project) => (
+                console.log('project:', project),
+                (
+                  <li key={project.id}>
+                    <p>{project.attributes.name}</p>
+                    <img
+                      src={`http://localhost:1337${project.attributes.picture_fabric.data.attributes.url}`}
+                      alt={project.attributes.name}
+                      className="w-20 h-20 rounded-lg"
+                    ></img>
+                    {project.attributes.washes?.data.map((icone) => (
+                      <div>
+                        <img
+                          key={icone.id}
+                          src={`http://localhost:1337${icone.attributes.icone.data?.[0].attributes.url}`}
+                          alt={icone.attributes.description}
+                          className="w-10 h-10"
+                        />
+                        <p>{icone.attributes.description}</p>
+                      </div>
+                    ))}
+                  </li>
+                )
+              )
+            )}
           </ul>
         </div>
       </div>

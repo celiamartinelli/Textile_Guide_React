@@ -26,7 +26,11 @@ export default function HomeScreen() {
               }}
             >
               <h4>Tissus</h4>
-              <FaScroll />
+              <img
+                className="w-36"
+                src="../../../assets/search_by_fabric.png"
+                alt="search by project"
+              />
             </div>
             <div
               className="flex flex-col justify-center items-center border rounded-md p-5"
@@ -36,7 +40,7 @@ export default function HomeScreen() {
             >
               <h4>Projets</h4>
               <img
-                className="w-32"
+                className="w-36"
                 src="../../../assets/search_by_project.png"
                 alt="search by project"
               />

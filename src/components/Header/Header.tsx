@@ -16,7 +16,7 @@ const Header: React.FC = () => {
             <Link to="/">
               <img
                 className="border rounded-full shadow-md"
-                src="../../../public/Guide_Textile_logo.png"
+                src="../../../public/assets/Guide_Textile_logo.png"
                 alt="Guide Textile Logo"
               ></img>
             </Link>

@@ -126,11 +126,11 @@ const OneProductScreen: React.FC = () => {
   return (
     <div>
       <Header />
-      <div className="flex flex-col h-screen border bg-pink">
-        <div className="flex flex-col justify-center items-center bg-lightPink">
+      <div className="flex flex-col h-screen ">
+        <div className="flex flex-col justify-center items-center pt-12 mt-36">
           <h1 className="bg-blue-200">{product.attributes.name}</h1>
         </div>
-        <div className="flex flex-col bg-lightPink">
+        <div className="flex flex-col">
           {product.attributes.icone_product?.data &&
             product.attributes.icone_product.data.length > 0 && (
               <img

@@ -1,5 +1,5 @@
-@use "reset";
-@use "variables" as v;
+@use 'reset';
+@use 'variables' as v;
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -11,4 +11,28 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+.thasadith-regular {
+  font-family: 'Thasadith', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.thasadith-bold {
+  font-family: 'Thasadith', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.thasadith-regular-italic {
+  font-family: 'Thasadith', sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.thasadith-bold-italic {
+  font-family: 'Thasadith', sans-serif;
+  font-weight: 700;
+  font-style: italic;
 }

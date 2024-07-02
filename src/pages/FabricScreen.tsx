@@ -114,8 +114,8 @@ const FabricScreen: React.FC = () => {
   return (
     <div>
       <Header />
-      <div className="flex flex-col h-screen border bg-pink">
-        <div className="flex flex-col justify-center items-center bg-lightPink">
+      <div className="flex flex-col h-screen ">
+        <div className="flex flex-col justify-center items-center pt-12 mt-36">
           <h1 className="bg-blue-200">FabricScreen</h1>
 
           <h2 className="bg-green-200">Fabrics</h2>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { FaScroll } from 'react-icons/fa';
 import { FaShirt } from 'react-icons/fa6';
+import { IconBase } from 'react-icons';
 
 export default function HomeScreen() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function HomeScreen() {
           Ici tu peux trouver quel textile conviens le mieux selon le projet que
           tu souhaite realiser en couture
         </h2>
-        <div className="flex flex-col justify-center items-center bg-pink">
+        <div className="flex flex-col justify-center items-center">
           <h3>RECHERCHÉ PAR:</h3>
           <div className="flex flex-row">
             <div
@@ -34,7 +35,11 @@ export default function HomeScreen() {
               }}
             >
               <h4>Projets</h4>
-              <FaShirt />
+              <img
+                className="w-32"
+                src="../../../assets/search_by_project.png"
+                alt="search by project"
+              />
             </div>
           </div>
         </div>

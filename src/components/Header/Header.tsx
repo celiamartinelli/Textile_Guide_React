@@ -3,20 +3,26 @@ import { Link } from 'react-router-dom';
 
 const Header: React.FC = () => {
   return (
-    <header className="flex">
-      <nav>
-        <ul className="flex flex-row  w-screen justify-between text-white text-xl font-bold">
+    <header className="flex font-thasadith-bold font-bold relative">
+      <nav className="fixed top-0 left-0 right-0">
+        <ul className="flex flex-row w-screen h-28 justify-around text-white text-xl font-bold bg-sage items-center">
           <li>
-            <Link to="/fabrics">Tissus</Link>
+            <Link to="/about">About</Link>
           </li>
           <li>
             <Link to="/products">Projets</Link>
           </li>
-          <li>
-            <Link to="/">Home</Link>
+          <li className="size-40 absolute pt-10">
+            <Link to="/">
+              <img
+                className="border rounded-full shadow-md"
+                src="../../../public/Guide_Textile_logo.png"
+                alt="Guide Textile Logo"
+              ></img>
+            </Link>
           </li>
           <li>
-            <Link to="/about">About</Link>
+            <Link to="/fabrics">Tissus</Link>
           </li>
           <li>
             <Link to="/contact">Contact</Link>

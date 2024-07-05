@@ -126,65 +126,75 @@ const FabricScreen: React.FC = () => {
   return (
     <div>
       <Header />
-      <div className="flex flex-col h-screen ">
-        <div className="flex flex-col justify-center items-center pt-12 mt-36">
-          <h1 className="bg-blue-200">{fabric.attributes.name}</h1>
-        </div>
-        <div className="flex flex-col">
-          {fabric.attributes.picture_fabric?.data && (
-            <img
-              src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
-              alt={fabric.attributes.name}
-              className="w-20 h-20 rounded-lg"
-            />
-          )}
-          <div>
-            <p>{fabric.attributes.description}</p>
-            <p>{fabric.attributes.composition}</p>
-            <p>{fabric.attributes.origin}</p>
-            <p>{fabric.attributes.characteristic}</p>
-            <p>{fabric.attributes.advantages}</p>
-            <p>{fabric.attributes.disadvantages}</p>
+      <div className="flex flex-col h-screen mx-3 pt-12 mt-36">
+        <div className="flex flex-col justify-center items-center border-2 border-white rounded-md shadow-lg">
+          <h1>{fabric.attributes.name}</h1>
+
+          <div className="flex flex-col justify-center items-center">
+            {fabric.attributes.picture_fabric?.data && (
+              <img
+                src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
+                alt={fabric.attributes.name}
+                className="w-20 h-20 rounded-lg"
+              />
+            )}
+            <div className="text-center text-sm">
+              <p>{fabric.attributes.description}</p>
+              <p>{fabric.attributes.composition}</p>
+              <p>{fabric.attributes.origin}</p>
+              <p>{fabric.attributes.characteristic}</p>
+              <p>{fabric.attributes.advantages}</p>
+              <p>{fabric.attributes.disadvantages}</p>
+            </div>
+            <div>
+              <h2 className="text-center">Entretien</h2>
+              <ul className="flex flex-row flex-wrap justify-center">
+                {fabric.attributes.washes?.data?.map((wash, index) => (
+                  <li
+                    className="w-14 flex flex-col justify-start items-center m-1"
+                    key={index}
+                  >
+                    {wash.attributes.icone?.data?.map((icon, iconIndex) => (
+                      <div>
+                        <img
+                          key={iconIndex}
+                          src={`http://localhost:1337${icon.attributes.url}`}
+                          alt="icone"
+                          className="w-12 h-12 p-1 border rounded-md bg-lightPink shadow-md"
+                        />
+                      </div>
+                    ))}
+                    <p className="text-xs w-14 text-center flex pt-1">
+                      {wash.attributes.description}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
           <div>
-            <h2>Washes</h2>
-
-            <ul>
-              {fabric.attributes.washes?.data?.map((wash, index) => (
-                <li key={index}>
-                  <p>{wash.attributes.description}</p>
-                  {wash.attributes.icone?.data?.map((icon, iconIndex) => (
-                    <img
-                      key={iconIndex}
-                      src={`http://localhost:1337${icon.attributes.url}`}
-                      alt="icone"
-                      className="w-10 h-10"
-                    />
-                  ))}
+            <h2 className="text-center">Projets Associés</h2>
+            <ul className="flex flex-row flex-wrap justify-center">
+              {fabric.attributes.products?.data?.map((product, index) => (
+                <li
+                  className="w-16 flex flex-col justify-center items-center m-1"
+                  key={index}
+                >
+                  {product.attributes.icone_product?.data?.map(
+                    (picture, picIndex) => (
+                      <img
+                        key={picIndex}
+                        src={`http://localhost:1337${picture.attributes.url}`}
+                        alt="project"
+                        className="w-12 h-12 p-1 border rounded-md bg-lightPink shadow-md"
+                      />
+                    )
+                  )}
+                  <p className="text-xs pt-1">{product.attributes.name}</p>
                 </li>
               ))}
             </ul>
           </div>
-        </div>
-        <div>
-          <h2>Projects</h2>
-          <ul>
-            {fabric.attributes.products?.data?.map((product, index) => (
-              <li key={index}>
-                <p>{product.attributes.name}</p>
-                {product.attributes.icone_product?.data?.map(
-                  (picture, picIndex) => (
-                    <img
-                      key={picIndex}
-                      src={`http://localhost:1337${picture.attributes.url}`}
-                      alt="project"
-                      className="w-10 h-10"
-                    />
-                  )
-                )}
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </div>

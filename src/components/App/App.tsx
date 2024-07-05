@@ -10,7 +10,7 @@ import OneProductScreen from '@/pages/OneProdutScreen';
 
 function App() {
   return (
-    <div className="bg-lightsage h-screen">
+    <div className="bg-lightsage">
       <Routes>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/fabrics" element={<FabricScreen />} />

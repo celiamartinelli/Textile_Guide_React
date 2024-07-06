@@ -1,7 +1,7 @@
-import Header from '@/components/Header/Header';
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Footer';
 
 interface RouteParams {
   fabricId: string;
@@ -185,6 +185,7 @@ const ProductScreen: React.FC = () => {
           </ul>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

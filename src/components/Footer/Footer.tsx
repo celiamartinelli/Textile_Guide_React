@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import HeaderDesktop from './HeaderDesktop';
-import HeaderPhone from './HeaderPhone';
+import FooterPhone from './FooterPhone';
+import FooterDesktop from './FooterDesktop';
 
-const Header: React.FC = () => {
+const Footer: React.FC = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 429);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const Header: React.FC = () => {
     // Nettoyer l'écouteur d'événement lors du démontage du composant
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  return <div>{isMobile ? <HeaderPhone /> : <HeaderDesktop />}</div>;
+  return <div>{isMobile ? <FooterPhone /> : <FooterDesktop />}</div>;
 };
 
-export default Header;
+export default Footer;

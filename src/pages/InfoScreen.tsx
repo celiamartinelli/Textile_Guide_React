@@ -1,5 +1,6 @@
-import Header from '@/components/Header/Header';
 import React from 'react';
+import Footer from '@/components/Footer/Footer';
+import Header from '@/components/Header/Header';
 
 export default function InfoScreen() {
   return (
@@ -10,6 +11,7 @@ export default function InfoScreen() {
           <h1>InfoScreen</h1>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

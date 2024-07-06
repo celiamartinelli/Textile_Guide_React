@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer/Footer';
 import Header from '@/components/Header/Header';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
@@ -175,6 +176,7 @@ const OneProductScreen: React.FC = () => {
           </ul>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

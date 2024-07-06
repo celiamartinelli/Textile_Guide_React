@@ -11,6 +11,7 @@ module.exports = {
         lightPink: '#ffcad4',
         pink: '#f4acb8',
         brown: '#9e8189',
+        darkBrown: '#6d6875',
       },
       fontFamily: {
         'thasadith-regular': ['Thasadith', 'sans-serif'],

@@ -1,7 +1,8 @@
-import Header from '@/components/Header/Header';
 import React from 'react';
+import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Footer';
 
-const ContactScreen: React.FC = () => {
+const SettingScreen: React.FC = () => {
   return (
     <div>
       <Header />
@@ -57,8 +58,9 @@ const ContactScreen: React.FC = () => {
           </form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
 
-export default ContactScreen;
+export default SettingScreen;

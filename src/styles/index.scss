@@ -10,7 +10,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 .thasadith-regular {
@@ -35,4 +35,12 @@
   font-family: 'Thasadith', sans-serif;
   font-weight: 700;
   font-style: italic;
+}
+
+.press-down {
+  transition: transform 0.2s;
+}
+
+.press-down:active {
+  transform: scale(0.95);
 }

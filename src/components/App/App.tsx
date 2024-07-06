@@ -4,7 +4,7 @@ import HomeScreen from '@/pages/HomeScreen';
 import FabricScreen from '@/pages/FabricScreen';
 import ProductScreen from '@/pages/ProductScreen';
 import InfoScreen from '@/pages/InfoScreen';
-import ContactScreen from '@/pages/ContactScreen';
+import SettingScreen from '@/pages/SettingScreen';
 import OneFabricScreen from '@/pages/OneFabricScreen';
 import OneProductScreen from '@/pages/OneProdutScreen';
 
@@ -18,7 +18,7 @@ function App() {
         <Route path="/products" element={<ProductScreen />} />
         <Route path="/products/:productId" element={<OneProductScreen />} />
         <Route path="/about" element={<InfoScreen />} />
-        <Route path="/contact" element={<ContactScreen />} />
+        <Route path="/setting" element={<SettingScreen />} />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
     </div>

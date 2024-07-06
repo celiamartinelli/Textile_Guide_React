@@ -66,6 +66,7 @@ interface ProductAttributes {
   name: string;
   category: string;
   description: string;
+  textile_quantity_required: string;
   icone_product: {
     data: ProductIcon[];
   };
@@ -127,53 +128,69 @@ const OneProductScreen: React.FC = () => {
   return (
     <div>
       <Header />
-      <div className="flex flex-col h-full">
-        <div className="flex flex-col justify-center items-center pt-12 mt-36">
-          <h1 className="bg-blue-200">{product.attributes.name}</h1>
-        </div>
-        <div className="flex flex-col">
-          {product.attributes.icone_product?.data &&
-            product.attributes.icone_product.data.length > 0 && (
-              <img
-                src={`http://localhost:1337${product.attributes.icone_product.data[0].attributes.url}`}
-                alt={product.attributes.name}
-                className="w-20 h-20 rounded-lg"
-              />
-            )}
-          <div>
-            <p>{product.attributes.description}</p>
-            <p>{product.attributes.category}</p>
-          </div>
-
-          <h2>Tissus Associés</h2>
-          <ul>
-            {product.attributes.fabrics?.data?.map(
-              (project) => (
-                console.log('project:', project),
-                (
-                  <li key={project.id}>
-                    <p>{project.attributes.name}</p>
-                    <img
-                      src={`http://localhost:1337${project.attributes.picture_fabric.data.attributes.url}`}
-                      alt={project.attributes.name}
-                      className="w-20 h-20 rounded-lg"
-                    ></img>
-                    {project.attributes.washes?.data.map((icone) => (
-                      <div>
-                        <img
-                          key={icone.id}
-                          src={`http://localhost:1337${icone.attributes.icone.data?.[0].attributes.url}`}
-                          alt={icone.attributes.description}
-                          className="w-10 h-10"
-                        />
-                        <p>{icone.attributes.description}</p>
-                      </div>
-                    ))}
+      <div className="flex flex-col h-screen mx-3 pt-12 mt-36">
+        <div className="flex flex-col justify-center items-center">
+          <h1 className="text-center">{product.attributes.name}</h1>
+          <div className="border-2 border-white rounded-md shadow-lg p-2 w-full">
+            {product.attributes.icone_product?.data &&
+              product.attributes.icone_product.data.length > 0 && (
+                <img
+                  src={`http://localhost:1337${product.attributes.icone_product.data[0].attributes.url}`}
+                  alt={product.attributes.name}
+                  className="w-24 h-24 rounded-lg m-2 mx-auto"
+                />
+              )}
+            <div className="text-center">
+              <p>{product.attributes.description}</p>
+              <p>{product.attributes.category}</p>
+              <div className="">
+                <h4>Quantité de tissus nécessaire:</h4>
+                <p className="border-2 rounded-md bg-cream">
+                  {product.attributes.textile_quantity_required}
+                </p>
+                <p>pour une laize de 1,5m</p>
+              </div>
+            </div>
+            <div className="flex flex-col justify-center items-center ">
+              <h2 className="">Tissus Associés</h2>
+              <ul className="flex">
+                {product.attributes.fabrics?.data?.map((fabric) => (
+                  // console.log('fabric:', fabric),
+                  <li
+                    className="flex flex-col justify-center items-center mb-2"
+                    key={fabric.id}
+                  >
+                    <Link to={`/fabrics/${fabric.id}`} className="text-center">
+                      <img
+                        src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
+                        alt={fabric.attributes.name}
+                        className="w-20 h-20 rounded-lg m-2"
+                      />
+                      <p className="text-center">{fabric.attributes.name}</p>
+                    </Link>
+                    {/* <div className="flex">
+                      {fabric.attributes.washes?.data.map((icon, iconIndex) => (
+                        <div
+                          className="flex flex-col justify-start items-center"
+                          key={`${fabric.id}-${iconIndex}`}
+                        >
+                          <img
+                            key={icon.id}
+                            src={`http://localhost:1337${icon.attributes.icone.data?.[0].attributes.url}`}
+                            alt={icon.attributes.description}
+                            className="w-12 h-12 p-1 border rounded-md bg-cream shadow-md"
+                          />
+                          <p className="text-xs w-14 text-center flex pt-1">
+                            {icon.attributes.description}
+                          </p>
+                        </div>
+                      ))}
+                    </div> */}
                   </li>
-                )
-              )
-            )}
-          </ul>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <Footer />

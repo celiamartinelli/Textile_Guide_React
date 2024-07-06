@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 interface RouteParams {
   fabricId: string;
@@ -139,15 +141,12 @@ const ProductScreen: React.FC = () => {
   return (
     <div>
       <Header />
-      <div className="flex flex-col h-screen border">
+      <div className="flex flex-col h-screen border text-white">
         <div className="flex flex-col justify-center items-center pt-12 mt-36">
-          <h1 className="bg-blue-200">ProductScreen</h1>
-
-          <h2 className="bg-green-200">Products</h2>
-          <h3 className="bg-yellow-200">Par Projets:</h3>
-          <div>
+          <h1 className="mb-3">Projets:</h1>
+          <div className="border-2 rounded-lg ">
             <input
-              className="bg-gray-200"
+              className=" rounded-md p-2 m-2 bg-white text-brown"
               type="text"
               placeholder="Search"
               value={search}
@@ -157,28 +156,32 @@ const ProductScreen: React.FC = () => {
               }}
             />
             <button
-              className="bg-violet-300"
+              className="bg-cream p-2 rounded-md text-brown mr-2"
               type="button"
               onClick={handleSearch}
+              aria-label="Rechercher"
             >
-              Search
+              <FontAwesomeIcon icon={faMagnifyingGlass} />
             </button>
           </div>
         </div>
         <div>
-          <ul className="flex flex-row flex-wrap">
+          <ul className="flex flex-row flex-wrap justify-center">
             {projects.map((project) => (
-              <li key={project.id}>
+              <li
+                key={project.id}
+                className="w-18 h-18 flex flex-col justify-center items-center border rounded-lg p-3 shadow-lg m-3 bg-sage"
+              >
                 <Link
                   to={`/products/${project.id}`}
-                  className="flex flex-col justify-center items-center border rounded-lg p-4 shadow-lg m-5 bg-lightPink"
+                  className="flex flex-col justify-center items-center"
                 >
                   <img
                     src={`http://localhost:1337${project.iconUrl}`}
                     alt={project.name}
-                    className="w-20 h-20 rounded-lg"
+                    className="h-16 rounded-lg"
                   />
-                  <p className="justify-center items-center">{project.name}</p>
+                  <p className="text-center w-24 text-sm">{project.name}</p>
                 </Link>
               </li>
             ))}

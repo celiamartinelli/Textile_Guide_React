@@ -19,28 +19,10 @@ type Wash = {
   };
 };
 
-interface Icone {
-  data: { attributes: { url: string } }[];
-}
 interface ProductIcon {
   id: number;
   attributes: {
-    // alternativeText: string | null;
-    // caption: string | null;
-    // createdAt: string;
-    // ext: string;
-    // formats: any | null; // Remplacez `any` par un type plus spécifique si possible
-    // hash: string;
-    // height: number;
-    // mime: string;
-    // name: string;
-    // previewUrl: string | null;
-    // provider: string;
-    // provider_metadata: any | null; // Remplacez `any` par un type plus spécifique si possible
-    // size: number;
-    // updatedAt: string;
     url: string;
-    // width: number;
   };
 }
 
@@ -84,14 +66,13 @@ type Fabric = {
   };
 };
 
-const FabricScreen: React.FC = () => {
+const OneFabricScreen: React.FC = () => {
   const { fabricId } = useParams() as unknown as RouteParams;
   const [fabric, setFabric] = useState<Fabric | null>(null);
 
   useEffect(() => {
     const fetchFabricData = async () => {
       try {
-        console.log(`Fetching fabric with ID: ${fabricId}`);
         const response = await fetch(
           `http://localhost:1337/api/fabrics/${fabricId}?populate[0]=picture_fabric&populate[1]=washes&populate[2]=washes.icone&populate[3]=products.icone_product`
         );
@@ -100,7 +81,6 @@ const FabricScreen: React.FC = () => {
         }
 
         const result = await response.json();
-        // console.log('Fetched data:', result);
 
         if (!result || !result.data) {
           console.error("La réponse de l'API ne contient pas de données");
@@ -120,6 +100,50 @@ const FabricScreen: React.FC = () => {
     fetchFabricData();
   }, [fabricId]);
 
+  const renderCompositionTags = (composition: string) => {
+    return composition.split(',').map((comp, index) => (
+      <span
+        key={index}
+        className="px-3 py-1 mb-2 mx-2 bg-cream rounded-md text-sm border"
+      >
+        {comp.trim()}
+      </span>
+    ));
+  };
+
+  const renderCharateristicTags = (characteristic: string) => {
+    return characteristic.split(',').map((charact, index) => (
+      <span
+        key={index}
+        className="px-3 py-1  mb-2 bg-lightPink rounded-md text-sm border"
+      >
+        {charact.trim()}
+      </span>
+    ));
+  };
+
+  const renderBenefitsTags = (benefits: string) => {
+    return benefits.split(',').map((benefit, index) => (
+      <span
+        key={index}
+        className="px-3 py-1  mb-2 bg-sage rounded-md text-sm text-white border"
+      >
+        {benefit.trim()}
+      </span>
+    ));
+  };
+
+  const renderDisadvantagesTags = (disadvantages: string) => {
+    return disadvantages.split(',').map((disadvantage, index) => (
+      <span
+        key={index}
+        className="px-3 py-1 mb-2 bg-pink rounded-md text-sm border "
+      >
+        {disadvantage.trim()}
+      </span>
+    ));
+  };
+
   if (!fabric || !fabric.attributes) {
     return <div>Chargement...</div>;
   }
@@ -127,73 +151,115 @@ const FabricScreen: React.FC = () => {
   return (
     <div>
       <Header />
-      <div className="flex flex-col h-screen mx-3 pt-12 mt-36">
-        <div className="flex flex-col justify-center items-center border-2 border-white rounded-md shadow-lg">
+      <div className="flex flex-col h-full mx-3 pt-12 mt-36">
+        <div className="flex flex-col justify-center items-center ">
           <h1>{fabric.attributes.name}</h1>
 
-          <div className="flex flex-col justify-center items-center">
+          <div className="border-2 border-white rounded-md shadow-lg p-2">
             {fabric.attributes.picture_fabric?.data && (
               <img
                 src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
                 alt={fabric.attributes.name}
-                className="w-20 h-20 rounded-lg"
+                className="w-24 h-24 rounded-lg float-left m-2"
               />
             )}
             <div className="text-center text-sm">
-              <p>{fabric.attributes.description}</p>
-              <p>{fabric.attributes.composition}</p>
-              <p>{fabric.attributes.origin}</p>
-              <p>{fabric.attributes.characteristic}</p>
-              <p>{fabric.attributes.advantages}</p>
-              <p>{fabric.attributes.disadvantages}</p>
-            </div>
-            <div>
-              <h2 className="text-center">Entretien</h2>
-              <ul className="flex flex-row flex-wrap justify-center">
-                {fabric.attributes.washes?.data?.map((wash, index) => (
-                  <li
-                    className="w-14 flex flex-col justify-start items-center m-1"
-                    key={index}
-                  >
-                    {wash.attributes.icone?.data?.map((icon, iconIndex) => (
-                      <div>
-                        <img
-                          key={iconIndex}
-                          src={`http://localhost:1337${icon.attributes.url}`}
-                          alt="icone"
-                          className="w-12 h-12 p-1 border rounded-md bg-lightPink shadow-md"
-                        />
-                      </div>
-                    ))}
-                    <p className="text-xs w-14 text-center flex pt-1">
-                      {wash.attributes.description}
-                    </p>
-                  </li>
-                ))}
-              </ul>
+              <p className="m-2 text-justify">
+                {fabric.attributes.description}
+              </p>
+              <div className="flex flex-col justify-center items-center w-full pb-2">
+                <h4 className="pb-2">Composition:</h4>
+                <p>
+                  {fabric.attributes.composition &&
+                    renderCompositionTags(fabric.attributes.composition)}
+                </p>
+              </div>
+              <div className="flex flex-col justify-center items-center w-full pb-2">
+                <h4 className="pb-2">Charactéristique:</h4>
+                <p className="flex flex-col w-full">
+                  {fabric.attributes.characteristic &&
+                    renderCharateristicTags(fabric.attributes.characteristic)}
+                </p>
+              </div>
+
+              <div className="flex flex-col justify-center ">
+                <div className="flex flex-col justify-center items-center w-full pb-2">
+                  <h4 className="pb-2">Avantages</h4>
+                  <p className="flex flex-col w-full">
+                    {fabric.attributes.benefit &&
+                      renderBenefitsTags(fabric.attributes.benefit)}
+                  </p>
+                </div>
+                <div className="flex flex-col justify-center items-center w-full pb-2">
+                  <h4 className="pb-2">Inconvénients</h4>
+                  <p className="flex flex-col justify-center w-full">
+                    {fabric.attributes.disadvantages &&
+                      renderDisadvantagesTags(fabric.attributes.disadvantages)}
+                  </p>
+                </div>
+              </div>
+              <div>
+                <h4>Origine:</h4>
+                <p>{fabric.attributes.origin}</p>
+              </div>
             </div>
           </div>
-          <div>
-            <h2 className="text-center">Projets Associés</h2>
+          <div className="border-2 border-white rounded-md shadow-lg my-2 w-full">
+            <h2 className="text-center">Entretien</h2>
             <ul className="flex flex-row flex-wrap justify-center">
-              {fabric.attributes.products?.data?.map((product, index) => (
+              {fabric.attributes.washes?.data?.map((wash, washIndex) => (
                 <li
-                  className="w-16 flex flex-col justify-center items-center m-1"
-                  key={index}
+                  className="w-16 flex flex-col justify-start items-center m-1"
+                  key={wash.id}
                 >
-                  {product.attributes.icone_product?.data?.map(
-                    (picture, picIndex) => (
+                  {wash.attributes.icone?.data?.map((icon, iconIndex) => (
+                    <div key={`${wash.id}-${iconIndex}`}>
                       <img
-                        key={picIndex}
-                        src={`http://localhost:1337${picture.attributes.url}`}
-                        alt="project"
-                        className="w-12 h-12 p-1 border rounded-md bg-lightPink shadow-md"
+                        key={iconIndex}
+                        src={`http://localhost:1337${icon.attributes.url}`}
+                        alt="icone"
+                        className="w-12 h-12 p-1 border rounded-md bg-cream shadow-md"
                       />
-                    )
-                  )}
-                  <p className="text-xs pt-1">{product.attributes.name}</p>
+                    </div>
+                  ))}
+                  <p className="text-xs w-14 text-center flex pt-1">
+                    {wash.attributes.description}
+                  </p>
                 </li>
               ))}
+            </ul>
+          </div>
+
+          <div className="border-2 border-white rounded-md shadow-lg w-full">
+            <h2 className="text-center">Projets Associés</h2>
+            <ul className="flex flex-row flex-wrap justify-center">
+              {fabric.attributes.products?.data?.map(
+                (product, productIndex) => (
+                  <li
+                    className="w-16 flex flex-col justify-start items-center m-1"
+                    key={product.id}
+                  >
+                    <Link
+                      to={`/products/${product.id}`}
+                      className="text-center"
+                    >
+                      {product.attributes.icone_product?.data?.map(
+                        (picture, picIndex) => (
+                          <img
+                            key={`${product.id}-${picIndex}`}
+                            src={`http://localhost:1337${picture.attributes.url}`}
+                            alt="project"
+                            className="w-12 h-12 p-1 border rounded-md bg-sage shadow-md"
+                          />
+                        )
+                      )}
+                      <p className="text-xs pt-1 text-center">
+                        {product.attributes.name}
+                      </p>
+                    </Link>
+                  </li>
+                )
+              )}
             </ul>
           </div>
         </div>
@@ -203,4 +269,4 @@ const FabricScreen: React.FC = () => {
   );
 };
 
-export default FabricScreen;
+export default OneFabricScreen;

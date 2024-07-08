@@ -151,116 +151,117 @@ const OneFabricScreen: React.FC = () => {
   return (
     <div>
       <Header />
-      <div className="flex flex-col h-full mx-3 pt-12 mt-36">
-        <div className="flex flex-col justify-center items-center ">
-          <h1>{fabric.attributes.name}</h1>
-
+      <div className="flex flex-col h-full mx-3 pt-12 mt-36 lg:h-screen">
+        <div className="flex flex-col justify-center items-center">
           <div className="border-2 border-white rounded-md shadow-lg p-2">
-            {fabric.attributes.picture_fabric?.data && (
-              <img
-                src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
-                alt={fabric.attributes.name}
-                className="w-24 h-24 rounded-lg float-left m-2"
-              />
-            )}
-            <div className="text-center text-sm">
-              <p className="m-2 text-justify">
+            <h1 className="text-center">{fabric.attributes.name}</h1>
+            <div className="flex flex-col justidy-center items-center sm:m-4 sm:flex-row md:m-8 lg:m-2">
+              {fabric.attributes.picture_fabric?.data && (
+                <img
+                  src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
+                  alt={fabric.attributes.name}
+                  className="w-38 h-38 rounded-lg m-2 md:w-26 h-26 lg:w-44 h-44"
+                />
+              )}
+
+              <p className="m-2 text-justify sm:pt-2 lg:pt-2">
                 {fabric.attributes.description}
               </p>
-              <div className="flex flex-col justify-center items-center w-full pb-2">
+            </div>
+            <div className="text-center text-sm sm:flex flex-wrap justify-around">
+              <div className="flex flex-col justify-center pb-2 mx-2 sm:justify-start sm:w-2/5">
                 <h4 className="pb-2">Composition:</h4>
-                <p>
+                <p className="flex flex-col justify-center">
                   {fabric.attributes.composition &&
                     renderCompositionTags(fabric.attributes.composition)}
                 </p>
               </div>
-              <div className="flex flex-col justify-center items-center w-full pb-2">
+              <div className="flex flex-col justify-center pb-2 mx-2 sm:justify-start sm:w-2/5">
                 <h4 className="pb-2">Charactéristique:</h4>
-                <p className="flex flex-col w-full">
+                <p className="flex flex-col justify-center">
                   {fabric.attributes.characteristic &&
                     renderCharateristicTags(fabric.attributes.characteristic)}
                 </p>
               </div>
-
-              <div className="flex flex-col justify-center ">
-                <div className="flex flex-col justify-center items-center w-full pb-2">
-                  <h4 className="pb-2">Avantages</h4>
-                  <p className="flex flex-col w-full">
-                    {fabric.attributes.benefit &&
-                      renderBenefitsTags(fabric.attributes.benefit)}
-                  </p>
-                </div>
-                <div className="flex flex-col justify-center items-center w-full pb-2">
-                  <h4 className="pb-2">Inconvénients</h4>
-                  <p className="flex flex-col justify-center w-full">
-                    {fabric.attributes.disadvantages &&
-                      renderDisadvantagesTags(fabric.attributes.disadvantages)}
-                  </p>
-                </div>
+              <div className="flex flex-col justify-center pb-2 mx-2 sm:justify-start sm:w-2/5">
+                <h4 className="pb-2">Inconvénients</h4>
+                <p className="flex flex-col justify-center">
+                  {fabric.attributes.disadvantages &&
+                    renderDisadvantagesTags(fabric.attributes.disadvantages)}
+                </p>
               </div>
-              <div>
-                <h4>Origine:</h4>
-                <p>{fabric.attributes.origin}</p>
+              <div className="flex flex-col justify-center pb-2 mx-2 sm:justify-start sm:w-2/5">
+                <h4 className="pb-2">Avantages</h4>
+                <p className="flex flex-col justify-center">
+                  {fabric.attributes.benefit &&
+                    renderBenefitsTags(fabric.attributes.benefit)}
+                </p>
               </div>
             </div>
+            <div className="text-center">
+              <h4>Origine:</h4>
+              <p>{fabric.attributes.origin}</p>
+            </div>
           </div>
-          <div className="border-2 border-white rounded-md shadow-lg my-2 w-full">
-            <h2 className="text-center">Entretien</h2>
-            <ul className="flex flex-row flex-wrap justify-center">
-              {fabric.attributes.washes?.data?.map((wash, washIndex) => (
-                <li
-                  className="w-16 flex flex-col justify-start items-center m-1"
-                  key={wash.id}
-                >
-                  {wash.attributes.icone?.data?.map((icon, iconIndex) => (
-                    <div key={`${wash.id}-${iconIndex}`}>
-                      <img
-                        key={iconIndex}
-                        src={`http://localhost:1337${icon.attributes.url}`}
-                        alt="icone"
-                        className="w-12 h-12 p-1 border rounded-md bg-cream shadow-md"
-                      />
-                    </div>
-                  ))}
-                  <p className="text-xs w-14 text-center flex pt-1">
-                    {wash.attributes.description}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="border-2 border-white rounded-md shadow-lg w-full">
-            <h2 className="text-center">Projets Associés</h2>
-            <ul className="flex flex-row flex-wrap justify-center">
-              {fabric.attributes.products?.data?.map(
-                (product, productIndex) => (
+          <div className="w-full  ">
+            <div className="border-2 border-white rounded-md shadow-lg my-2 w-full lg:my-0 ">
+              <h2 className="text-center lg:mt-2">Entretien</h2>
+              <ul className="flex flex-row flex-wrap justify-center">
+                {fabric.attributes.washes?.data?.map((wash, washIndex) => (
                   <li
-                    className="w-16 flex flex-col justify-start items-center m-1"
-                    key={product.id}
+                    className="w-16 flex flex-col justify-start items-center m-1 sm:w-24"
+                    key={wash.id}
                   >
-                    <Link
-                      to={`/products/${product.id}`}
-                      className="text-center"
-                    >
-                      {product.attributes.icone_product?.data?.map(
-                        (picture, picIndex) => (
-                          <img
-                            key={`${product.id}-${picIndex}`}
-                            src={`http://localhost:1337${picture.attributes.url}`}
-                            alt="project"
-                            className="w-12 h-12 p-1 border rounded-md bg-sage shadow-md"
-                          />
-                        )
-                      )}
-                      <p className="text-xs pt-1 text-center">
-                        {product.attributes.name}
-                      </p>
-                    </Link>
+                    {wash.attributes.icone?.data?.map((icon, iconIndex) => (
+                      <div key={`${wash.id}-${iconIndex}`}>
+                        <img
+                          key={iconIndex}
+                          src={`http://localhost:1337${icon.attributes.url}`}
+                          alt="icone"
+                          className="w-12 h-12 p-1 border rounded-md bg-cream shadow-md"
+                        />
+                      </div>
+                    ))}
+                    <p className="text-xs w-14 text-center flex pt-1 sm:w-24 justify-center">
+                      {wash.attributes.description}
+                    </p>
                   </li>
-                )
-              )}
-            </ul>
+                ))}
+              </ul>
+            </div>
+
+            <div className="border-2 border-white rounded-md shadow-lg w-full lg:my-0">
+              <h2 className="text-center lg:mt-2">Projets Associés</h2>
+              <ul className="flex flex-row flex-wrap justify-center">
+                {fabric.attributes.products?.data?.map(
+                  (product, productIndex) => (
+                    <li
+                      className="w-16 flex flex-col justify-start items-center m-1"
+                      key={product.id}
+                    >
+                      <Link
+                        to={`/products/${product.id}`}
+                        className="text-center"
+                      >
+                        {product.attributes.icone_product?.data?.map(
+                          (picture, picIndex) => (
+                            <img
+                              key={`${product.id}-${picIndex}`}
+                              src={`http://localhost:1337${picture.attributes.url}`}
+                              alt="project"
+                              className="w-12 h-12 p-1 border rounded-md bg-sage shadow-md"
+                            />
+                          )
+                        )}
+                        <p className="text-xs pt-1 text-center">
+                          {product.attributes.name}
+                        </p>
+                      </Link>
+                    </li>
+                  )
+                )}
+              </ul>
+            </div>
           </div>
         </div>
       </div>

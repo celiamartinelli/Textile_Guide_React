@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 
-const SettingScreen: React.FC = () => {
+const AboutScreen: React.FC = () => {
   return (
     <div>
       <Header />
@@ -63,4 +63,4 @@ const SettingScreen: React.FC = () => {
   );
 };
 
-export default SettingScreen;
+export default AboutScreen;

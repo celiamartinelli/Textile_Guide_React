@@ -67,6 +67,7 @@ interface ProductAttributes {
   category: string;
   description: string;
   textile_quantity_required: string;
+  second_category: string;
   icone_product: {
     data: ProductIcon[];
   };
@@ -142,7 +143,13 @@ const OneProductScreen: React.FC = () => {
               )}
             <div className="text-center">
               <p>{product.attributes.description}</p>
-              <p>{product.attributes.category}</p>
+              <div className="flex justify-center">
+                {' '}
+                <p>{product.attributes.category}</p>
+                <p>-</p>
+                <p>{product.attributes.second_category}</p>
+              </div>
+
               <div className="">
                 <h4>Quantité de tissus nécessaire:</h4>
                 <p className="border-2 rounded-md bg-cream">

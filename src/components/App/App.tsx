@@ -3,10 +3,9 @@ import { Routes, Route } from 'react-router-dom';
 import HomeScreen from '@/pages/HomeScreen';
 import FabricScreen from '@/pages/FabricScreen';
 import ProductScreen from '@/pages/ProductScreen';
-import InfoScreen from '@/pages/InfoScreen';
-import SettingScreen from '@/pages/SettingScreen';
 import OneFabricScreen from '@/pages/OneFabricScreen';
 import OneProductScreen from '@/pages/OneProdutScreen';
+import AboutScreen from '@/pages/AboutScreen';
 
 function App() {
   return (
@@ -17,8 +16,8 @@ function App() {
         <Route path="/fabrics/:fabricId" element={<OneFabricScreen />} />
         <Route path="/products" element={<ProductScreen />} />
         <Route path="/products/:productId" element={<OneProductScreen />} />
-        <Route path="/about" element={<InfoScreen />} />
-        <Route path="/setting" element={<SettingScreen />} />
+        <Route path="/about" element={<AboutScreen />} />
+
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
     </div>

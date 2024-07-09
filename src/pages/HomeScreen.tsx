@@ -12,7 +12,7 @@ export default function HomeScreen() {
   return (
     <div className="text-white">
       <Header />
-      <div className="flex flex-col justify-center items-center h-screen">
+      <div className="flex flex-col justify-center items-center h-screen mt-16">
         <div className="mb-5 text-center">
           <h1 className="pb-8 text-2xl font-bold">
             Bienvenue dans le

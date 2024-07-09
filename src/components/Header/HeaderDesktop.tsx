@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { FiSun } from 'react-icons/fi';
+import { RiMoonFill } from 'react-icons/ri';
 
 const HeaderDesktop: React.FC = () => {
+  const [isDarkMode, setIsDarkMode] = useState('light');
+
   return (
     <header className="flex font-thasadith-bold font-bold relative">
       <nav className="fixed top-0 left-0 right-0">
@@ -17,7 +21,7 @@ const HeaderDesktop: React.FC = () => {
             <Link to="/">
               <img
                 className="border rounded-full shadow-md w-40 h-40"
-                src="../../../public/assets/Guide_Textile_logo.png"
+                src="../../../public/assets/guide_textile_sage.png"
                 alt="Guide Textile Logo"
               ></img>
             </Link>
@@ -26,7 +30,16 @@ const HeaderDesktop: React.FC = () => {
             <Link to="/fabrics">Tissus</Link>
           </li>
           <li>
-            <Link to="/setting">Contact</Link>
+            <button
+              aria-label="Activer le Dark Mode"
+              type="button"
+              onClick={() => {
+                setIsDarkMode(isDarkMode === 'light' ? 'dark' : 'light');
+              }}
+              className="bg-sage text-white py-2 px-4 rounded-md hover:bg-lightsage"
+            >
+              {isDarkMode === 'light' ? <RiMoonFill /> : <FiSun />}
+            </button>
           </li>
         </ul>
       </nav>

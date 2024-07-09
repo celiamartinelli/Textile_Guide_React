@@ -5,13 +5,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        lightsage: '#adc9b8',
-        sage: '#89a594',
+        lightsage: '#d8e2dc',
+        sage: '#adc9b8',
+        darkSage: '#89a594',
         cream: '#ffe5d9',
         lightPink: '#ffcad4',
         pink: '#f4acb8',
         brown: '#9e8189',
         darkBrown: '#6d6875',
+        rosyBrown: '#bfa4a4',
       },
       fontFamily: {
         'thasadith-regular': ['Thasadith', 'sans-serif'],

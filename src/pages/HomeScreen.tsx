@@ -18,13 +18,13 @@ export default function HomeScreen() {
             Bienvenue dans le
             <br /> Guide des Textiles
           </h1>
-          <h2 className="">
+          <h2 className="text-darkBrown">
             Ici tu peux trouver quel textile convient le mieux selon le projet
             que tu souhaites realiser dans l'univers du textile.
           </h2>
         </div>
         <div className="flex flex-col justify-center items-center">
-          <h3>Recherché par:</h3>
+          <h3 className="text-darkBrown">Recherché par:</h3>
           <div className="flex flex-row m-2">
             <div
               className="flex flex-col justify-center items-center border rounded-md p-2 m-2 shadow-lg bg-sage"

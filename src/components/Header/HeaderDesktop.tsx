@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiSun } from 'react-icons/fi';
 import { RiMoonFill } from 'react-icons/ri';
+import { useDarkMode } from '../App/DarkModeContext';
 
 const HeaderDesktop: React.FC = () => {
-  const [isDarkMode, setIsDarkMode] = useState('light');
+  const { isDarkMode, setIsDarkMode } = useDarkMode();
 
   return (
-    <header className="flex font-thasadith-bold font-bold relative">
+    <header className="flex font-thasadith-bold font-bold relative ">
       <nav className="fixed top-0 left-0 right-0">
         <ul className="flex flex-row w-screen h-24 justify-around text-white text-xl font-bold bg-sage items-center">
           <li>
@@ -33,12 +34,10 @@ const HeaderDesktop: React.FC = () => {
             <button
               aria-label="Activer le Dark Mode"
               type="button"
-              onClick={() => {
-                setIsDarkMode(isDarkMode === 'light' ? 'dark' : 'light');
-              }}
+              onClick={() => setIsDarkMode(!isDarkMode)}
               className="bg-sage text-white py-2 px-4 rounded-md hover:bg-lightsage"
             >
-              {isDarkMode === 'light' ? <RiMoonFill /> : <FiSun />}
+              {isDarkMode ? <RiMoonFill /> : <FiSun />}
             </button>
           </li>
         </ul>

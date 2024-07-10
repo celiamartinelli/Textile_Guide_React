@@ -10,6 +10,7 @@ import { DarkModeProvider } from './DarkModeContext';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import HeaderDesktop from '../Header/HeaderDesktop';
+import NotFound from '@/pages/NotFound';
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
           <Route path="/products/:productId" element={<OneProductScreen />} />
           <Route path="/about" element={<AboutScreen />} />
 
-          <Route path="*" element={<h1>Not Found</h1>} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
       </div>

@@ -127,9 +127,8 @@ const OneProductScreen: React.FC = () => {
   }
 
   return (
-    <div>
-      <Header />
-      <div className="flex flex-col h-screen mx-6 pt-12 mt-36 md:w-2/4 md:mx-auto">
+    <div className="pb-20">
+      <div className="flex flex-col min-h-screen mx-6 pt-12 mt-36 md:w-2/4 md:mx-auto">
         <div className="flex flex-col justify-center items-center ">
           <h1 className="text-center">{product.attributes.name}</h1>
           <div className="border-2 border-white rounded-md shadow-lg p-2 w-full">
@@ -200,7 +199,6 @@ const OneProductScreen: React.FC = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

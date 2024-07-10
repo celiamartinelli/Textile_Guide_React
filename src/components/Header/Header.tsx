@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import HeaderDesktop from './HeaderDesktop';
 import HeaderPhone from './HeaderPhone';
+// import { useDarkMode } from '../App/DarkModeContext';
 
 const Header: React.FC = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 429);
+  // const { isDarkMode, setIsDarkMode } = useDarkMode();
 
   useEffect(() => {
     const handleResize = () => {

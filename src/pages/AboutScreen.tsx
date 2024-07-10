@@ -17,9 +17,8 @@ const AboutScreen: React.FC = () => {
   }, [location]);
 
   return (
-    <div>
-      <Header />
-      <div className="flex flex-col h-screen pt-12 my-36">
+    <div className="pb-20">
+      <div className="flex flex-col min-h-screen pt-12 my-36">
         <div className="flex flex-col justify-center items-center mx-8">
           <h1 className=" font-bold text-3xl text-white">
             A Propos de Guide Textile
@@ -87,7 +86,7 @@ const AboutScreen: React.FC = () => {
                 id="message"
                 className="bg-white rounded-md p-2 w-64 "
                 rows={4}
-              ></textarea>
+              />
             </div>
             <button
               type="submit"
@@ -98,7 +97,6 @@ const AboutScreen: React.FC = () => {
           </form>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

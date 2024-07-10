@@ -1,32 +1,43 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGear } from '@fortawesome/free-solid-svg-icons';
-import { faCircleQuestion } from '@fortawesome/free-regular-svg-icons';
+import { IoIosInformationCircle } from 'react-icons/io';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FiSun } from 'react-icons/fi';
+import { RiMoonFill } from 'react-icons/ri';
+import { useDarkMode } from '../App/DarkModeContext';
 
 const HeaderPhone: React.FC = () => {
+  const { isDarkMode, setIsDarkMode } = useDarkMode();
+  const textileLogo = isDarkMode
+    ? '../../../assets/guide_textile_dark.png'
+    : '../../../assets/guide_textile.png';
   return (
     <header className="flex font-thasadith-bold font-bold relative">
       <nav className="fixed top-0 left-0 right-0">
-        <ul className="flex flex-row w-screen h-20 justify-between text-white text-xl font-bold bg-sage items-center">
-          <li className="px-8">
+        <ul className="flex flex-row w-screen h-20 justify-between text-white text-xl font-bold bg-lightBackground dark:bg-darkBackground  items-center px-8">
+          <li className="p-2 rounded-full hover:bg-lightBackgroundLight dark:hover:bg-darkBackgroundLightHover ">
             <Link to="/about">
-              <FontAwesomeIcon icon={faCircleQuestion} />
+              <IoIosInformationCircle />
             </Link>
           </li>
           <li className="size-4/12 sm:size-2/12 lg:size-2/12">
             <Link to="/">
               <img
                 className="border rounded-full shadow-md"
-                src="../../../public/assets/guide_textile_sage.png"
+                src={textileLogo}
                 alt="Guide Textile Logo"
-              ></img>
+              />
             </Link>
           </li>
-          <li className="px-8">
-            <Link to="/setting">
-              <FontAwesomeIcon icon={faGear} />
-            </Link>
+          <li>
+            <button
+              aria-label="Activer le Dark Mode"
+              type="button"
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className=" text-white p-2 rounded-full hover:bg-lightBackgroundLight dark:hover:bg-darkBackgroundLightHover "
+            >
+              {isDarkMode ? <FiSun /> : <RiMoonFill />}
+            </button>
           </li>
         </ul>
       </nav>

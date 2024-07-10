@@ -14,6 +14,19 @@ module.exports = {
         brown: '#9e8189',
         darkBrown: '#6d6875',
         rosyBrown: '#bfa4a4',
+        // LightMode
+        lightBackground: '#74A186',
+        lightBackgroundLight: '#adc9b8',
+        lightBackgroundLightHover: '#bcddc9',
+        lightText: '#333',
+        lightTextLight: '#666',
+
+        // DarkMode
+        darkBackground: '#5c4e4f',
+        darkBackgroundLight: '#9a7b7b',
+        darkBackgroundLightHover: '#bfa4a4',
+        darkText: '#e5e5e5',
+        darkTextLight: '#f0f0f0',
       },
       fontFamily: {
         'thasadith-regular': ['Thasadith', 'sans-serif'],

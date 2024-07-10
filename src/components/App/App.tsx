@@ -7,20 +7,15 @@ import OneFabricScreen from '@/pages/OneFabricScreen';
 import OneProductScreen from '@/pages/OneProdutScreen';
 import AboutScreen from '@/pages/AboutScreen';
 import { DarkModeProvider } from './DarkModeContext';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
+import HeaderDesktop from '../Header/HeaderDesktop';
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  useEffect(() => {
-    // Appliquer ou retirer la classe dark-mode du corps du document
-    if (isDarkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
-  }, [isDarkMode]);
   return (
     <DarkModeProvider>
-      <div className={`bg-lightsage ${isDarkMode ? 'dark:bg-sage' : ''}`}>
+      <div className="bg-lightBackgroundLight dark:bg-darkBackgroundLight text-black dark:text-darkText min-h-screen">
+        <Header />
         <Routes>
           <Route path="/" element={<HomeScreen />} />
           <Route path="/fabrics" element={<FabricScreen />} />
@@ -31,6 +26,7 @@ function App() {
 
           <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
+        <Footer />
       </div>
     </DarkModeProvider>
   );

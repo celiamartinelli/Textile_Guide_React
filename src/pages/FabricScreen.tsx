@@ -114,9 +114,8 @@ const FabricScreen: React.FC = () => {
   };
 
   return (
-    <div>
-      <Header />
-      <div className="flex flex-col h-screen text-white">
+    <div className="pb-20">
+      <div className="flex flex-col min-h-screen text-white">
         <div className="flex flex-col justify-center items-center pt-12 mt-36">
           <h1 className="mb-3">Tissus:</h1>
           <div className="border-2 rounded-lg ">
@@ -146,7 +145,7 @@ const FabricScreen: React.FC = () => {
               <li key={fabric.id}>
                 <Link
                   to={`/fabrics/${fabric.id}`}
-                  className="flex flex-col justify-center items-center border rounded-lg p-4 shadow-lg m-3 bg-sage"
+                  className="flex flex-col justify-center items-center border rounded-lg p-4 shadow-lg m-3 bg-lightBackground hover:bg-lightBackgroundLightHover dark:bg-darkBackground hover:dark:bg-darkBackgroundLightHover"
                 >
                   {fabric.attributes.picture_fabric?.data && (
                     <img
@@ -176,7 +175,6 @@ const FabricScreen: React.FC = () => {
           </ul>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

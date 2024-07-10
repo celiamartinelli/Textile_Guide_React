@@ -139,9 +139,8 @@ const ProductScreen: React.FC = () => {
   };
 
   return (
-    <div>
-      <Header />
-      <div className="flex flex-col h-screen border text-white">
+    <div className="pb-20">
+      <div className="flex flex-col min-h-screen  text-white">
         <div className="flex flex-col justify-center items-center pt-12 mt-36">
           <h1 className="mb-3">Projets:</h1>
           <div className="border-2 rounded-lg ">
@@ -170,7 +169,7 @@ const ProductScreen: React.FC = () => {
             {projects.map((project) => (
               <li
                 key={project.id}
-                className="w-18 h-18 flex flex-col justify-center items-center border rounded-lg p-3 shadow-lg m-3 bg-sage"
+                className="w-18 h-18 flex flex-col justify-center items-center border rounded-lg p-3 shadow-lg m-3 bg-lightBackground hover:bg-lightBackgroundLightHover dark:bg-darkBackground hover:dark:bg-darkBackgroundLightHover"
               >
                 <Link
                   to={`/products/${project.id}`}
@@ -188,7 +187,6 @@ const ProductScreen: React.FC = () => {
           </ul>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

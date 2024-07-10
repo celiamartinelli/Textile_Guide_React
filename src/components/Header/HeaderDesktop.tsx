@@ -6,11 +6,14 @@ import { useDarkMode } from '../App/DarkModeContext';
 
 const HeaderDesktop: React.FC = () => {
   const { isDarkMode, setIsDarkMode } = useDarkMode();
+  const textileLogo = isDarkMode
+    ? '../../../assets/guide_textile_dark.png'
+    : '../../../assets/guide_textile.png';
 
   return (
     <header className="flex font-thasadith-bold font-bold relative ">
       <nav className="fixed top-0 left-0 right-0">
-        <ul className="flex flex-row w-screen h-24 justify-around text-white text-xl font-bold bg-sage items-center">
+        <ul className="flex flex-row w-screen h-24 justify-around text-white text-xl font-bold bg-lightBackground dark:bg-darkBackground  items-center">
           <li>
             <Link to="/about">About</Link>
           </li>
@@ -22,7 +25,7 @@ const HeaderDesktop: React.FC = () => {
             <Link to="/">
               <img
                 className="border rounded-full shadow-md w-40 h-40"
-                src="../../../public/assets/guide_textile_sage.png"
+                src={textileLogo}
                 alt="Guide Textile Logo"
               ></img>
             </Link>
@@ -35,9 +38,9 @@ const HeaderDesktop: React.FC = () => {
               aria-label="Activer le Dark Mode"
               type="button"
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="bg-sage text-white py-2 px-4 rounded-md hover:bg-lightsage"
+              className=" text-white py-2 px-4 rounded-md hover:bg-lightBackgroundLight  dark:hover:bg-darkBackgroundLightHover"
             >
-              {isDarkMode ? <RiMoonFill /> : <FiSun />}
+              {isDarkMode ? <FiSun /> : <RiMoonFill />}
             </button>
           </li>
         </ul>

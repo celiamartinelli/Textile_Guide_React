@@ -149,9 +149,8 @@ const OneFabricScreen: React.FC = () => {
   }
 
   return (
-    <div>
-      <Header />
-      <div className="flex flex-col h-full mx-3 pt-12 mt-36 lg:h-screen">
+    <div className="pb-20">
+      <div className="flex flex-col h-full mx-3 pt-12 mt-36 lg:min-h-screen">
         <div className="flex flex-col justify-center items-center">
           <div className="border-2 border-white rounded-md shadow-lg p-2">
             <h1 className="text-center">{fabric.attributes.name}</h1>
@@ -265,7 +264,6 @@ const OneFabricScreen: React.FC = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

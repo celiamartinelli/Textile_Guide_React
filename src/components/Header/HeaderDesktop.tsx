@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FiSun } from 'react-icons/fi';
 import { RiMoonFill } from 'react-icons/ri';
 import { useDarkMode } from '../App/DarkModeContext';
+import LanguageSwitcher from '../Button/LanguageSwitcher';
 
 const HeaderDesktop: React.FC = () => {
   const { isDarkMode, setIsDarkMode } = useDarkMode();
@@ -33,7 +34,9 @@ const HeaderDesktop: React.FC = () => {
           <li className="ml-24">
             <Link to="/fabrics">Tissus</Link>
           </li>
-          <li>
+
+          <li className="flex">
+            <LanguageSwitcher />
             <button
               aria-label="Activer le Dark Mode"
               type="button"

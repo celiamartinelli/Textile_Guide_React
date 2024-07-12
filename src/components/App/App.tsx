@@ -9,7 +9,6 @@ import AboutScreen from '@/pages/AboutScreen';
 import { DarkModeProvider } from './DarkModeContext';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
-import HeaderDesktop from '../Header/HeaderDesktop';
 import NotFound from '@/pages/NotFound';
 
 function App() {

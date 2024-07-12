@@ -4,6 +4,7 @@ import App from '@/components/App/App';
 import { BrowserRouter } from 'react-router-dom';
 import './styles/index.scss';
 import '@/styles/index.css';
+import './config/i18n.ts';
 
 const container = document.getElementById('root');
 

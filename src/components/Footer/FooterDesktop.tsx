@@ -4,9 +4,11 @@ import { FaLinkedin } from 'react-icons/fa';
 import { IoMail } from 'react-icons/io5';
 import { TbApi } from 'react-icons/tb';
 import { useDarkMode } from '../App/DarkModeContext';
+import { useTranslation } from 'react-i18next';
 
 export default function FooterDesktop() {
   const { isDarkMode, setIsDarkMode } = useDarkMode();
+  const { t } = useTranslation();
   return (
     <div className="bg-lightBackground flex justify-between p-5 fixed bottom-0 left-0 right-0 text-white dark:bg-darkBackground">
       <div>
@@ -15,7 +17,7 @@ export default function FooterDesktop() {
         </Link>
       </div>
       <div>
-        <p>✂️ &copy; 2024 Textile-Guide. Tous droits réservés.🪡</p>
+        <p>✂️ &copy; 2024 {t('footer')}🪡</p>
       </div>
       <div>
         <ul className="flex">

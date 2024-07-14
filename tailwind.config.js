@@ -22,9 +22,11 @@ module.exports = {
         lightTextLight: '#666',
 
         // DarkMode
-        darkBackground: '#5c4e4f',
-        darkBackgroundLight: '#9a7b7b',
-        darkBackgroundLightHover: '#bfa4a4',
+        // darkBackground: '#5c4e4f',
+        darkBackground: '#153C24',
+        // darkBackgroundLight: '#9a7b7b',
+        darkBackgroundLight: '#235537',
+        darkBackgroundLightHover: '#2E6C47',
         darkText: '#e5e5e5',
         darkTextLight: '#f0f0f0',
       },

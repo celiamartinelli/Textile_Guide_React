@@ -17,7 +17,7 @@ export default function FooterDesktop() {
         </Link>
       </div>
       <div>
-        <p>✂️ &copy; 2024 {t('footer')}🪡</p>
+        <p>✂️ &copy; 2024 {t('footer.text')}🪡</p>
       </div>
       <div>
         <ul className="flex">

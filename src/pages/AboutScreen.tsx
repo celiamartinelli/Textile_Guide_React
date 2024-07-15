@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 const AboutScreen: React.FC = () => {
   const location = useLocation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (location.state?.scrollToContact) {
@@ -23,79 +24,47 @@ const AboutScreen: React.FC = () => {
       <div className="flex flex-col min-h-screen pt-12 my-36 mx-8">
         <div className="flex flex-col justify-center items-center ">
           <h2 className="font-bold text-3xl text-white mb-4 text-center">
-            A Propos de Guide Textile
+            {t('about.title')}
           </h2>
           <div className="text-justify lg:mx-20">
-            <p className="my-3">
-              Bienvenue sur notre application de guide textile, votre source
-              fiable pour tout ce qui concerne les textiles. Notre mission est
-              de fournir des informations complètes et accessibles pour vous
-              aider à mieux comprendre les différents types de tissus, leurs
-              utilisations et leurs entretiens.
-            </p>
-            <p className="my-3">
-              Imaginez que vous avez une chute de tissu et que vous souhaitez en
-              faire un projet, mais vous ne savez pas encore quel projet
-              choisir. Notre application vous propose des projets adaptés à
-              votre tissu. De plus, vous avez la possibilité de faire des
-              recherches par projet. Par exemple, si un projet vous intéresse
-              mais que vous ne savez pas quel tissu utiliser, notre application
-              vous recommande des tissus adaptés à ce projet.
-            </p>
-            <p className="my-3">
-              Cette application a été conçue et pensée pour les couturiers et
-              couturières par une couturière, afin de savoir quels projets
-              réaliser avec certains tissus et quels tissus choisir en fonction
-              du projet que vous avez en tête, ou tout simplement pour chercher
-              de l'inspiration.
-            </p>
+            <p className="my-3">{t('about.p1')}</p>
+            <p className="my-3">{t('about.p2')}</p>
+            <p className="my-3">{t('about.p3')}</p>
           </div>
-          <h2 className="font-bold text-3xl text-white my-4">Notre Histoire</h2>
-          <p className="text-justify lg:mx-20">
-            L'idée du guide textile est née de ma passion pour les tissus et la
-            couture. Constatant le manque d'informations centralisées et
-            accessibles sur les textiles, et étant moi-même en constante
-            recherche d'informations sur ce sujet, j'ai décidé de créer une
-            ressource complète pour les amateurs et les professionnels. En tant
-            que couturière toujours en apprentissage, j'ai ressenti le besoin
-            d'une telle plateforme pour améliorer mes connaissances et partager
-            ces informations précieuses avec la communauté.
-          </p>
           <h2 className="font-bold text-3xl text-white my-4">
-            Fonctionnalités
+            {t('about.title2')}
           </h2>
+          <p className="text-justify lg:mx-20">{t('about.p4')}</p>
+          <h2 className="font-bold text-3xl text-white my-4">
+            {t('about.title3')}
+          </h2>
+          <p className="text-justify lg:mx-20">{t('about.p5')}</p>
           <div className="flex flex-col text-center lg:mx-20">
             <div className="flex flex-col m-1 ">
-              <h2>Recherche par Textile</h2>
+              <h2>{t('about.title4')}</h2>
               <p className="border-2 p-4 rounded-lg bg-lightBackground">
-                Notre application permet de rechercher facilement différents
-                types de tissus. Utilisez notre barre de recherche pour trouver
-                des informations détaillées sur chaque tissu.
+                {t('about.p6')}
               </p>
             </div>
             <div className="flex flex-col m-1 ">
-              <h2>Guides d'Entretien</h2>
+              <h2>{t('about.title5')}</h2>
               <p className="border-2 p-4 rounded-lg bg-lightBackground">
-                Chaque fiche de tissu est accompagnée de guides d'entretien
-                détaillés, vous aidant à maintenir vos textiles en parfait état.
+                {t('about.p7')}
               </p>
             </div>
             <div className="flex flex-col m-1 ">
-              <h2>Recherche par Produits</h2>
+              <h2>{t('about.title6')}</h2>
               <p className="border-2 p-4 rounded-lg bg-lightBackground">
-                Nous proposons des recommandations de produits et des projets
-                associés pour chaque type de tissu, facilitant ainsi vos choix
-                et inspirations pour vos créations.
+                {t('about.p8')}
               </p>
             </div>
           </div>
         </div>
         <div className="flex flex-col justify-center items-center">
-          <h3 className="text-3xl font-bold my-4 text-white">Contactez-nous</h3>
-          <p className="text-justify lg:mx-20">
-            Nous aimerions avoir de vos nouvelles. Si vous avez des questions,
-            des suggestions ou des commentaires, n'hésitez pas à nous contacter.
-          </p>
+          <h3 className="text-3xl font-bold my-4 text-white">
+            {t('about.title7')}
+          </h3>
+          <p className="text-justify lg:mx-20">{t('about.p9')}</p>
           <form
             className="flex flex-col justify-center items-center p-8 rounded-lg bg-lightBackgroundCream dark:bg-darkBackgroundRosy shadow-md mt-4 sm:w-80"
             id="contact-form"
@@ -105,7 +74,7 @@ const AboutScreen: React.FC = () => {
                 htmlFor="name"
                 className="block text-brown dark:text-white font-bold mb-2"
               >
-                Nom
+                {t('about.form1')}
               </label>
               <input
                 type="text"
@@ -118,7 +87,7 @@ const AboutScreen: React.FC = () => {
                 htmlFor="email"
                 className="block text-brown dark:text-white font-bold my-2"
               >
-                Email
+                {t('about.form2')}
               </label>
               <input
                 type="email"
@@ -131,7 +100,7 @@ const AboutScreen: React.FC = () => {
                 htmlFor="message"
                 className="block text-brown dark:text-white font-bold mb-2"
               >
-                Message
+                {t('about.form3')}
               </label>
               <textarea
                 id="message"

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { FiSun } from 'react-icons/fi';
 import { RiMoonFill } from 'react-icons/ri';
 import { useDarkMode } from '../App/DarkModeContext';
+import LanguageSwitcher from '../Button/LanguageSwitcher';
 
 const HeaderPhone: React.FC = () => {
   const { isDarkMode, setIsDarkMode } = useDarkMode();
@@ -29,7 +30,8 @@ const HeaderPhone: React.FC = () => {
               />
             </Link>
           </li>
-          <li>
+          <li className="flex flex-col items-center">
+            <LanguageSwitcher />
             <button
               aria-label="Activer le Dark Mode"
               type="button"

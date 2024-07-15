@@ -5,12 +5,12 @@ import HeaderPhone from './HeaderPhone';
 // import { useDarkMode } from '../App/DarkModeContext';
 
 const Header: React.FC = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 429);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 489);
   // const { isDarkMode, setIsDarkMode } = useDarkMode();
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 429);
+      setIsMobile(window.innerWidth < 489);
     };
 
     window.addEventListener('resize', handleResize);

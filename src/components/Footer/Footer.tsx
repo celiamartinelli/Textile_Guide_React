@@ -4,11 +4,11 @@ import FooterPhone from './FooterPhone';
 import FooterDesktop from './FooterDesktop';
 
 const Footer: React.FC = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 429);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 489);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 429);
+      setIsMobile(window.innerWidth < 489);
     };
 
     window.addEventListener('resize', handleResize);

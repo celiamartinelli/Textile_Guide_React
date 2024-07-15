@@ -20,6 +20,7 @@ module.exports = {
         lightBackgroundLightHover: '#bcddc9',
         lightText: '#333',
         lightTextLight: '#666',
+        lightBackgroundCream: '#ffe5d9',
 
         // DarkMode
         // darkBackground: '#5c4e4f',
@@ -29,6 +30,7 @@ module.exports = {
         darkBackgroundLightHover: '#2E6C47',
         darkText: '#e5e5e5',
         darkTextLight: '#f0f0f0',
+        darkBackgroundRosy: '#ba8b8b',
       },
       fontFamily: {
         'thasadith-regular': ['Thasadith', 'sans-serif'],

@@ -3,6 +3,7 @@ import Header from '@/components/Header/Header';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { AiOutlineColumnWidth } from 'react-icons/ai';
 
 interface RouteParams {
   productId: string;
@@ -62,6 +63,21 @@ interface Fabric {
   };
 }
 
+interface SupplyQuantity {
+  id: number;
+  attributes: {
+    main_fabric: string;
+    interior_fabric: string;
+    interling_fabric: string;
+    closure: string;
+    fastener: string;
+    ribbon: string;
+    decoration: string;
+    accessory: string;
+    id_supplies_quantities: string;
+  };
+}
+
 interface ProductAttributes {
   name: string;
   category: string;
@@ -73,6 +89,9 @@ interface ProductAttributes {
   };
   fabrics?: {
     data: Fabric[];
+  };
+  supplies_quantities?: {
+    data: SupplyQuantity[];
   };
 }
 
@@ -94,7 +113,7 @@ const OneProductScreen: React.FC = () => {
       try {
         console.log(`Fetching product with ID: ${productId}`);
         const response = await fetch(
-          `http://localhost:1337/api/products/${productId}?populate[icone_product][populate]=*&populate[fabrics][populate][0]=picture_fabric&populate[fabrics][populate][1]=washes.icone`
+          `http://localhost:1337/api/products/${productId}?populate[icone_product][populate]=*&populate[fabrics][populate][0]=picture_fabric&populate[supplies_quantities][populate]=*`
         );
 
         if (!response.ok) {
@@ -102,7 +121,7 @@ const OneProductScreen: React.FC = () => {
         }
 
         const result = await response.json();
-        // console.log('Fetched data:', result);
+        console.log('Fetched data:', result);
 
         if (!result || !result.data) {
           console.error("La réponse de l'API ne contient pas de données");
@@ -110,7 +129,13 @@ const OneProductScreen: React.FC = () => {
         }
 
         setProduct(result.data);
-        console.log('Product:', result.data);
+        console.log('Product:', result);
+        if (result.data.attributes.supplies_quantities) {
+          console.log(
+            'Supplies Quantities:',
+            result.data.attributes.supplies_quantities
+          );
+        }
       } catch (error) {
         console.error(
           'Erreur lors du chargement des données du produit',
@@ -126,9 +151,42 @@ const OneProductScreen: React.FC = () => {
     return <div>Chargement...</div>;
   }
 
+  const formatSupplyText = (text: string) => {
+    return text.split('(l)').map((part, index) => {
+      if (index === 0) {
+        return part;
+      }
+      return (
+        <React.Fragment key={index}>
+          <div className="flex items-center">
+            <span className="inline-flex items-center">
+              <AiOutlineColumnWidth className="mr-1 border rounded-full p-1 w-5 h-5" />
+            </span>
+            {part}
+          </div>
+        </React.Fragment>
+      );
+    });
+  };
+
+  const formatListText = (text: string) => {
+    return text.split(',').map((item, index) => (
+      <li className="text-xs flex flex-col" key={index}>
+        {formatSupplyText(item.trim())}
+      </li>
+    ));
+  };
+
+  function renderProductAttribute(title: string, value: string) {
+    return (
+      <div className="w-2/6 m-2 border">
+        {title}: {formatListText(value)}
+      </div>
+    );
+  }
   return (
     <div className="pb-20">
-      <div className="flex flex-col min-h-screen mx-6 pt-12 mt-36 md:w-2/4 md:mx-auto">
+      <div className="flex flex-col min-h-screen mx-6 pt-12 mt-36 ">
         <div className="flex flex-col justify-center items-center ">
           <h1 className="text-center">{product.attributes.name}</h1>
           <div className="border-2 border-white rounded-md shadow-lg p-2 w-full">
@@ -149,13 +207,13 @@ const OneProductScreen: React.FC = () => {
                 <p>{product.attributes.second_category}</p>
               </div>
 
-              <div className="">
+              {/* <div className="">
                 <h4>Quantité de tissus nécessaire:</h4>
                 <p className="border-2 rounded-md bg-cream">
                   {product.attributes.textile_quantity_required}
                 </p>
                 <p>pour une laize de 1,5m</p>
-              </div>
+              </div> */}
             </div>
             <div className="flex flex-col justify-center items-center ">
               <h2 className="">Tissus Associés</h2>
@@ -195,6 +253,41 @@ const OneProductScreen: React.FC = () => {
                   </li>
                 ))}
               </ul>
+              <h2 className="">Quantités de Fournitures</h2>
+              <div className="flex">
+                {product.attributes.supplies_quantities?.data?.map((supply) => (
+                  <div
+                    className="flex flex-wrap justify-center items-center mb-2"
+                    key={supply.id}
+                  >
+                    {renderProductAttribute(
+                      'Main Fabric',
+                      supply.attributes.main_fabric
+                    )}
+                    {renderProductAttribute(
+                      'Interior Fabric',
+                      supply.attributes.interior_fabric
+                    )}
+                    {renderProductAttribute(
+                      'Interling Fabric',
+                      supply.attributes.interling_fabric
+                    )}
+                    {renderProductAttribute(
+                      'Fasteners',
+                      supply.attributes.fastener
+                    )}
+                    {renderProductAttribute('Ribbon', supply.attributes.ribbon)}
+                    {renderProductAttribute(
+                      'Decoration',
+                      supply.attributes.decoration
+                    )}
+                    {renderProductAttribute(
+                      'Accessory',
+                      supply.attributes.accessory
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

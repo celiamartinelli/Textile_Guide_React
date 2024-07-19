@@ -4,6 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { AiOutlineColumnWidth } from 'react-icons/ai';
+import {
+  FaRibbon,
+  FaPaintBrush,
+  FaPuzzlePiece,
+  FaAnchor,
+} from 'react-icons/fa';
 
 interface RouteParams {
   productId: string;
@@ -58,7 +64,7 @@ interface Fabric {
       data: Wash[];
     };
     products: {
-      data: any[]; // Update based on actual structure
+      data: any[];
     };
   };
 }
@@ -125,7 +131,7 @@ const OneProductScreen: React.FC = () => {
 
         if (!result || !result.data) {
           console.error("La réponse de l'API ne contient pas de données");
-          return; // Sortie anticipée si pas de données
+          return;
         }
 
         setProduct(result.data);
@@ -177,10 +183,74 @@ const OneProductScreen: React.FC = () => {
     ));
   };
 
-  function renderProductAttribute(title: string, value: string) {
+  type CategoryType =
+    | 'Main Fabric'
+    | 'Interior Fabric'
+    | 'Interling Fabric'
+    | 'Closure'
+    | 'Fasteners'
+    | 'Ribbon'
+    | 'Decoration'
+    | 'Accessory';
+
+  function getIconForCategory(category: CategoryType) {
+    switch (category) {
+      case 'Main Fabric':
+        return (
+          <img
+            alt="main_fabric"
+            src="../../public/assets/icone_supply/main_fabric_black.png"
+          />
+        );
+      case 'Interior Fabric':
+        return (
+          <img
+            alt="interior_fabric"
+            src="../../public/assets/icone_supply/interior_fabric_black.png"
+          />
+        );
+      case 'Interling Fabric':
+        return (
+          <img
+            alt="interling_fabric"
+            src="../../public/assets/icone_supply/interling_fabric_black.png"
+          />
+        );
+      case 'Closure':
+        return (
+          <img
+            alt="closure"
+            src="../../public/assets/icone_supply/closure_black.png"
+          />
+        );
+      case 'Fasteners':
+        return (
+          <img
+            alt="festener_fabric"
+            src="../../public/assets/icone_supply/fastener_black.png"
+          />
+        );
+      case 'Ribbon':
+        return <FaRibbon />;
+      case 'Decoration':
+        return <FaPaintBrush />;
+      case 'Accessory':
+        return <FaPuzzlePiece />;
+      default:
+        return null;
+    }
+  }
+
+  function renderProductAttribute(
+    title: string,
+    value: string,
+    category: string
+  ) {
+    const Icon = getIconForCategory(category);
     return (
       <div className="w-2/6 m-2 border">
-        {title}: {formatListText(value)}
+        {Icon}
+        {category}: {formatListText(value)}
       </div>
     );
   }
@@ -262,28 +332,43 @@ const OneProductScreen: React.FC = () => {
                   >
                     {renderProductAttribute(
                       'Main Fabric',
-                      supply.attributes.main_fabric
+                      supply.attributes.main_fabric,
+                      'Main Fabric'
                     )}
                     {renderProductAttribute(
                       'Interior Fabric',
-                      supply.attributes.interior_fabric
+                      supply.attributes.interior_fabric,
+                      'Interior Fabric'
                     )}
                     {renderProductAttribute(
                       'Interling Fabric',
-                      supply.attributes.interling_fabric
+                      supply.attributes.interling_fabric,
+                      'Interling Fabric'
+                    )}
+                    {renderProductAttribute(
+                      'Closure',
+                      supply.attributes.closure,
+                      'Closure'
                     )}
                     {renderProductAttribute(
                       'Fasteners',
-                      supply.attributes.fastener
+                      supply.attributes.fastener,
+                      'Fasteners'
                     )}
-                    {renderProductAttribute('Ribbon', supply.attributes.ribbon)}
+                    {renderProductAttribute(
+                      'Ribbon',
+                      supply.attributes.ribbon,
+                      'Ribbon'
+                    )}
                     {renderProductAttribute(
                       'Decoration',
-                      supply.attributes.decoration
+                      supply.attributes.decoration,
+                      'Decoration'
                     )}
                     {renderProductAttribute(
                       'Accessory',
-                      supply.attributes.accessory
+                      supply.attributes.accessory,
+                      'Accessory'
                     )}
                   </div>
                 ))}

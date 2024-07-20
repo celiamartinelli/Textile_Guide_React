@@ -22,6 +22,18 @@ const resources = {
       footer: {
         text: 'Textile-Guide. All rights reserved',
       },
+      oneProduct: {
+        supply_category: {
+          main_fabric: 'Main Fabric',
+          interior_fabric: 'Interior Fabric',
+          interling_fabric: 'Interling Fabric',
+          closure: 'Closure',
+          fastener: 'Fasteners',
+          ribbon: 'Ribbon',
+          decoration: 'Decoration',
+          accessory: 'Accessory',
+        },
+      },
       about: {
         title: 'About Guide Textile',
         p1: 'Welcome to our textile guide application, your reliable source for everything related to textiles. Our mission is to provide comprehensive and accessible information to help you better understand the different types of fabrics, their uses, and their care.',
@@ -64,6 +76,18 @@ const resources = {
       footer: {
         text: 'Textile-Guide. Tous droits réservés',
       },
+      oneProduct: {
+        supply_category: {
+          main_fabric: 'Tissu Pirncipal',
+          interior_fabric: 'Tissu Intérieur',
+          interling_fabric: 'Entoilage',
+          closure: 'Fermeture',
+          fastener: 'Attache',
+          ribbon: 'Rubanerie',
+          decoration: 'Decoration',
+          accessory: 'Accessoire',
+        },
+      },
       about: {
         title: 'A Propos de Guide Textile',
         p1: ' Bienvenue sur notre application de guide textile, votre source fiable pour tout ce qui concerne les textiles. Notre mission est de fournir des informations complètes et accessibles pour vous aider à mieux comprendre les différents types de tissus, leurs utilisations et leurs entretiens.',
@@ -93,6 +117,7 @@ i18n.use(initReactI18next).init({
   resources,
   lng: 'fr', // Langue par défaut
   fallbackLng: 'en',
+
   interpolation: {
     escapeValue: false, // React gère déjà la protection contre les XSS
   },

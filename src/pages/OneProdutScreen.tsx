@@ -10,6 +10,7 @@ import {
   FaPuzzlePiece,
   FaAnchor,
 } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 interface RouteParams {
   productId: string;
@@ -111,6 +112,7 @@ interface Icone {
 }
 
 const OneProductScreen: React.FC = () => {
+  const { t } = useTranslation();
   const { productId } = useParams() as unknown as RouteParams;
   const [product, setProduct] = useState<Product | null>(null);
 
@@ -184,58 +186,81 @@ const OneProductScreen: React.FC = () => {
   };
 
   type CategoryType =
-    | 'Main Fabric'
-    | 'Interior Fabric'
-    | 'Interling Fabric'
-    | 'Closure'
-    | 'Fasteners'
-    | 'Ribbon'
-    | 'Decoration'
-    | 'Accessory';
+    | 'main_fabric'
+    | 'interior_fabric'
+    | 'interling_fabric'
+    | 'closure'
+    | 'fastener'
+    | 'ribbon'
+    | 'decoration'
+    | 'accessory';
 
   function getIconForCategory(category: CategoryType) {
     switch (category) {
-      case 'Main Fabric':
+      case 'main_fabric':
         return (
           <img
+            className="w-24 h-24"
             alt="main_fabric"
             src="../../public/assets/icone_supply/main_fabric_black.png"
           />
         );
-      case 'Interior Fabric':
+      case 'interior_fabric':
         return (
           <img
+            className="w-24 h-24"
             alt="interior_fabric"
             src="../../public/assets/icone_supply/interior_fabric_black.png"
           />
         );
-      case 'Interling Fabric':
+      case 'interling_fabric':
         return (
           <img
+            className="w-24 h-24"
             alt="interling_fabric"
             src="../../public/assets/icone_supply/interling_fabric_black.png"
           />
         );
-      case 'Closure':
+      case 'closure':
         return (
           <img
+            className="w-24 h-24"
             alt="closure"
             src="../../public/assets/icone_supply/closure_black.png"
           />
         );
-      case 'Fasteners':
+      case 'fastener':
         return (
           <img
+            className="w-24 h-24"
             alt="festener_fabric"
             src="../../public/assets/icone_supply/fastener_black.png"
           />
         );
-      case 'Ribbon':
-        return <FaRibbon />;
-      case 'Decoration':
-        return <FaPaintBrush />;
-      case 'Accessory':
-        return <FaPuzzlePiece />;
+      case 'ribbon':
+        return (
+          <img
+            className="w-24 h-24"
+            alt="ribbon"
+            src="../../public/assets/icone_supply/ribbons_black.png"
+          />
+        );
+      case 'decoration':
+        return (
+          <img
+            className="w-24 h-24"
+            alt="decoration"
+            src="../../public/assets/icone_supply/decoration_black.png"
+          />
+        );
+      case 'accessory':
+        return (
+          <img
+            className="w-24 h-24"
+            alt="accessory"
+            src="../../public/assets/icone_supply/access_black.png"
+          />
+        );
       default:
         return null;
     }
@@ -247,10 +272,13 @@ const OneProductScreen: React.FC = () => {
     category: string
   ) {
     const Icon = getIconForCategory(category);
+    const translatedCategory = t(`oneProduct.supply_category.${category}`);
+    console.log('Category:', category); // Pour déboguer
+    console.log('Translated Category:', translatedCategory);
     return (
-      <div className="w-2/6 m-2 border">
+      <div className="w-2/6 h-1/5 m-2 border-2 rounded-lg p-4 bg-lightBackground dark:bg-darkBackground flex flex-col justify_center items-center">
         {Icon}
-        {category}: {formatListText(value)}
+        {translatedCategory}: {formatListText(value)}
       </div>
     );
   }
@@ -331,44 +359,44 @@ const OneProductScreen: React.FC = () => {
                     key={supply.id}
                   >
                     {renderProductAttribute(
-                      'Main Fabric',
+                      'main_fabric',
                       supply.attributes.main_fabric,
-                      'Main Fabric'
+                      'main_fabric'
                     )}
                     {renderProductAttribute(
-                      'Interior Fabric',
+                      'interior_fabric',
                       supply.attributes.interior_fabric,
-                      'Interior Fabric'
+                      'interior_fabric'
                     )}
                     {renderProductAttribute(
-                      'Interling Fabric',
+                      'interling_fabric',
                       supply.attributes.interling_fabric,
-                      'Interling Fabric'
+                      'interling_fabric'
                     )}
                     {renderProductAttribute(
-                      'Closure',
+                      'closure',
                       supply.attributes.closure,
-                      'Closure'
+                      'closure'
                     )}
                     {renderProductAttribute(
-                      'Fasteners',
+                      'fastener',
                       supply.attributes.fastener,
-                      'Fasteners'
+                      'fastener'
                     )}
                     {renderProductAttribute(
-                      'Ribbon',
+                      'ribbon',
                       supply.attributes.ribbon,
-                      'Ribbon'
+                      'ribbon'
                     )}
                     {renderProductAttribute(
-                      'Decoration',
+                      'decoration',
                       supply.attributes.decoration,
-                      'Decoration'
+                      'decoration'
                     )}
                     {renderProductAttribute(
-                      'Accessory',
+                      'accessory',
                       supply.attributes.accessory,
-                      'Accessory'
+                      'accessory'
                     )}
                   </div>
                 ))}

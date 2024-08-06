@@ -17,7 +17,7 @@ const HeaderDesktop: React.FC = () => {
   return (
     <header className="flex font-thasadith-bold font-bold relative ">
       <nav className="fixed top-0 left-0 right-0">
-        <ul className="flex flex-row w-screen h-24 justify-around text-white text-xl font-bold bg-lightBackground dark:bg-darkBackground  items-center">
+        <ul className="flex flex-row w-screen h-24 justify-around text-white text-xl font-bold bg-lightBackground dark:bg-darkPruneBG  items-center">
           <li>
             <Link to="/about">{t('header.about')}</Link>
           </li>

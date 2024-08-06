@@ -15,7 +15,7 @@ const HeaderPhone: React.FC = () => {
   return (
     <header className="flex font-thasadith-bold font-bold relative">
       <nav className="fixed top-0 left-0 right-0">
-        <ul className="flex flex-row w-screen h-20 justify-between text-white text-xl font-bold bg-lightBackground dark:bg-darkBackground  items-center px-8">
+        <ul className="flex flex-row w-screen h-20 justify-between text-white text-xl font-bold bg-lightBackground dark:bg-darkPruneBG  items-center px-8">
           <li className="p-2 rounded-full hover:bg-lightBackgroundLight dark:hover:bg-darkBackgroundLightHover ">
             <Link to="/about">
               <IoIosInformationCircle />

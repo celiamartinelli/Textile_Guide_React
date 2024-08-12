@@ -26,15 +26,24 @@ const ProductScreen: React.FC = () => {
   const [search, setSearch] = useState('');
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(25); // Nombre de résultats par page
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    // Récupère tous les produits lorsque le composant est monté
-    fetch(`http://localhost:1337/api/products?populate=icone_product`)
+    fetchProducts(page); // Charger les produits lors du changement de page
+  }, [page]);
+
+  const fetchProducts = (currentPage: number) => {
+    fetch(
+      `http://localhost:1337/api/products?populate=icone_product&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}`
+    )
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data.data)) {
           setAllProducts(data.data);
           setFilteredProducts(data.data); // Affiche tous les produits initialement
+          setTotalPages(data.meta.pagination.pageCount); // Met à jour le nombre total de pages
         } else {
           console.error('Expected an array for products:', data);
         }
@@ -42,7 +51,7 @@ const ProductScreen: React.FC = () => {
       .catch((err) => {
         console.error('Error fetching products:', err);
       });
-  }, []);
+  };
 
   useEffect(() => {
     // Affine les résultats de la recherche
@@ -88,7 +97,7 @@ const ProductScreen: React.FC = () => {
             {filteredProducts.map((product) => (
               <li
                 key={product.id}
-                className="w-18 h-18 flex flex-col justify-center items-center border rounded-lg p-3 shadow-lg m-3 bg-lightBackground hover:bg-lightBackgroundLightHover dark:bg-darkBackground hover:dark:bg-darkBackgroundLightHover"
+                className="w-18 h-18 flex flex-col justify-center items-center border rounded-lg p-3 shadow-lg m-3 bg-lightBackground hover:bg-lightBackgroundLightHover dark:bg-darkPruneLogo hover:dark:bg-darkPruneBG"
               >
                 <Link
                   to={`/products/${product.id}`}
@@ -106,6 +115,27 @@ const ProductScreen: React.FC = () => {
               </li>
             ))}
           </ul>
+        </div>
+        <div className="flex justify-center mt-4">
+          <button
+            type="button"
+            disabled={page <= 1}
+            onClick={() => setPage(page - 1)}
+            className="mx-2 px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+          >
+            Précédent
+          </button>
+          <span className="mx-2">
+            Page {page} sur {totalPages}
+          </span>
+          <button
+            type="button"
+            disabled={page >= totalPages}
+            onClick={() => setPage(page + 1)}
+            className="mx-2 px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+          >
+            Suivant
+          </button>
         </div>
       </div>
     </div>

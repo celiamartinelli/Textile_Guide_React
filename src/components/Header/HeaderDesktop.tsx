@@ -44,7 +44,7 @@ const HeaderDesktop: React.FC = () => {
               aria-label="Activer le Dark Mode"
               type="button"
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className=" text-white py-2 px-4 rounded-md hover:bg-lightBackgroundLight  dark:hover:bg-darkBackgroundLightHover"
+              className=" text-white m-2 py-2 px-4 rounded-md hover:bg-lightBackgroundLight dark:hover:bg-darkPrune"
             >
               {isDarkMode ? <FiSun /> : <RiMoonFill />}
             </button>

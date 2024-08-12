@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import { Button } from '@mui/material';
+import ButtonInfoLevelSewing from '@/components/Button/ButtonInfoLevelSewing';
 
 interface RouteParams {
   fabricId: string;
@@ -63,12 +65,24 @@ type Fabric = {
     products: {
       data: Products[];
     };
+    level_sewing: {
+      data: Level[];
+    };
   };
 };
+
+interface Level {
+  id: string;
+  attributes: {
+    name_level: string;
+    description: string;
+  };
+}
 
 const OneFabricScreen: React.FC = () => {
   const { fabricId } = useParams() as unknown as RouteParams;
   const [fabric, setFabric] = useState<Fabric | null>(null);
+  const [allLevels, setAllLevels] = useState<Level[]>([]);
 
   useEffect(() => {
     const fetchFabricData = async () => {
@@ -264,6 +278,7 @@ const OneFabricScreen: React.FC = () => {
           </div>
         </div>
       </div>
+      <ButtonInfoLevelSewing />
     </div>
   );
 };

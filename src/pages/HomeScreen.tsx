@@ -1,13 +1,24 @@
 // src/pages/HomeScreen.tsx
 import { useNavigate } from 'react-router-dom';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDarkMode } from '@/components/App/DarkModeContext';
+import { Button } from '@mui/material';
+import ButtonInfoLevelSewing from '@/components/Button/ButtonInfoLevelSewing';
+
+interface Level {
+  id: string;
+  attributes: {
+    name_level: string;
+    description: string;
+  };
+}
 
 export default function HomeScreen() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
+  const [allLevels, setAllLevels] = useState<Level[]>([]);
   const searchByProjectImg = isDarkMode
     ? '../../../assets/search_by_project_dark.png'
     : '../../../assets/search_by_project.png';
@@ -52,6 +63,7 @@ export default function HomeScreen() {
               />
             </div>
           </div>
+          <ButtonInfoLevelSewing />
         </div>
       </div>
     </div>

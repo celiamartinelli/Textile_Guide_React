@@ -23,6 +23,10 @@ const resources = {
         text: 'Textile-Guide. All rights reserved',
       },
       oneProduct: {
+        quantity_textile_required: 'Quantity of textile required:',
+        laize: 'for a width of 1.45m',
+        h2Fabric: 'Associated Fabrics',
+        h2AssociatedSupply: 'Supply Quantities',
         supply_category: {
           main_fabric: 'Main Fabric',
           interior_fabric: 'Interior Fabric',
@@ -77,6 +81,10 @@ const resources = {
         text: 'Textile-Guide. Tous droits réservés',
       },
       oneProduct: {
+        quantity_textile_required: 'Quantité de tissus nécessaire:',
+        laize: 'pour une laize de 1,45m',
+        h2Fabric: 'Tissus Associés',
+        h2AssociatedSupply: 'Quantités de Fournitures',
         supply_category: {
           main_fabric: 'Tissu Pirncipal',
           interior_fabric: 'Tissu Intérieur',

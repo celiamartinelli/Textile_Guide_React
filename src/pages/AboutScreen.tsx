@@ -42,19 +42,22 @@ const AboutScreen: React.FC = () => {
           <div className="flex flex-col text-center lg:mx-20">
             <div className="flex flex-col m-1 ">
               <h2>{t('about.title4')}</h2>
-              <p className="border-2 p-4 rounded-lg bg-lightBackground">
+              <p
+                className="border-2 p-4 rounded-lg bg-lightBackground dark:bg-darkPruneBG
+              "
+              >
                 {t('about.p6')}
               </p>
             </div>
             <div className="flex flex-col m-1 ">
               <h2>{t('about.title5')}</h2>
-              <p className="border-2 p-4 rounded-lg bg-lightBackground">
+              <p className="border-2 p-4 rounded-lg bg-lightBackground dark:bg-darkPruneBG">
                 {t('about.p7')}
               </p>
             </div>
             <div className="flex flex-col m-1 ">
               <h2>{t('about.title6')}</h2>
-              <p className="border-2 p-4 rounded-lg bg-lightBackground">
+              <p className="border-2 p-4 rounded-lg bg-lightBackground dark:bg-darkPruneBG">
                 {t('about.p8')}
               </p>
             </div>

@@ -36,7 +36,7 @@ const HeaderPhone: React.FC = () => {
               aria-label="Activer le Dark Mode"
               type="button"
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className=" text-white p-2 rounded-full hover:bg-lightBackgroundLight dark:hover:bg-darkBackgroundLightHover "
+              className=" text-white p-2 rounded-full hover:bg-lightBackgroundLight dark:hover:bg-darkPrune"
             >
               {isDarkMode ? <FiSun /> : <RiMoonFill />}
             </button>

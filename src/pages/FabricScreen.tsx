@@ -42,17 +42,24 @@ const FabricScreen: React.FC = () => {
   const [allFabrics, setAllFabrics] = useState<Fabric[]>([]);
   const [filteredFabrics, setFilteredFabrics] = useState<Fabric[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(25); // Nombre de résultats par page
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    // Récupère tous les tissus lorsque le composant est monté
+    fetchFabrics(page); // Charger les tissus lors du changement de page
+  }, [page]);
+
+  const fetchFabrics = (currentPage: number) => {
     fetch(
-      `http://localhost:1337/api/fabrics?populate[0]=picture_fabric&populate[1]=washes&populate[2]=washes.icone`
+      `http://localhost:1337/api/fabrics?populate[0]=picture_fabric&populate[1]=washes&populate[2]=washes&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}`
     )
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data.data)) {
           setAllFabrics(data.data);
           setFilteredFabrics(data.data); // Affiche tous les tissus initialement
+          setTotalPages(data.meta.pagination.pageCount); // Met à jour le nombre total de pages
           fetchProjects(data.data.map((fabric: Fabric) => fabric.id));
         } else {
           console.error('Expected an array for fabrics:', data);
@@ -61,7 +68,7 @@ const FabricScreen: React.FC = () => {
       .catch((err) => {
         console.error('Error fetching fabrics:', err);
       });
-  }, []);
+  };
 
   useEffect(() => {
     // Affine les résultats de la recherche
@@ -108,7 +115,7 @@ const FabricScreen: React.FC = () => {
       <div className="flex flex-col min-h-screen text-white">
         <div className="flex flex-col justify-center items-center pt-12 mt-36">
           <h1 className="mb-3">Tissus:</h1>
-          <div className="border-2 rounded-lg ">
+          <div className="border-2 rounded-lg">
             <input
               className="rounded-md p-2 m-2 bg-white text-brown"
               type="text"
@@ -132,7 +139,7 @@ const FabricScreen: React.FC = () => {
               <li key={fabric.id}>
                 <Link
                   to={`/fabrics/${fabric.id}`}
-                  className="flex flex-col justify-center items-center border rounded-lg p-4 shadow-lg m-3 bg-lightBackground hover:bg-lightBackgroundLightHover dark:bg-darkBackground hover:dark:bg-darkBackgroundLightHover"
+                  className="flex flex-col justify-center items-center border rounded-lg p-4 shadow-lg m-3 bg-lightBackground hover:bg-lightBackgroundLightHover dark:bg-darkPruneLogo hover:dark:bg-darkPruneBG"
                 >
                   {fabric.attributes.picture_fabric?.data && (
                     <img
@@ -148,6 +155,27 @@ const FabricScreen: React.FC = () => {
               </li>
             ))}
           </ul>
+        </div>
+        <div className="flex justify-center mt-4">
+          <button
+            type="button"
+            disabled={page <= 1}
+            onClick={() => setPage(page - 1)}
+            className="mx-2 px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+          >
+            Précédent
+          </button>
+          <span className="mx-2">
+            Page {page} sur {totalPages}
+          </span>
+          <button
+            type="button"
+            disabled={page >= totalPages}
+            onClick={() => setPage(page + 1)}
+            className="mx-2 px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+          >
+            Suivant
+          </button>
         </div>
       </div>
     </div>

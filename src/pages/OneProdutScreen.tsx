@@ -3,14 +3,12 @@ import Header from '@/components/Header/Header';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { AiOutlineColumnWidth } from 'react-icons/ai';
-import {
-  FaRibbon,
-  FaPaintBrush,
-  FaPuzzlePiece,
-  FaAnchor,
-} from 'react-icons/fa';
+import { AiOutlineAntDesign, AiOutlineColumnWidth } from 'react-icons/ai';
 import { useTranslation } from 'react-i18next';
+import { faInfo } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ModalShowMoreInfosLevel from '@/components/Modal/OneProduct/ModalShowMoreInfosLevel';
+import ButtonInfoLevelSewing from '@/components/Button/ButtonInfoLevelSewing';
 
 interface RouteParams {
   productId: string;
@@ -100,6 +98,16 @@ interface ProductAttributes {
   supplies_quantities?: {
     data: SupplyQuantity[];
   };
+  level_sewing: {
+    data: Level[];
+  };
+}
+interface Level {
+  id: string;
+  attributes: {
+    name_level: string;
+    description: string;
+  };
 }
 
 interface Product {
@@ -115,13 +123,15 @@ const OneProductScreen: React.FC = () => {
   const { t } = useTranslation();
   const { productId } = useParams() as unknown as RouteParams;
   const [product, setProduct] = useState<Product | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [allLevels, setAllLevels] = useState<Level[]>([]);
 
   useEffect(() => {
     const fetchProductData = async () => {
       try {
-        console.log(`Fetching product with ID: ${productId}`);
+        // console.log(`Fetching product with ID: ${productId}`);
         const response = await fetch(
-          `http://localhost:1337/api/products/${productId}?populate[icone_product][populate]=*&populate[fabrics][populate][0]=picture_fabric&populate[supplies_quantities][populate]=*`
+          `http://localhost:1337/api/products/${productId}?populate[icone_product][populate]=*&populate[fabrics][populate][0]=picture_fabric&populate[supplies_quantities][populate]=*&populate[level_sewing]=*`
         );
 
         if (!response.ok) {
@@ -139,10 +149,10 @@ const OneProductScreen: React.FC = () => {
         setProduct(result.data);
         console.log('Product:', result);
         if (result.data.attributes.supplies_quantities) {
-          console.log(
-            'Supplies Quantities:',
-            result.data.attributes.supplies_quantities
-          );
+          // console.log(
+          //   'Supplies Quantities:',
+          //   result.data.attributes.supplies_quantities
+          // );
         }
       } catch (error) {
         console.error(
@@ -152,12 +162,37 @@ const OneProductScreen: React.FC = () => {
       }
     };
 
+    // const fetchAllLevels = async () => {
+    //   try {
+    //     const response = await fetch('http://localhost:1337/api/level-sewings');
+    //     const result = await response.json();
+    //     console.log('Fetched levels:', result);
+    //     setAllLevels(result.data);
+    //   } catch (error) {
+    //     console.error(
+    //       'Erreur lors du chargement des niveaux de couture',
+    //       error
+    //     );
+    //   }
+    // };
+
     fetchProductData();
+    // fetchAllLevels();
   }, [productId]);
 
   if (!product || !product.attributes) {
     return <div>Chargement...</div>;
   }
+
+  // Fonction pour ouvrir la modal
+  const showMoreInfosLevelSewing = () => {
+    setShowModal(true);
+  };
+
+  // Fonction pour fermer la modal
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   const formatSupplyText = (text: string) => {
     return text.split('(l)').map((part, index) => {
@@ -273,10 +308,10 @@ const OneProductScreen: React.FC = () => {
   ) {
     const Icon = getIconForCategory(category);
     const translatedCategory = t(`oneProduct.supply_category.${category}`);
-    console.log('Category:', category); // Pour déboguer
-    console.log('Translated Category:', translatedCategory);
+    // console.log('Category:', category); // Pour déboguer
+    // console.log('Translated Category:', translatedCategory);
     return (
-      <div className="w-2/6 h-1/5 m-2 border-2 rounded-lg p-4 bg-lightBackground dark:bg-darkBackground flex flex-col justify_center items-center">
+      <div className="w-2/6 h-1/5 m-2 border-2 rounded-lg p-4 bg-lightBackground dark:bg-darkPruneLogo  flex flex-col justify_center items-center">
         {Icon}
         {translatedCategory}: {formatListText(value)}
       </div>
@@ -305,16 +340,41 @@ const OneProductScreen: React.FC = () => {
                 <p>{product.attributes.second_category}</p>
               </div>
 
-              {/* <div className="">
-                <h4>Quantité de tissus nécessaire:</h4>
-                <p className="border-2 rounded-md bg-cream">
-                  {product.attributes.textile_quantity_required}
+              <div className="">
+                <h4>{t('oneProduct.quantity_textile_required')}</h4>
+                <div className="border-2 rounded-md ">
+                  {product.attributes.textile_quantity_required.split(',').map(
+                    (quantity, index) => (
+                      <p key={index}>{quantity}</p>
+                    ),
+                    []
+                  )}
+                </div>
+                <p>{t('oneProduct.laize')}</p>
+              </div>
+              <div className="border">
+                <div>
+                  <h2>Niveau de Couture</h2>
+                  <ButtonInfoLevelSewing />
+                  {/* <button
+                    type="button"
+                    className="bg-cream p-2 rounded-full text-brown mr-2"
+                    onClick={showMoreInfosLevelSewing}
+                    aria-label="Afficher plus d'informations sur le niveau de couture"
+                  >
+                    <FontAwesomeIcon icon={faInfo} />
+                  </button> */}
+                </div>
+                <p>
+                  {
+                    product.attributes.level_sewing.data[0].attributes
+                      .name_level
+                  }
                 </p>
-                <p>pour une laize de 1,5m</p>
-              </div> */}
+              </div>
             </div>
             <div className="flex flex-col justify-center items-center ">
-              <h2 className="">Tissus Associés</h2>
+              <h2 className="">{t('oneProduct.h2Fabric')}</h2>
               <ul className="flex">
                 {product.attributes.fabrics?.data?.map((fabric) => (
                   // console.log('fabric:', fabric),
@@ -351,7 +411,7 @@ const OneProductScreen: React.FC = () => {
                   </li>
                 ))}
               </ul>
-              <h2 className="">Quantités de Fournitures</h2>
+              <h2 className="">{t('oneProduct.h2AssociatedSupply')}</h2>
               <div className="flex">
                 {product.attributes.supplies_quantities?.data?.map((supply) => (
                   <div
@@ -405,6 +465,9 @@ const OneProductScreen: React.FC = () => {
           </div>
         </div>
       </div>
+      {showModal && (
+        <ModalShowMoreInfosLevel levels={allLevels} onClose={closeModal} />
+      )}
     </div>
   );
 };

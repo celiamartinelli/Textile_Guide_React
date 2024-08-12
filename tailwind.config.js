@@ -25,6 +25,7 @@ module.exports = {
         // DarkMode
         darkPruneBG: '#703448',
         darkPruneLBG: '#4a1b2a',
+        darkPruneLogo: '#61293a',
         // darkBackground: '#5c4e4f',
         darkBackground: '#153C24',
         // darkBackgroundLight: '#9a7b7b',

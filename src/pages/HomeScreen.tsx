@@ -20,13 +20,13 @@ export default function HomeScreen() {
       <div className="flex flex-col justify-center items-center min-h-screen mt-16">
         <div className="mb-5 text-center">
           <h1 className="pb-8 text-2xl font-bold">{t('home.welcome')}</h1>
-          <h2 className="text-darkBrown">{t('home.intro')}</h2>
+          <h2>{t('home.intro')}</h2>
         </div>
         <div className="flex flex-col justify-center items-center">
-          <h3 className="text-darkBrown">{t('home.search_by')}</h3>
+          <h3>{t('home.search_by')}</h3>
           <div className="flex flex-row m-2">
             <div
-              className="flex flex-col justify-center items-center border rounded-md p-2 m-2 shadow-lg bg-lightBackground hover:bg-lightBackgroundLightHover dark:bg-darkBackground hover:dark:bg-darkBackgroundLightHover"
+              className="flex flex-col justify-center items-center border rounded-md p-2 m-2 shadow-lg bg-lightBackground hover:bg-lightBackgroundLightHover dark:bg-darkPruneLogo hover:dark:bg-darkPruneBG"
               onClick={() => {
                 navigate('/products');
               }}
@@ -39,7 +39,7 @@ export default function HomeScreen() {
               />
             </div>
             <div
-              className="flex flex-col justify-center items-center border rounded-md p-2 m-2 shadow-lg bg-lightBackground hover:bg-lightBackgroundLightHover dark:bg-darkBackground hover:dark:bg-darkBackgroundLightHover"
+              className="flex flex-col justify-center items-center border rounded-md p-2 m-2 shadow-lg bg-lightBackground hover:bg-lightBackgroundLightHover dark:bg-darkPruneLogo hover:dark:bg-darkPruneBG"
               onClick={() => {
                 navigate('/fabrics');
               }}

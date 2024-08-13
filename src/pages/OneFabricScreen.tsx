@@ -59,6 +59,9 @@ type Fabric = {
     temperature: string | null;
     advantages: string;
     disadvantages: string;
+    weight: string;
+    consumption: string;
+    appearance: string;
     washes: {
       data: Wash[];
     };
@@ -68,8 +71,26 @@ type Fabric = {
     level_sewing: {
       data: Level[];
     };
+    weave_of_fabrics: {
+      data: Weave[];
+    };
   };
 };
+
+interface Weave {
+  id: string;
+  attributes: {
+    category: string;
+    name: string;
+    icone_weave: {
+      data: {
+        attributes: {
+          url: string;
+        };
+      }[];
+    };
+  };
+}
 
 interface Level {
   id: string;
@@ -88,7 +109,7 @@ const OneFabricScreen: React.FC = () => {
     const fetchFabricData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:1337/api/fabrics/${fabricId}?populate[0]=picture_fabric&populate[1]=washes&populate[2]=washes.icone&populate[3]=products.icone_product`
+          `http://localhost:1337/api/fabrics/${fabricId}?populate[picture_fabric]=true&populate[washes][populate]=icone&populate[products][populate]=icone_product&populate[weave_of_fabrics][populate]=icone_weave&populate[level_sewing]=true`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -158,6 +179,19 @@ const OneFabricScreen: React.FC = () => {
     ));
   };
 
+  const renderConsumptionCard = (consumption: string) => {
+    // Définir les titres à utiliser
+    const titles = ['Eau', 'Electricité'];
+
+    return consumption.split(',').map((value, index) => (
+      <span key={index} className="px-3 py-1 mb-2 rounded-md text-sm border">
+        {/* Afficher le titre suivi de la valeur */}
+        <strong>{titles[index] ? `${titles[index]}: ` : ''}</strong>
+        {value.trim()}
+      </span>
+    ));
+  };
+
   if (!fabric || !fabric.attributes) {
     return <div>Chargement...</div>;
   }
@@ -214,6 +248,42 @@ const OneFabricScreen: React.FC = () => {
             <div className="text-center">
               <h4>Origine:</h4>
               <p>{fabric.attributes.origin}</p>
+            </div>
+            <div className="text-center">
+              <h4>Poids pour 1m²:</h4>
+              <p>{fabric.attributes.weight}</p>
+            </div>
+            <div className="text-center">
+              <h4>Consommation Energitique:</h4>
+              <div className="flex">
+                {fabric.attributes.consumption &&
+                  renderConsumptionCard(fabric.attributes.consumption)}
+              </div>
+            </div>
+            <div className="text-center">
+              <h4>Aspect du Tissus:</h4>
+              <p>{fabric.attributes.appearance}</p>
+            </div>
+            <div className="text-center">
+              <h4>Niveau de Couture</h4>
+              <p>
+                {fabric.attributes.level_sewing.data[0].attributes.name_level}
+              </p>
+            </div>
+            <div className="text-center flex flex-col justify-center items-center border rounded-lg">
+              <h4>Armure du Tissus:</h4>
+              <p>
+                {fabric.attributes.weave_of_fabrics.data[0].attributes.category}
+              </p>
+
+              <img
+                src={`http://localhost:1337${fabric.attributes.weave_of_fabrics.data[0].attributes.icone_weave.data[0].attributes.url}`}
+                alt="weave-icone"
+                className="w-32 h-32 p-1 rounded-md "
+              />
+              <p>
+                {fabric.attributes.weave_of_fabrics.data[0].attributes.name}
+              </p>
             </div>
           </div>
           <div className="w-full  ">

@@ -21,7 +21,7 @@ const ModalShowMoreInfosLevel: React.FC<ModalShowMoreInfosLevelProps> = ({
 }) => {
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded-lg max-w-[80%] max-h-[80%] flex flex-col">
+      <div className=" p-6 rounded-lg max-w-[80%] max-h-[80%] flex flex-col bg-cream dark:bg-darkPruneLBG">
         <div className="flex flex-row justify-between items-center">
           <h2 className="text-lg font-bold mb-4">Niveaux de couture</h2>
           <button
@@ -34,11 +34,22 @@ const ModalShowMoreInfosLevel: React.FC<ModalShowMoreInfosLevelProps> = ({
           </button>
         </div>
         <div className="flex-grow overflow-y-auto">
-          <ul className="list-disc pl-5 mb-4">
+          <ul className="list-disc pl-5 m-4">
             {levels.map((level) => (
-              <li key={level.id} className="text-sm mb-2">
-                <strong>{level.attributes.name_level}</strong>:{' '}
-                {level.attributes.description}
+              <li key={level.id} className="text-sm m-2">
+                <strong className="bg-sage dark:bg-darkPruneBG p-2 m-1 rounded-md">
+                  {level.attributes.name_level}
+                </strong>
+                <p className="my-4">
+                  {level.attributes.description
+                    .split('/')
+                    .map((line, index) => (
+                      <span key={index}>
+                        {line}
+                        <br />
+                      </span>
+                    ))}
+                </p>
               </li>
             ))}
           </ul>

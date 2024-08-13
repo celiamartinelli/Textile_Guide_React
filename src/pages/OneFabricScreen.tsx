@@ -267,22 +267,25 @@ const OneFabricScreen: React.FC = () => {
             <div className="text-center">
               <h4>Niveau de Couture</h4>
               <p>
-                {fabric.attributes.level_sewing.data[0].attributes.name_level}
+                {fabric.attributes?.level_sewing?.data?.[0]?.attributes
+                  ?.name_level || 'Niveau non disponible'}
               </p>
             </div>
             <div className="text-center flex flex-col justify-center items-center border rounded-lg">
               <h4>Armure du Tissus:</h4>
               <p>
-                {fabric.attributes.weave_of_fabrics.data[0].attributes.category}
+                {fabric.attributes?.weave_of_fabrics?.data?.[0]?.attributes
+                  ?.category || 'Catégorie non disponible'}
               </p>
 
               <img
-                src={`http://localhost:1337${fabric.attributes.weave_of_fabrics.data[0].attributes.icone_weave.data[0].attributes.url}`}
+                src={`http://localhost:1337${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
                 alt="weave-icone"
                 className="w-32 h-32 p-1 rounded-md "
               />
               <p>
-                {fabric.attributes.weave_of_fabrics.data[0].attributes.name}
+                {fabric.attributes?.weave_of_fabrics?.data?.[0]?.attributes
+                  ?.name || 'Nom non disponible'}
               </p>
             </div>
           </div>

@@ -14,7 +14,7 @@ export default function FooterPhone() {
   return (
     <div>
       <nav className="fixed bottom-0 left-0 right-0">
-        <ul className="flex flex-row w-screen h-16 justify-around text-white text-xl font-bold bg-lightBackground dark:bg-darkPruneBG items-center">
+        <ul className="flex flex-row w-screen h-16 justify-around text-white text-xl font-bold bg-lightBackground dark:bg-darkPruneBG items-center transition-colors duration-500">
           <li>
             <Link to="/products">
               <img

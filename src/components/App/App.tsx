@@ -14,7 +14,7 @@ import NotFound from '@/pages/NotFound';
 function App() {
   return (
     <DarkModeProvider>
-      <div className="bg-lightBackgroundLight dark:bg-darkPruneLBG text-black dark:text-darkText min-h-screen">
+      <div className="bg-lightBackgroundLight transition-colors duration-500 dark:bg-darkPruneLBG text-black dark:text-darkText min-h-screen">
         <Header />
         <Routes>
           <Route path="/" element={<HomeScreen />} />

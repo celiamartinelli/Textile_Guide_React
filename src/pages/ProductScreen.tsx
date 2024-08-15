@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import {
+  faChevronLeft,
+  faChevronRight,
+  faMagnifyingGlass,
+} from '@fortawesome/free-solid-svg-icons';
 
 type ProductIcon = {
   id: number;
@@ -76,14 +80,14 @@ const ProductScreen: React.FC = () => {
           <h1 className="mb-3">Projets:</h1>
           <div className="border-2 rounded-lg">
             <input
-              className="rounded-md p-2 m-2 bg-white text-brown"
+              className="rounded-md p-2 m-2 bg-white dark:bg-darkPruneBG  text-brown dark:text-white shadow-inner transition-colors duration-500"
               type="text"
               placeholder="Rechercher"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
             <button
-              className="bg-cream p-2 rounded-md text-brown mr-2"
+              className="bg-cream dark:bg-darkSage dark:hover:bg-sage dark:text-white p-2 rounded-md text-brown mr-2 transition-colors duration-500"
               type="button"
               onClick={() => setSearch(search)}
               aria-label="Rechercher"
@@ -97,17 +101,19 @@ const ProductScreen: React.FC = () => {
             {filteredProducts.map((product) => (
               <li
                 key={product.id}
-                className="w-18 h-18 flex flex-col justify-center items-center border rounded-lg p-3 shadow-lg m-3 bg-lightBackground hover:bg-lightBackgroundLightHover dark:bg-darkPruneLogo hover:dark:bg-darkPruneBG"
+                className="w-18 h-18 flex flex-col justify-center items-center border rounded-lg p-3 shadow-lg m-3 bg-lightBackground hover:bg-lightBackgroundLightHover dark:bg-darkPruneLogo hover:dark:bg-darkPruneBG transition-colors duration-500"
               >
                 <Link
                   to={`/products/${product.id}`}
                   className="flex flex-col justify-center items-center"
                 >
-                  <img
-                    src={`http://localhost:1337${product.attributes.icone_product.data?.[0]?.attributes?.url}`}
-                    alt={product.attributes.name}
-                    className="h-16 rounded-lg"
-                  />
+                  <div className="bg-white bg-opacity-30 rounded-full p-4 shadow transition-colors duration-500">
+                    <img
+                      src={`http://localhost:1337${product.attributes.icone_product.data?.[0]?.attributes?.url}`}
+                      alt={product.attributes.name}
+                      className="h-16 rounded-lg"
+                    />
+                  </div>
                   <p className="text-center w-24 text-sm">
                     {product.attributes.name}
                   </p>
@@ -116,14 +122,15 @@ const ProductScreen: React.FC = () => {
             ))}
           </ul>
         </div>
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center items-center mt-4">
           <button
             type="button"
             disabled={page <= 1}
             onClick={() => setPage(page - 1)}
-            className="mx-2 px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+            className="mx-2 px-4 py-2 bg-lightBackground  rounded hover:bg-darkBackgroundLight hover:dark:bg-lightPrune  dark:bg-darkPruneBG transition-colors duration-500"
+            aria-label="Précédent"
           >
-            Précédent
+            <FontAwesomeIcon icon={faChevronLeft} />
           </button>
           <span className="mx-2">
             Page {page} sur {totalPages}
@@ -132,9 +139,10 @@ const ProductScreen: React.FC = () => {
             type="button"
             disabled={page >= totalPages}
             onClick={() => setPage(page + 1)}
-            className="mx-2 px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+            className="mx-2 px-4 py-2 bg-lightBackground hover:bg-darkBackgroundLight rounded hover:dark:bg-lightPrune  dark:bg-darkPruneBG transition-colors duration-500"
+            aria-label="Suivant"
           >
-            Suivant
+            <FontAwesomeIcon icon={faChevronRight} />
           </button>
         </div>
       </div>

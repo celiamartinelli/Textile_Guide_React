@@ -17,7 +17,7 @@ const HeaderDesktop: React.FC = () => {
   return (
     <header className="flex font-thasadith-bold font-bold relative ">
       <nav className="fixed top-0 left-0 right-0">
-        <ul className="flex flex-row w-screen h-24 justify-around text-white text-xl font-bold bg-lightBackground dark:bg-darkPruneBG  items-center">
+        <ul className="flex flex-row w-screen h-24 justify-around text-white text-xl font-bold bg-lightBackground dark:bg-darkPruneBG  items-center transition-colors duration-500">
           <li>
             <Link to="/about">{t('header.about')}</Link>
           </li>
@@ -28,10 +28,10 @@ const HeaderDesktop: React.FC = () => {
           <li className="absolute top-3">
             <Link to="/">
               <img
-                className="border rounded-full shadow-md w-40 h-40"
+                className="border rounded-full shadow-md w-40 h-40 transition-opacity duration-500 ease-in-out"
                 src={textileLogo}
                 alt="Guide Textile Logo"
-              ></img>
+              />
             </Link>
           </li>
           <li className="ml-24">
@@ -44,7 +44,7 @@ const HeaderDesktop: React.FC = () => {
               aria-label="Activer le Dark Mode"
               type="button"
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className=" text-white m-2 py-2 px-4 rounded-md hover:bg-lightBackgroundLight dark:hover:bg-darkPrune"
+              className=" text-white m-2 py-2 px-4 rounded-md hover:bg-lightBackgroundLight dark:hover:bg-darkPrune transition-colors duration-500"
             >
               {isDarkMode ? <FiSun /> : <RiMoonFill />}
             </button>

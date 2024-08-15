@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import { Button } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import ButtonInfoLevelSewing from '@/components/Button/ButtonInfoLevelSewing';
 
 interface RouteParams {
@@ -101,9 +102,11 @@ interface Level {
 }
 
 const OneFabricScreen: React.FC = () => {
+  const { t } = useTranslation();
   const { fabricId } = useParams() as unknown as RouteParams;
   const [fabric, setFabric] = useState<Fabric | null>(null);
   const [allLevels, setAllLevels] = useState<Level[]>([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     const fetchFabricData = async () => {
@@ -135,61 +138,61 @@ const OneFabricScreen: React.FC = () => {
     fetchFabricData();
   }, [fabricId]);
 
-  const renderCompositionTags = (composition: string) => {
-    return composition.split(',').map((comp, index) => (
-      <span
-        key={index}
-        className="px-3 py-1 mb-2 mx-2 bg-cream rounded-md text-sm border"
-      >
-        {comp.trim()}
-      </span>
-    ));
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
 
-  const renderCharateristicTags = (characteristic: string) => {
-    return characteristic.split(',').map((charact, index) => (
-      <span
-        key={index}
-        className="px-3 py-1  mb-2 bg-lightPink rounded-md text-sm border"
-      >
-        {charact.trim()}
-      </span>
-    ));
-  };
+    window.addEventListener('resize', handleResize);
 
-  const renderBenefitsTags = (benefits: string) => {
-    return benefits.split(',').map((benefit, index) => (
-      <span
-        key={index}
-        className="px-3 py-1  mb-2 bg-sage rounded-md text-sm text-white border"
-      >
-        {benefit.trim()}
-      </span>
-    ));
-  };
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  const renderDisadvantagesTags = (disadvantages: string) => {
-    return disadvantages.split(',').map((disadvantage, index) => (
-      <span
-        key={index}
-        className="px-3 py-1 mb-2 bg-pink rounded-md text-sm border "
-      >
-        {disadvantage.trim()}
-      </span>
+  const renderTableCellContent = (content: string) => {
+    return content.split(',').map((item, index) => (
+      <div key={index} className="">
+        {item.trim()}
+      </div>
     ));
   };
 
   const renderConsumptionCard = (consumption: string) => {
-    // Définir les titres à utiliser
-    const titles = ['Eau', 'Electricité'];
+    const titles = ['💧 Eau', '💡 Electricité'];
 
-    return consumption.split(',').map((value, index) => (
-      <span key={index} className="px-3 py-1 mb-2 rounded-md text-sm border">
-        {/* Afficher le titre suivi de la valeur */}
-        <strong>{titles[index] ? `${titles[index]}: ` : ''}</strong>
-        {value.trim()}
-      </span>
-    ));
+    const values = consumption.split(',').map((value) => value.trim());
+
+    return (
+      <table className="table-auto w-full">
+        <thead className="border-b bg-white bg-opacity-30">
+          <tr>
+            {titles.map((title, index) => (
+              <th
+                key={index}
+                className={`px-4 py-2 text-center ${
+                  index === 0 ? 'border-r' : ''
+                }`}
+              >
+                {title}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {values.map((value, index) => (
+              <td
+                key={index}
+                className={`px-4 py-2 text-center ${
+                  index === 0 ? 'border-r' : ''
+                }`}
+              >
+                {value}
+              </td>
+            ))}
+          </tr>
+        </tbody>
+      </table>
+    );
   };
 
   if (!fabric || !fabric.attributes) {
@@ -198,11 +201,10 @@ const OneFabricScreen: React.FC = () => {
 
   return (
     <div className="pb-20">
-      <div className="flex flex-col h-full mx-3 pt-12 mt-36 lg:min-h-screen">
+      <div className="flex flex-col h-full mx-3 pt-12 mt-24 md:mt-32 lg:min-h-screen">
         <div className="flex flex-col justify-center items-center">
-          <div className="border-2 border-white rounded-md shadow-lg p-2">
-            <h1 className="text-center">{fabric.attributes.name}</h1>
-            <div className="flex flex-col justidy-center items-center sm:m-4 sm:flex-row md:m-8 lg:m-2">
+          <div className=" p-2">
+            <div className="flex flex-col justify-center items-center mb-6 sm:m-4 sm:flex-row md:m-6 lg:m-2">
               {fabric.attributes.picture_fabric?.data && (
                 <img
                   src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
@@ -210,88 +212,265 @@ const OneFabricScreen: React.FC = () => {
                   className="w-38 h-38 rounded-lg m-2 md:w-26 h-26 lg:w-44 h-44"
                 />
               )}
+              <div>
+                <h1 className="text-center text-2xl font-medium mt-2">
+                  {fabric.attributes.name}
+                </h1>
+                <p className="m-2 text-justify sm:pt-2 lg:pt-2">
+                  {fabric.attributes.description}
+                </p>
+              </div>
+            </div>
+            {isMobile ? (
+              <div className="text-center flex flex-col justify-center border-2 rounded-md shadow-md">
+                <table className="table-auto ">
+                  <tbody>
+                    <tr className="border-b">
+                      <th className="px-4 py-2 bg-white bg-opacity-30">
+                        {t('oneFabric.h41')}
+                      </th>
+                    </tr>
+                    <tr>
+                      {' '}
+                      <td className="px-4 py-2 border-b">
+                        {fabric.attributes.composition &&
+                          renderTableCellContent(fabric.attributes.composition)}
+                      </td>
+                    </tr>
+                    <tr>
+                      {' '}
+                      <th className="px-4 py-2 border-b bg-white bg-opacity-30">
+                        {t('oneFabric.h42')}
+                      </th>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-2 border-b">
+                        {fabric.attributes.characteristic &&
+                          renderTableCellContent(
+                            fabric.attributes.characteristic
+                          )}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th className="px-4 py-2 border-b bg-white bg-opacity-30">
+                        {t('oneFabric.h43')}
+                      </th>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-2 border-b ">
+                        {fabric.attributes.disadvantages &&
+                          renderTableCellContent(
+                            fabric.attributes.disadvantages
+                          )}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th className="px-4 py-2 border-b bg-white bg-opacity-30">
+                        {t('oneFabric.h44')}
+                      </th>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-2 ">
+                        {fabric.attributes.benefit &&
+                          renderTableCellContent(fabric.attributes.benefit)}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div
+                className="text-center mx-10
+             border-2 rounded-md shadow-md"
+              >
+                <table className="table-auto w-full ">
+                  <thead className="border-b">
+                    <tr className="bg-white bg-opacity-30">
+                      <th className="px-4 py-2 border-r ">
+                        {t('oneFabric.h41')}
+                      </th>
+                      <th className="px-4 py-2 border-r">
+                        {t('oneFabric.h42')}
+                      </th>
+                      <th className="px-4 py-2 border-r">
+                        {t('oneFabric.h43')}
+                      </th>
+                      <th className="px-4 py-2 ">{t('oneFabric.h44')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="px-4 py-2 border-r">
+                        {fabric.attributes.composition &&
+                          renderTableCellContent(fabric.attributes.composition)}
+                      </td>
+                      <td className="px-4 py-2 border-r">
+                        {fabric.attributes.characteristic &&
+                          renderTableCellContent(
+                            fabric.attributes.characteristic
+                          )}
+                      </td>
+                      <td className="px-4 py-2 border-r">
+                        {fabric.attributes.disadvantages &&
+                          renderTableCellContent(
+                            fabric.attributes.disadvantages
+                          )}
+                      </td>
+                      <td className="px-4 py-2 ">
+                        {fabric.attributes.benefit &&
+                          renderTableCellContent(fabric.attributes.benefit)}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            )}
 
-              <p className="m-2 text-justify sm:pt-2 lg:pt-2">
-                {fabric.attributes.description}
-              </p>
-            </div>
-            <div className="text-center text-sm sm:flex flex-wrap justify-around">
-              <div className="flex flex-col justify-center pb-2 mx-2 sm:justify-start sm:w-2/5">
-                <h4 className="pb-2">Composition:</h4>
-                <p className="flex flex-col justify-center">
-                  {fabric.attributes.composition &&
-                    renderCompositionTags(fabric.attributes.composition)}
-                </p>
-              </div>
-              <div className="flex flex-col justify-center pb-2 mx-2 sm:justify-start sm:w-2/5">
-                <h4 className="pb-2">Charactéristique:</h4>
-                <p className="flex flex-col justify-center">
-                  {fabric.attributes.characteristic &&
-                    renderCharateristicTags(fabric.attributes.characteristic)}
-                </p>
-              </div>
-              <div className="flex flex-col justify-center pb-2 mx-2 sm:justify-start sm:w-2/5">
-                <h4 className="pb-2">Inconvénients</h4>
-                <p className="flex flex-col justify-center">
-                  {fabric.attributes.disadvantages &&
-                    renderDisadvantagesTags(fabric.attributes.disadvantages)}
-                </p>
-              </div>
-              <div className="flex flex-col justify-center pb-2 mx-2 sm:justify-start sm:w-2/5">
-                <h4 className="pb-2">Avantages</h4>
-                <p className="flex flex-col justify-center">
-                  {fabric.attributes.benefit &&
-                    renderBenefitsTags(fabric.attributes.benefit)}
-                </p>
-              </div>
-            </div>
-            <div className="text-center">
-              <h4>Origine:</h4>
+            <div className="text-center flex flex-col m-6">
+              <h4 className="m-2 text-center text-xl font-medium">
+                {' '}
+                {t('oneFabric.h49')}
+              </h4>
               <p>{fabric.attributes.origin}</p>
             </div>
-            <div className="text-center">
-              <h4>Poids pour 1m²:</h4>
-              <p>{fabric.attributes.weight}</p>
-            </div>
-            <div className="text-center">
-              <h4>Consommation Energitique:</h4>
-              <div className="flex">
-                {fabric.attributes.consumption &&
-                  renderConsumptionCard(fabric.attributes.consumption)}
-              </div>
-            </div>
-            <div className="text-center">
-              <h4>Aspect du Tissus:</h4>
-              <p>{fabric.attributes.appearance}</p>
-            </div>
-            <div className="text-center">
-              <h4>Niveau de Couture</h4>
-              <p>
-                {fabric.attributes?.level_sewing?.data?.[0]?.attributes
-                  ?.name_level || 'Niveau non disponible'}
-              </p>
-            </div>
-            <div className="text-center flex flex-col justify-center items-center border rounded-lg">
-              <h4>Armure du Tissus:</h4>
-              <p>
-                {fabric.attributes?.weave_of_fabrics?.data?.[0]?.attributes
-                  ?.category || 'Catégorie non disponible'}
-              </p>
+            {isMobile ? (
+              <div className="text-center flex flex-col justify-center border-2 rounded-md shadow-md">
+                <table className="table-auto">
+                  <tbody>
+                    <tr className="border-b">
+                      <th className="px-4 py-2 bg-white bg-opacity-30">
+                        {t('oneFabric.h45')}
+                      </th>
+                    </tr>
 
-              <img
-                src={`http://localhost:1337${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
-                alt="weave-icone"
-                className="w-32 h-32 p-1 rounded-md "
-              />
-              <p>
-                {fabric.attributes?.weave_of_fabrics?.data?.[0]?.attributes
-                  ?.name || 'Nom non disponible'}
-              </p>
+                    <tr>
+                      <td className="px-4 py-2 border-b">
+                        {fabric.attributes.weight}
+                      </td>
+                    </tr>
+
+                    <tr className="border-b">
+                      <th className="px-4 py-2 bg-white bg-opacity-30">
+                        {t('oneFabric.h46')}
+                      </th>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-2 border-b">
+                        {fabric.attributes.appearance &&
+                          renderTableCellContent(fabric.attributes.appearance)}
+                      </td>
+                    </tr>
+                    <tr className="border-b">
+                      <th className="px-4 py-2 bg-white bg-opacity-30 flex justify-evenly">
+                        {t('oneFabric.h47')} <ButtonInfoLevelSewing />
+                      </th>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-4 border-b">
+                        {fabric.attributes?.level_sewing?.data?.[0]?.attributes
+                          ?.name_level || 'Niveau non disponible'}
+                      </td>
+                    </tr>
+                    <tr className="border-b">
+                      <th className="px-4 py-2 bg-white bg-opacity-30">
+                        {t('oneFabric.h48')}
+                      </th>
+                    </tr>
+
+                    <tr>
+                      <td className="px-4 py-2 text-center">
+                        <div className="flex flex-col justify-center items-center">
+                          {fabric.attributes?.weave_of_fabrics?.data?.[0]
+                            ?.attributes?.category ||
+                            'Catégorie non disponible'}
+
+                          <img
+                            src={`http://localhost:1337${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
+                            alt="weave-icone"
+                            className="w-32 h-32 p-1 rounded-md"
+                          />
+
+                          {fabric.attributes?.weave_of_fabrics?.data?.[0]
+                            ?.attributes?.name || 'Nom non disponible'}
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div
+                className="text-center mx-10
+           border-2 rounded-md shadow-md"
+              >
+                <table className="table-auto w-full">
+                  <thead className="border-b">
+                    <tr className="bg-white bg-opacity-30">
+                      <th className="px-4 py-2 border-r">
+                        {' '}
+                        {t('oneFabric.h45')}
+                      </th>
+                      <th className="px-4 py-2 border-r">
+                        {' '}
+                        {t('oneFabric.h46')}
+                      </th>
+                      <th className="px-4 py-2 border-r">
+                        {' '}
+                        {t('oneFabric.h47')}
+                      </th>
+                      <th className="px-4 py-2"> {t('oneFabric.h48')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="px-4 py-2 border-r">
+                        {fabric.attributes.weight}
+                      </td>
+                      <td className="px-4 py-2 border-r">
+                        {fabric.attributes.appearance &&
+                          renderTableCellContent(fabric.attributes.appearance)}
+                      </td>
+                      <td className="px-4 py-2 border-r">
+                        {fabric.attributes?.level_sewing?.data?.[0]?.attributes
+                          ?.name_level || 'Niveau non disponible'}
+                      </td>
+                      <td className="px-4 py-2 text-center">
+                        <div className="flex flex-col justify-center items-center">
+                          {fabric.attributes?.weave_of_fabrics?.data?.[0]
+                            ?.attributes?.category ||
+                            'Catégorie non disponible'}
+
+                          <img
+                            src={`http://localhost:1337${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
+                            alt="weave-icone"
+                            className="w-32 h-32 p-1 rounded-md"
+                          />
+
+                          {fabric.attributes?.weave_of_fabrics?.data?.[0]
+                            ?.attributes?.name || 'Nom non disponible'}
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          <div className="text-center m-4 ">
+            <h4 className="m-2 text-center text-xl font-medium">
+              {t('oneFabric.h50')}
+            </h4>
+            <div className="w-full sm:w-1/2 mx-auto border-2 rounded-md shadow-md">
+              {fabric.attributes.consumption &&
+                renderConsumptionCard(fabric.attributes.consumption)}
             </div>
           </div>
-          <div className="w-full  ">
-            <div className="border-2 border-white rounded-md shadow-lg my-2 w-full lg:my-0 ">
-              <h2 className="text-center lg:mt-2">Entretien</h2>
+          <div className="w-full">
+            <div className=" my-2 w-full lg:my-0 ">
+              <h4 className="m-2 text-center text-xl font-medium">
+                {t('oneFabric.h51')}
+              </h4>
               <ul className="flex flex-row flex-wrap justify-center">
                 {fabric.attributes.washes?.data?.map((wash, washIndex) => (
                   <li
@@ -316,42 +495,51 @@ const OneFabricScreen: React.FC = () => {
               </ul>
             </div>
 
-            <div className="border-2 border-white rounded-md shadow-lg w-full lg:my-0">
-              <h2 className="text-center lg:mt-2">Projets Associés</h2>
-              <ul className="flex flex-row flex-wrap justify-center">
-                {fabric.attributes.products?.data?.map(
-                  (product, productIndex) => (
-                    <li
-                      className="w-16 flex flex-col justify-start items-center m-1"
-                      key={product.id}
-                    >
-                      <Link
-                        to={`/products/${product.id}`}
-                        className="text-center"
+            <div className=" w-full my-5 lg:my-0">
+              <h4 className="m-2 text-center text-xl font-medium">
+                {t('oneFabric.h52')}
+              </h4>
+              {fabric.attributes.products?.data?.length === 0 ? (
+                <div className="text-center text-sm mt-3">
+                  <p>Aucun Projet associé pour le moment</p>
+                </div>
+              ) : (
+                <ul className="flex flex-row flex-wrap justify-center">
+                  {fabric.attributes.products?.data?.map(
+                    (product, productIndex) => (
+                      <li
+                        className="w-16 flex flex-col justify-start items-center m-1"
+                        key={product.id}
                       >
-                        {product.attributes.icone_product?.data?.map(
-                          (picture, picIndex) => (
-                            <img
-                              key={`${product.id}-${picIndex}`}
-                              src={`http://localhost:1337${picture.attributes.url}`}
-                              alt="project"
-                              className="w-12 h-12 p-1 border rounded-md bg-sage shadow-md"
-                            />
-                          )
-                        )}
-                        <p className="text-xs pt-1 text-center">
-                          {product.attributes.name}
-                        </p>
-                      </Link>
-                    </li>
-                  )
-                )}
-              </ul>
+                        <Link
+                          to={`/products/${product.id}`}
+                          className="text-center "
+                        >
+                          <div className="">
+                            {product.attributes.icone_product?.data?.map(
+                              (picture, picIndex) => (
+                                <img
+                                  key={`${product.id}-${picIndex}`}
+                                  src={`http://localhost:1337${picture.attributes.url}`}
+                                  alt="project"
+                                  className="w-18 h-18 p-2 rounded-full bg-white bg-opacity-30 shadow-md"
+                                />
+                              )
+                            )}
+                          </div>
+                          <p className="text-xs pt-1 text-center">
+                            {product.attributes.name}
+                          </p>
+                        </Link>
+                      </li>
+                    )
+                  )}
+                </ul>
+              )}
             </div>
           </div>
         </div>
       </div>
-      <ButtonInfoLevelSewing />
     </div>
   );
 };

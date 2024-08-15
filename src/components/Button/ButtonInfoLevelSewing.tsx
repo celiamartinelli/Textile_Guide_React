@@ -37,10 +37,10 @@ const ShowMoreInfosButton: React.FC = () => {
 
   if (loading) return <p>Chargement...</p>;
   return (
-    <>
+    <div className="flex w-7 justify-center items-center bg-cream dark:bg-rosyBrown rounded-full h-7">
       <button
         type="button"
-        className="bg-cream p-2 rounded-full text-brown mr-2"
+        className="text-brown dark:text-white"
         onClick={() => setIsModalOpen(true)}
         aria-label="Afficher plus d'informations sur le niveau de couture"
       >
@@ -52,7 +52,7 @@ const ShowMoreInfosButton: React.FC = () => {
           onClose={() => setIsModalOpen(false)}
         />
       )}
-    </>
+    </div>
   );
 };
 

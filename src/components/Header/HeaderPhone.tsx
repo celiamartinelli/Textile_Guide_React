@@ -15,8 +15,8 @@ const HeaderPhone: React.FC = () => {
   return (
     <header className="flex font-thasadith-bold font-bold relative">
       <nav className="fixed top-0 left-0 right-0">
-        <ul className="flex flex-row w-screen h-20 justify-between text-white text-xl font-bold bg-lightBackground dark:bg-darkPruneBG  items-center px-8">
-          <li className="p-2 rounded-full hover:bg-lightBackgroundLight dark:hover:bg-darkBackgroundLightHover ">
+        <ul className="flex flex-row w-screen h-20 justify-between text-white text-xl font-bold bg-lightBackground dark:bg-darkPruneBG  items-center px-8 transition-colors duration-500">
+          <li className="p-2 rounded-full hover:bg-lightBackgroundLight dark:hover:bg-darkBackgroundLightHover transition-colors duration-500">
             <Link to="/about">
               <IoIosInformationCircle />
             </Link>
@@ -24,7 +24,7 @@ const HeaderPhone: React.FC = () => {
           <li className="size-4/12 sm:size-2/12 lg:size-2/12">
             <Link to="/">
               <img
-                className="border rounded-full shadow-md"
+                className="border rounded-full shadow-md ransition-opacity duration-500 ease-in-out"
                 src={textileLogo}
                 alt="Guide Textile Logo"
               />
@@ -36,7 +36,7 @@ const HeaderPhone: React.FC = () => {
               aria-label="Activer le Dark Mode"
               type="button"
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className=" text-white p-2 rounded-full hover:bg-lightBackgroundLight dark:hover:bg-darkPrune"
+              className=" text-white p-2 rounded-full hover:bg-lightBackgroundLight dark:hover:bg-darkPrune transition-colors duration-500"
             >
               {isDarkMode ? <FiSun /> : <RiMoonFill />}
             </button>

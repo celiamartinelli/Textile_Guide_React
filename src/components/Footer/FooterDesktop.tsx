@@ -10,7 +10,7 @@ export default function FooterDesktop() {
   const { isDarkMode, setIsDarkMode } = useDarkMode();
   const { t } = useTranslation();
   return (
-    <div className="bg-lightBackground flex justify-between p-5 fixed bottom-0 left-0 right-0 text-white dark:bg-darkPruneBG">
+    <div className="bg-lightBackground flex justify-between p-5 fixed bottom-0 left-0 right-0 text-white dark:bg-darkPruneBG transition-colors duration-500">
       <div>
         <Link to="/notFound">
           <TbApi />

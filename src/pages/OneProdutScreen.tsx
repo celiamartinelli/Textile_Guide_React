@@ -201,9 +201,9 @@ const OneProductScreen: React.FC = () => {
       }
       return (
         <React.Fragment key={index}>
-          <div className="flex items-center">
+          <div className="flex items-center justify-center">
             <span className="inline-flex items-center">
-              <AiOutlineColumnWidth className="mr-1 border rounded-full p-1 w-5 h-5" />
+              <AiOutlineColumnWidth className="mx-2" />
             </span>
             {part}
           </div>
@@ -235,7 +235,7 @@ const OneProductScreen: React.FC = () => {
       case 'main_fabric':
         return (
           <img
-            className="w-24 h-24"
+            className="w-16 h-16 sm:w-24 sm:h-24"
             alt="main_fabric"
             src="../../public/assets/icone_supply/main_fabric_black.png"
           />
@@ -243,7 +243,7 @@ const OneProductScreen: React.FC = () => {
       case 'interior_fabric':
         return (
           <img
-            className="w-24 h-24"
+            className="w-16 h-16 sm:w-24 sm:h-24"
             alt="interior_fabric"
             src="../../public/assets/icone_supply/interior_fabric_black.png"
           />
@@ -251,7 +251,7 @@ const OneProductScreen: React.FC = () => {
       case 'interling_fabric':
         return (
           <img
-            className="w-24 h-24"
+            className="w-16 h-16 sm:w-24 sm:h-24"
             alt="interling_fabric"
             src="../../public/assets/icone_supply/interling_fabric_black.png"
           />
@@ -259,7 +259,7 @@ const OneProductScreen: React.FC = () => {
       case 'closure':
         return (
           <img
-            className="w-24 h-24"
+            className="w-16 h-16 sm:w-24 sm:h-24"
             alt="closure"
             src="../../public/assets/icone_supply/closure_black.png"
           />
@@ -267,7 +267,7 @@ const OneProductScreen: React.FC = () => {
       case 'fastener':
         return (
           <img
-            className="w-24 h-24"
+            className="w-16 h-16 sm:w-24 sm:h-24"
             alt="festener_fabric"
             src="../../public/assets/icone_supply/fastener_black.png"
           />
@@ -275,7 +275,7 @@ const OneProductScreen: React.FC = () => {
       case 'ribbon':
         return (
           <img
-            className="w-24 h-24"
+            className="w-16 h-16 sm:w-24 sm:h-24"
             alt="ribbon"
             src="../../public/assets/icone_supply/ribbons_black.png"
           />
@@ -283,7 +283,7 @@ const OneProductScreen: React.FC = () => {
       case 'decoration':
         return (
           <img
-            className="w-24 h-24"
+            className="w-16 h-16 sm:w-24 sm:h-24"
             alt="decoration"
             src="../../public/assets/icone_supply/decoration_black.png"
           />
@@ -291,7 +291,7 @@ const OneProductScreen: React.FC = () => {
       case 'accessory':
         return (
           <img
-            className="w-24 h-24"
+            className="w-16 h-16 sm:w-24 sm:h-24"
             alt="accessory"
             src="../../public/assets/icone_supply/access_black.png"
           />
@@ -306,14 +306,21 @@ const OneProductScreen: React.FC = () => {
     value: string,
     category: string
   ) {
+    if (value === 'N/A') {
+      return null; // Return null if the value is 'N/A'
+    }
     const Icon = getIconForCategory(category);
     const translatedCategory = t(`oneProduct.supply_category.${category}`);
+    const formattedText = formatListText(value);
+
     // console.log('Category:', category); // Pour déboguer
     // console.log('Translated Category:', translatedCategory);
     return (
-      <div className="w-2/6 h-1/5 m-2 border-2 rounded-lg p-4 bg-lightBackground dark:bg-darkPruneLogo  flex flex-col justify_center items-center">
-        {Icon}
-        {translatedCategory}: {formatListText(value)}
+      <div className="w-full border-2 rounded-lg p-4 bg-lightBackground dark:bg-darkPruneLogo flex flex-row items-center my-3 justify-center">
+        <div className=" mx-1">{Icon}</div>
+        <div className="text-center w-2/3 mx-1">
+          <h5 className="mb-2">{translatedCategory}:</h5> {formattedText}
+        </div>
       </div>
     );
   }
@@ -322,7 +329,7 @@ const OneProductScreen: React.FC = () => {
       <div className="flex flex-col min-h-screen mx-6 pt-12 mt-36 ">
         <div className="flex flex-col justify-center items-center ">
           <h1 className="text-center">{product.attributes.name}</h1>
-          <div className="border-2 border-white rounded-md shadow-lg p-2 w-full">
+          <div className="p-2 w-full">
             {product.attributes.icone_product?.data &&
               product.attributes.icone_product.data.length > 0 && (
                 <img
@@ -332,52 +339,71 @@ const OneProductScreen: React.FC = () => {
                 />
               )}
             <div className="text-center">
-              <p>{product.attributes.description}</p>
               <div className="flex justify-center">
-                {' '}
                 <p>{product.attributes.category}</p>
-                <p>-</p>
+                <p> - </p>
                 <p>{product.attributes.second_category}</p>
               </div>
+              <p>{product.attributes.description}</p>
 
-              <div className="">
-                <h4>{t('oneProduct.quantity_textile_required')}</h4>
-                <div className="border-2 rounded-md ">
-                  {product.attributes.textile_quantity_required.split(',').map(
-                    (quantity, index) => (
-                      <p key={index}>{quantity}</p>
-                    ),
-                    []
-                  )}
+              <div className="flex justify-center my-6">
+                <div className="border-2 rounded-md">
+                  <table className="table-auto w-full">
+                    <thead className="border-b">
+                      <tr>
+                        <th className="px-4 py-2 text-center" colSpan={2}>
+                          {t('oneProduct.quantity_textile_required')}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {product.attributes.textile_quantity_required
+                        .split(',')
+                        .map((quantity, index) => {
+                          const [size, amount] = quantity.split(':');
+                          return (
+                            <tr
+                              key={index}
+                              className="border-b border-gray-200"
+                            >
+                              <th className="px-4 py-2 text-left border-r border-gray-200">
+                                {size}
+                              </th>
+                              <td className="px-4 py-2 text-left">{amount}</td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td className="px-4 py-2 text-center" colSpan={2}>
+                          {t('oneProduct.laize')}
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
                 </div>
-                <p>{t('oneProduct.laize')}</p>
               </div>
-              <div className="border">
-                <div>
-                  <h2>Niveau de Couture</h2>
+              <div className="flex justify-center">
+                <div className="flex border-2 rounded-lg items-center p-5 pr-2">
+                  <div className="flex flex-col mr-2">
+                    <h2 className="mb-2"> {t('oneProduct.h2level')}</h2>
+
+                    <p className="bg-cream rounded-full p-2 dark:bg-darkSage">
+                      {
+                        product.attributes?.level_sewing?.data[0]?.attributes
+                          ?.name_level
+                      }
+                    </p>
+                  </div>
                   <ButtonInfoLevelSewing />
-                  {/* <button
-                    type="button"
-                    className="bg-cream p-2 rounded-full text-brown mr-2"
-                    onClick={showMoreInfosLevelSewing}
-                    aria-label="Afficher plus d'informations sur le niveau de couture"
-                  >
-                    <FontAwesomeIcon icon={faInfo} />
-                  </button> */}
                 </div>
-                <p>
-                  {
-                    product.attributes.level_sewing.data[0].attributes
-                      .name_level
-                  }
-                </p>
               </div>
             </div>
-            <div className="flex flex-col justify-center items-center ">
+            <div className="flex flex-col justify-center items-center my-6">
               <h2 className="">{t('oneProduct.h2Fabric')}</h2>
               <ul className="flex">
                 {product.attributes.fabrics?.data?.map((fabric) => (
-                  // console.log('fabric:', fabric),
                   <li
                     className="flex flex-col justify-center items-center mb-2"
                     key={fabric.id}
@@ -390,24 +416,6 @@ const OneProductScreen: React.FC = () => {
                       />
                       <p className="text-center">{fabric.attributes.name}</p>
                     </Link>
-                    {/* <div className="flex">
-                      {fabric.attributes.washes?.data.map((icon, iconIndex) => (
-                        <div
-                          className="flex flex-col justify-start items-center"
-                          key={`${fabric.id}-${iconIndex}`}
-                        >
-                          <img
-                            key={icon.id}
-                            src={`http://localhost:1337${icon.attributes.icone.data?.[0].attributes.url}`}
-                            alt={icon.attributes.description}
-                            className="w-12 h-12 p-1 border rounded-md bg-cream shadow-md"
-                          />
-                          <p className="text-xs w-14 text-center flex pt-1">
-                            {icon.attributes.description}
-                          </p>
-                        </div>
-                      ))}
-                    </div> */}
                   </li>
                 ))}
               </ul>
@@ -415,7 +423,7 @@ const OneProductScreen: React.FC = () => {
               <div className="flex">
                 {product.attributes.supplies_quantities?.data?.map((supply) => (
                   <div
-                    className="flex flex-wrap justify-center items-center mb-2"
+                    className="flex flex-wrap justify-center items-center"
                     key={supply.id}
                   >
                     {renderProductAttribute(

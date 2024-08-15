@@ -80,6 +80,9 @@ interface SupplyQuantity {
     decoration: string;
     accessory: string;
     id_supplies_quantities: string;
+    pocket: boolean;
+    pocket_fabric: string;
+    pocket_closure: string;
   };
 }
 
@@ -228,7 +231,9 @@ const OneProductScreen: React.FC = () => {
     | 'fastener'
     | 'ribbon'
     | 'decoration'
-    | 'accessory';
+    | 'accessory'
+    | 'pocket_fabric'
+    | 'pocket_closure';
 
   function getIconForCategory(category: CategoryType) {
     switch (category) {
@@ -296,6 +301,22 @@ const OneProductScreen: React.FC = () => {
             src="../../public/assets/icone_supply/access_black.png"
           />
         );
+      case 'pocket_fabric':
+        return (
+          <img
+            className="w-16 h-16 sm:w-24 sm:h-24"
+            alt="pocket_fabric"
+            src="../../public/assets/icone_supply/pocket_fabric_black.png"
+          />
+        );
+      case 'pocket_closure':
+        return (
+          <img
+            className="w-16 h-16 sm:w-24 sm:h-24"
+            alt="pocket_closure"
+            src="../../public/assets/icone_supply/pocket_closure_black.png"
+          />
+        );
       default:
         return null;
     }
@@ -339,7 +360,7 @@ const OneProductScreen: React.FC = () => {
                 />
               )}
             <div className="text-center">
-              <div className="flex justify-center">
+              <div className="flex justify-center text-xs mb-6">
                 <p>{product.attributes.category}</p>
                 <p> - </p>
                 <p>{product.attributes.second_category}</p>
@@ -465,6 +486,21 @@ const OneProductScreen: React.FC = () => {
                       'accessory',
                       supply.attributes.accessory,
                       'accessory'
+                    )}
+                    {supply.attributes.pocket && (
+                      <>
+                        {renderProductAttribute(
+                          'pocket_fabric',
+                          supply.attributes.pocket_fabric,
+                          'pocket_fabric'
+                        )}
+
+                        {renderProductAttribute(
+                          'pocket_closure',
+                          supply.attributes.pocket_closure,
+                          'pocket_closure'
+                        )}
+                      </>
                     )}
                   </div>
                 ))}

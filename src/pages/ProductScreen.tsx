@@ -40,7 +40,7 @@ const ProductScreen: React.FC = () => {
 
   const fetchProducts = (currentPage: number) => {
     fetch(
-      `http://localhost:1337/api/products?populate=icone_product&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}`
+      `http://localhost:1337/api/products?populate=icone_product&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}&sort=name:asc`
     )
       .then((res) => res.json())
       .then((data) => {

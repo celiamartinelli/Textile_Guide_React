@@ -191,6 +191,7 @@ const OneFabricScreen: React.FC = () => {
             ))}
           </tr>
         </tbody>
+        <caption className="border-b">Pour un 1 m² de tissu</caption>
       </table>
     );
   };
@@ -209,14 +210,14 @@ const OneFabricScreen: React.FC = () => {
                 <img
                   src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
                   alt={fabric.attributes.name}
-                  className="w-38 h-38 rounded-lg m-2 md:w-26 h-26 lg:w-44 h-44"
+                  className="w-38 h-38 rounded-lg m-2 md:w-26 h-26 sm:mr-6 lg:w-44 h-44"
                 />
               )}
-              <div>
+              <div className="w-2/3 justify-center items-center ">
                 <h1 className="text-center text-2xl font-medium mt-2">
                   {fabric.attributes.name}
                 </h1>
-                <p className="m-2 text-justify sm:pt-2 lg:pt-2">
+                <p className="m-2 sm:pt-2 lg:pt-2 text-justify">
                   {fabric.attributes.description}
                 </p>
               </div>
@@ -461,7 +462,7 @@ const OneFabricScreen: React.FC = () => {
             <h4 className="m-2 text-center text-xl font-medium">
               {t('oneFabric.h50')}
             </h4>
-            <div className="w-full sm:w-1/2 mx-auto border-2 rounded-md shadow-md">
+            <div className="w-full sm:w-2/3 md:2/3 lg:w-5/6 mx-auto border-2 rounded-md shadow-md">
               {fabric.attributes.consumption &&
                 renderConsumptionCard(fabric.attributes.consumption)}
             </div>

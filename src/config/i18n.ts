@@ -37,6 +37,8 @@ const resources = {
           ribbon: 'Ribbon',
           decoration: 'Decoration',
           accessory: 'Accessory',
+          pocket_fabric: 'Pocket Fabric',
+          pocket_closure: 'Pocket Closure',
         },
       },
       oneFabric: {
@@ -52,6 +54,13 @@ const resources = {
         h50: 'Energy Consumption:',
         h51: 'Care',
         h52: 'Associated Projects',
+      },
+      modalInfoLevel: {
+        title: 'Sewing Level',
+        title1: 'Skills',
+        title2: 'Typical Projects',
+        title3: 'Techniques',
+        title4: 'Examples of Fabrics',
       },
       about: {
         title: 'About Guide Textile',
@@ -110,6 +119,8 @@ const resources = {
           ribbon: 'Rubanerie',
           decoration: 'Decoration',
           accessory: 'Accessoire',
+          pocket_fabric: 'Tissu de Poche',
+          pocket_closure: 'Fermeture de Poche',
         },
       },
       oneFabric: {
@@ -125,6 +136,13 @@ const resources = {
         h50: 'Consommation Energitique:',
         h51: 'Entretien',
         h52: 'Projets Associés',
+      },
+      modalInfoLevel: {
+        title: 'Niveau de Couture',
+        title1: 'Compétences',
+        title2: 'Projets Typiques',
+        title3: 'Techniques',
+        title4: 'Exemples de Tissus',
       },
       about: {
         title: 'A Propos de Guide Textile',

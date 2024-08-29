@@ -134,7 +134,7 @@ const OneProductScreen: React.FC = () => {
       try {
         // console.log(`Fetching product with ID: ${productId}`);
         const response = await fetch(
-          `http://localhost:1337/api/products/${productId}?populate[icone_product][populate]=*&populate[fabrics][populate][0]=picture_fabric&populate[supplies_quantities][populate]=*&populate[level_sewing]=*`
+          `https://supreme-rainbow-f7999372d6.strapiapp.com/api/products/${productId}?populate[icone_product][populate]=*&populate[fabrics][populate][0]=picture_fabric&populate[supplies_quantities][populate]=*&populate[level_sewing]=*`
         );
 
         if (!response.ok) {

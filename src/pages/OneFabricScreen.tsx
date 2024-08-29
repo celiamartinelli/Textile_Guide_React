@@ -112,8 +112,9 @@ const OneFabricScreen: React.FC = () => {
     const fetchFabricData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:1337/api/fabrics/${fabricId}?populate[picture_fabric]=true&populate[washes][populate]=icone&populate[products][populate]=icone_product&populate[weave_of_fabrics][populate]=icone_weave&populate[level_sewing]=true`
+          `https://supreme-rainbow-f7999372d6.strapiapp.com/api/fabrics/${fabricId}?populate[picture_fabric]=true&populate[washes][populate]=icone&populate[products][populate]=icone_product&populate[weave_of_fabrics][populate]=icone_weave&populate[level_sewing]=true`
         );
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

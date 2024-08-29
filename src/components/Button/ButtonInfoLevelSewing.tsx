@@ -19,7 +19,10 @@ const ShowMoreInfosButton: React.FC = () => {
   useEffect(() => {
     const fetchLevels = async () => {
       try {
-        const response = await fetch('http://localhost:1337/api/level-sewings');
+        const response = await fetch(
+          'https://supreme-rainbow-f7999372d6.strapiapp.com/api/level-sewings'
+        );
+
         const result = await response.json();
         setLevels(result.data);
         setLoading(false);

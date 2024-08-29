@@ -109,7 +109,8 @@ const ProductScreen: React.FC = () => {
                 >
                   <div className="bg-white bg-opacity-30 rounded-full p-4 shadow transition-colors duration-500">
                     <img
-                      src={`http://localhost:1337${product.attributes.icone_product.data?.[0]?.attributes?.url}`}
+                      // src={`http://localhost:1337${product.attributes.icone_product.data?.[0]?.attributes?.url}`}
+                      src={`https://supreme-rainbow-f7999372d6.strapiapp.com${product.attributes.icone_product.data?.[0]?.attributes?.url}`}
                       alt={product.attributes.name}
                       className="h-16 rounded-lg"
                     />

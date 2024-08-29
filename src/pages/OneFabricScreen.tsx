@@ -209,7 +209,8 @@ const OneFabricScreen: React.FC = () => {
             <div className="flex flex-col justify-center items-center mb-6 sm:m-4 sm:flex-row md:m-6 lg:m-2">
               {fabric.attributes.picture_fabric?.data && (
                 <img
-                  src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
+                  // src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
+                  src={`https://supreme-rainbow-f7999372d6.strapiapp.com${fabric.attributes.picture_fabric.data.attributes.url}`}
                   alt={fabric.attributes.name}
                   className="w-38 h-38 rounded-lg m-2 md:w-26 h-26 sm:mr-6 lg:w-44 h-44"
                 />

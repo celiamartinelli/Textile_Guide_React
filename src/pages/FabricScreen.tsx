@@ -151,7 +151,8 @@ const FabricScreen: React.FC = () => {
                 >
                   {fabric.attributes.picture_fabric?.data && (
                     <img
-                      src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
+                      // src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
+                      src={`https://supreme-rainbow-f7999372d6.strapiapp.com${fabric.attributes.picture_fabric.data.attributes.url}`}
                       alt={fabric.attributes.name}
                       className="w-20 h-20 rounded-lg"
                     />

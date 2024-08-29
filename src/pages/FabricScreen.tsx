@@ -56,7 +56,7 @@ const FabricScreen: React.FC = () => {
 
   const fetchFabrics = (currentPage: number) => {
     fetch(
-      `http://localhost:1337/api/fabrics?populate[0]=picture_fabric&populate[1]=washes&populate[2]=washes&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}&sort=name:asc`
+      `https://supreme-rainbow-f7999372d6.strapiapp.com/api/fabrics?populate[0]=picture_fabric&populate[1]=washes&populate[2]=washes&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}&sort=name:asc`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -91,7 +91,11 @@ const FabricScreen: React.FC = () => {
   }, [search, allFabrics]);
 
   const fetchProjects = (fabricIds: number[]) => {
-    fetch(`http://localhost:1337/api/products?fabricIds=${fabricIds.join(',')}`)
+    fetch(
+      `https://supreme-rainbow-f7999372d6.strapiapp.com/api/products?fabricIds=${fabricIds.join(
+        ','
+      )}`
+    )
       .then((res) => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);

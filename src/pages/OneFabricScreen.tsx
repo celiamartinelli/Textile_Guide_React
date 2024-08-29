@@ -388,7 +388,8 @@ const OneFabricScreen: React.FC = () => {
                             'Catégorie non disponible'}
 
                           <img
-                            src={`http://localhost:1337${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
+                            // src={`http://localhost:1337${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
+                            src={`https://supreme-rainbow-f7999372d6.media.strapiapp.com${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
                             alt="weave-icone"
                             className="w-32 h-32 p-1 rounded-md"
                           />
@@ -444,7 +445,8 @@ const OneFabricScreen: React.FC = () => {
                             'Catégorie non disponible'}
 
                           <img
-                            src={`http://localhost:1337${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
+                            // src={`http://localhost:1337${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
+                            src={`https://supreme-rainbow-f7999372d6.strapiapp.com${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
                             alt="weave-icone"
                             className="w-32 h-32 p-1 rounded-md"
                           />
@@ -484,7 +486,8 @@ const OneFabricScreen: React.FC = () => {
                       <div key={`${wash.id}-${iconIndex}`}>
                         <img
                           key={iconIndex}
-                          src={`http://localhost:1337${icon.attributes.url}`}
+                          // src={`http://localhost:1337${icon.attributes.url}`}
+                          src={`https://supreme-rainbow-f7999372d6.media.strapiapp.com${icon.attributes.url}`}
                           alt="icone"
                           className="w-12 h-12 p-1 border rounded-md bg-cream shadow-md"
                         />
@@ -523,7 +526,8 @@ const OneFabricScreen: React.FC = () => {
                               (picture, picIndex) => (
                                 <img
                                   key={`${product.id}-${picIndex}`}
-                                  src={`http://localhost:1337${picture.attributes.url}`}
+                                  // src={`http://localhost:1337${picture.attributes.url}`}
+                                  src={`http://https://supreme-rainbow-f7999372d6.media.strapiapp.com${picture.attributes.url}`}
                                   alt="project"
                                   className="w-18 h-18 p-2 rounded-full bg-white bg-opacity-30 shadow-md"
                                 />

@@ -15,13 +15,12 @@ const ShowMoreInfosButton: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [levels, setLevels] = useState<Level[]>([]);
   const [loading, setLoading] = useState(true);
+  const getBaseUrl = 'https://textile-guide-srv.fr';
 
   useEffect(() => {
     const fetchLevels = async () => {
       try {
-        const response = await fetch(
-          'https://supreme-rainbow-f7999372d6.strapiapp.com/api/level-sewings'
-        );
+        const response = await fetch(`${getBaseUrl}/api/level-sewings`);
 
         const result = await response.json();
         setLevels(result.data);

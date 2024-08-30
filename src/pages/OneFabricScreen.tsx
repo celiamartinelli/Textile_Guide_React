@@ -109,7 +109,7 @@ const OneFabricScreen: React.FC = () => {
   const [allLevels, setAllLevels] = useState<Level[]>([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  const getBaseUrl = process.env.BASE_URL;
+  const getBaseUrl = 'https://textile-guide-srv.fr';
 
   useEffect(() => {
     const fetchFabricData = async () => {

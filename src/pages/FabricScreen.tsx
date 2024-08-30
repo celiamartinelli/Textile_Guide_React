@@ -6,7 +6,6 @@ import {
   faChevronRight,
   faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
-import { getBaseUrl } from '@/config/api';
 
 type Wash = {
   id: number;
@@ -51,6 +50,8 @@ const FabricScreen: React.FC = () => {
   const [pageSize] = useState(25); // Nombre de résultats par page
   const [totalPages, setTotalPages] = useState(1);
 
+  const getBaseUrl = process.env.BASE_URL;
+
   useEffect(() => {
     fetchFabrics(page); // Charger les tissus lors du changement de page
   }, [page]);
@@ -77,6 +78,8 @@ const FabricScreen: React.FC = () => {
         console.error('Error fetching fabrics:', err);
       });
   };
+
+  console.log('projects:', projects);
 
   useEffect(() => {
     // Affine les résultats de la recherche

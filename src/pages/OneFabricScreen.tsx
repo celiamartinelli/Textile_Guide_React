@@ -6,6 +6,7 @@ import Footer from '@/components/Footer/Footer';
 import { Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import ButtonInfoLevelSewing from '@/components/Button/ButtonInfoLevelSewing';
+import { getBaseUrl } from '@/config/api';
 
 interface RouteParams {
   fabricId: string;
@@ -201,16 +202,17 @@ const OneFabricScreen: React.FC = () => {
     return <div>Chargement...</div>;
   }
 
+  const imageUrl = fabric?.attributes.picture_fabric?.data?.attributes.url;
+
   return (
     <div className="pb-20">
       <div className="flex flex-col h-full mx-3 pt-12 mt-24 md:mt-32 lg:min-h-screen">
         <div className="flex flex-col justify-center items-center">
           <div className=" p-2">
             <div className="flex flex-col justify-center items-center mb-6 sm:m-4 sm:flex-row md:m-6 lg:m-2">
-              {fabric.attributes.picture_fabric?.data && (
+              {imageUrl && (
                 <img
-                  // src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
-                  src={`https://supreme-rainbow-f7999372d6.strapiapp.com${fabric.attributes.picture_fabric.data.attributes.url}`}
+                  src={`${getBaseUrl()}${imageUrl}`}
                   alt={fabric.attributes.name}
                   className="w-38 h-38 rounded-lg m-2 md:w-26 h-26 sm:mr-6 lg:w-44 h-44"
                 />

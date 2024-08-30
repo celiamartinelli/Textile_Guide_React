@@ -129,12 +129,14 @@ const OneProductScreen: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [allLevels, setAllLevels] = useState<Level[]>([]);
 
+  const getBaseUrl = 'https://textile-guide-srv.fr';
+
   useEffect(() => {
     const fetchProductData = async () => {
       try {
         // console.log(`Fetching product with ID: ${productId}`);
         const response = await fetch(
-          `https://supreme-rainbow-f7999372d6.strapiapp.com/api/products/${productId}?populate[icone_product][populate]=*&populate[fabrics][populate][0]=picture_fabric&populate[supplies_quantities][populate]=*&populate[level_sewing]=*`
+          `${getBaseUrl}/api/products/${productId}?populate[icone_product][populate]=*&populate[fabrics][populate][0]=picture_fabric&populate[supplies_quantities][populate]=*&populate[level_sewing]=*`
         );
 
         if (!response.ok) {
@@ -354,7 +356,7 @@ const OneProductScreen: React.FC = () => {
             {product.attributes.icone_product?.data &&
               product.attributes.icone_product.data.length > 0 && (
                 <img
-                  src={`http://localhost:1337${product.attributes.icone_product.data[0].attributes.url}`}
+                  src={`${getBaseUrl}${product.attributes.icone_product.data[0].attributes.url}`}
                   alt={product.attributes.name}
                   className="w-24 h-24 rounded-lg m-2 mx-auto"
                 />
@@ -432,7 +434,7 @@ const OneProductScreen: React.FC = () => {
                     <Link to={`/fabrics/${fabric.id}`} className="text-center">
                       <img
                         // src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
-                        src={`https://supreme-rainbow-f7999372d6.strapiapp.com${fabric.attributes.picture_fabric.data.attributes.url}`}
+                        src={`${getBaseUrl}${fabric.attributes.picture_fabric.data.attributes.url}`}
                         alt={fabric.attributes.name}
                         className="w-20 h-20 rounded-lg m-2"
                       />

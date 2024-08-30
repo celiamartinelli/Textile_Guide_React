@@ -34,13 +34,15 @@ const ProductScreen: React.FC = () => {
   const [pageSize] = useState(25); // Nombre de résultats par page
   const [totalPages, setTotalPages] = useState(1);
 
+  const getBaseUrl = 'https://textile-guide-srv.fr';
+
   useEffect(() => {
     fetchProducts(page); // Charger les produits lors du changement de page
   }, [page]);
 
   const fetchProducts = (currentPage: number) => {
     fetch(
-      `https://supreme-rainbow-f7999372d6.strapiapp.com/api/products?populate=icone_product&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}&sort=name:asc`
+      `${getBaseUrl}/api/products?populate=icone_product&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}&sort=name:asc`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -110,7 +112,7 @@ const ProductScreen: React.FC = () => {
                   <div className="bg-white bg-opacity-30 rounded-full p-4 shadow transition-colors duration-500">
                     <img
                       // src={`http://localhost:1337${product.attributes.icone_product.data?.[0]?.attributes?.url}`}
-                      src={`https://supreme-rainbow-f7999372d6.strapiapp.com${product.attributes.icone_product.data?.[0]?.attributes?.url}`}
+                      src={`${getBaseUrl}${product.attributes.icone_product.data?.[0]?.attributes?.url}`}
                       alt={product.attributes.name}
                       className="h-16 rounded-lg"
                     />

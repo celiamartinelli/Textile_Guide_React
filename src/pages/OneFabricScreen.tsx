@@ -109,11 +109,13 @@ const OneFabricScreen: React.FC = () => {
   const [allLevels, setAllLevels] = useState<Level[]>([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
+  const getBaseUrl = process.env.BASE_URL;
+
   useEffect(() => {
     const fetchFabricData = async () => {
       try {
         const response = await fetch(
-          `https://supreme-rainbow-f7999372d6.strapiapp.com/api/fabrics/${fabricId}?populate[picture_fabric]=true&populate[washes][populate]=icone&populate[products][populate]=icone_product&populate[weave_of_fabrics][populate]=icone_weave&populate[level_sewing]=true`
+          `${getBaseUrl}/api/fabrics/${fabricId}?populate[picture_fabric]=true&populate[washes][populate]=icone&populate[products][populate]=icone_product&populate[weave_of_fabrics][populate]=icone_weave&populate[level_sewing]=true`
         );
 
         if (!response.ok) {
@@ -212,7 +214,7 @@ const OneFabricScreen: React.FC = () => {
             <div className="flex flex-col justify-center items-center mb-6 sm:m-4 sm:flex-row md:m-6 lg:m-2">
               {imageUrl && (
                 <img
-                  src={`${getBaseUrl()}${imageUrl}`}
+                  src={`${getBaseUrl}${imageUrl}`}
                   alt={fabric.attributes.name}
                   className="w-38 h-38 rounded-lg m-2 md:w-26 h-26 sm:mr-6 lg:w-44 h-44"
                 />
@@ -391,9 +393,7 @@ const OneFabricScreen: React.FC = () => {
 
                           <img
                             // src={`http://localhost:1337${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
-                            src={`${getBaseUrl()}${fabric?.attributes
-                              ?.weave_of_fabrics?.data?.[0]?.attributes
-                              ?.icone_weave?.data?.[0]?.attributes?.url}`}
+                            src={`${getBaseUrl}${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
                             alt="weave-icone"
                             className="w-32 h-32 p-1 rounded-md"
                           />
@@ -450,7 +450,7 @@ const OneFabricScreen: React.FC = () => {
 
                           <img
                             // src={`http://localhost:1337${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
-                            src={`https://supreme-rainbow-f7999372d6.strapiapp.com${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
+                            src={`${getBaseUrl}${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
                             alt="weave-icone"
                             className="w-32 h-32 p-1 rounded-md"
                           />
@@ -491,7 +491,7 @@ const OneFabricScreen: React.FC = () => {
                         <img
                           key={iconIndex}
                           // src={`http://localhost:1337${icon.attributes.url}`}
-                          src={`https://supreme-rainbow-f7999372d6.media.strapiapp.com${icon.attributes.url}`}
+                          src={`${getBaseUrl}${icon.attributes.url}`}
                           alt="icone"
                           className="w-12 h-12 p-1 border rounded-md bg-cream shadow-md"
                         />
@@ -531,7 +531,7 @@ const OneFabricScreen: React.FC = () => {
                                 <img
                                   key={`${product.id}-${picIndex}`}
                                   // src={`http://localhost:1337${picture.attributes.url}`}
-                                  src={`http://https://supreme-rainbow-f7999372d6.media.strapiapp.com${picture.attributes.url}`}
+                                  src={`${getBaseUrl}${picture.attributes.url}`}
                                   alt="project"
                                   className="w-18 h-18 p-2 rounded-full bg-white bg-opacity-30 shadow-md"
                                 />

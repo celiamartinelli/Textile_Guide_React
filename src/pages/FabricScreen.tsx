@@ -50,7 +50,7 @@ const FabricScreen: React.FC = () => {
   const [pageSize] = useState(25); // Nombre de résultats par page
   const [totalPages, setTotalPages] = useState(1);
 
-  const getBaseUrl = process.env.BASE_URL;
+  const getBaseUrl = 'https://textile-guide-srv.fr';
 
   useEffect(() => {
     fetchFabrics(page); // Charger les tissus lors du changement de page

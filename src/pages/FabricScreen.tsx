@@ -6,6 +6,7 @@ import {
   faChevronRight,
   faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
+import { getBaseUrl } from '@/config/api';
 
 type Wash = {
   id: number;
@@ -55,8 +56,11 @@ const FabricScreen: React.FC = () => {
   }, [page]);
 
   const fetchFabrics = (currentPage: number) => {
+    // fetch(
+    //   `https://supreme-rainbow-f7999372d6.strapiapp.com/api/fabrics?populate[0]=picture_fabric&populate[1]=washes&populate[2]=washes&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}&sort=name:asc`
+    // )
     fetch(
-      `https://supreme-rainbow-f7999372d6.strapiapp.com/api/fabrics?populate[0]=picture_fabric&populate[1]=washes&populate[2]=washes&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}&sort=name:asc`
+      `${getBaseUrl}/api/fabrics?populate[0]=picture_fabric&populate[1]=washes&populate[2]=washes&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}&sort=name:asc`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -91,11 +95,7 @@ const FabricScreen: React.FC = () => {
   }, [search, allFabrics]);
 
   const fetchProjects = (fabricIds: number[]) => {
-    fetch(
-      `https://supreme-rainbow-f7999372d6.strapiapp.com/api/products?fabricIds=${fabricIds.join(
-        ','
-      )}`
-    )
+    fetch(`${getBaseUrl}/api/products?fabricIds=${fabricIds.join(',')}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
@@ -152,7 +152,7 @@ const FabricScreen: React.FC = () => {
                   {fabric.attributes.picture_fabric?.data && (
                     <img
                       // src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
-                      src={`https://supreme-rainbow-f7999372d6.strapiapp.com${fabric.attributes.picture_fabric.data.attributes.url}`}
+                      src={`${getBaseUrl}${fabric.attributes.picture_fabric.data.attributes.url}`}
                       alt={fabric.attributes.name}
                       className="w-20 h-20 rounded-lg"
                     />

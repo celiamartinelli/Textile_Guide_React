@@ -391,7 +391,9 @@ const OneFabricScreen: React.FC = () => {
 
                           <img
                             // src={`http://localhost:1337${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
-                            src={`https://supreme-rainbow-f7999372d6.media.strapiapp.com${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
+                            src={`${getBaseUrl()}${fabric?.attributes
+                              ?.weave_of_fabrics?.data?.[0]?.attributes
+                              ?.icone_weave?.data?.[0]?.attributes?.url}`}
                             alt="weave-icone"
                             className="w-32 h-32 p-1 rounded-md"
                           />

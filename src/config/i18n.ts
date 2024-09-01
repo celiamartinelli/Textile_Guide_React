@@ -42,6 +42,7 @@ const resources = {
         },
       },
       oneFabric: {
+        none: 'No associated project for the moment',
         h41: 'Composition',
         h42: 'Characteristics',
         h43: 'Disadvantages',
@@ -124,6 +125,7 @@ const resources = {
         },
       },
       oneFabric: {
+        none: 'Aucun Projet associé pour le moment',
         h41: 'Composition',
         h42: 'Caractéristiques',
         h43: 'Inconvénients',

@@ -396,14 +396,14 @@ const OneFabricScreen: React.FC = () => {
                             'Catégorie non disponible'}
                           {fabric?.attributes?.weave_of_fabrics?.data?.[0]
                             ?.attributes?.icone_weave?.data?.[0]?.attributes
-                            ?.url && (
+                            ?.url ? (
                             <img
                               // src={`http://localhost:1337${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
                               src={`${getBaseUrl}${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
                               alt="weave-icone"
                               className="w-32 h-32 p-1 rounded-md"
                             />
-                          )}
+                          ) : null}
                           {fabric.attributes?.weave_of_fabrics?.data?.[0]
                             ?.attributes?.name || 'Nom non disponible'}
                         </div>
@@ -450,16 +450,24 @@ const OneFabricScreen: React.FC = () => {
                       </td>
                       <td className="px-4 py-2 text-center">
                         <div className="flex flex-col justify-center items-center">
-                          {fabric.attributes?.weave_of_fabrics?.data?.[0]
-                            ?.attributes?.category ||
-                            'Catégorie non disponible'}
+                          {
+                            fabric.attributes?.weave_of_fabrics?.data?.[0]
+                              ?.attributes?.category
+                          }
 
-                          <img
-                            // src={`http://localhost:1337${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
-                            src={`${getBaseUrl}${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
-                            alt="weave-icone"
-                            className="w-32 h-32 p-1 rounded-md"
-                          />
+                          {fabric.attributes?.weave_of_fabrics?.data?.[0]
+                            ?.attributes?.icone_weave?.data?.[0]?.attributes
+                            ?.url ? (
+                            <img
+                              src={`${getBaseUrl}${fabric.attributes.weave_of_fabrics.data[0].attributes.icone_weave.data[0].attributes.url}`}
+                              alt="weave-icone"
+                              className="w-32 h-32 p-1 rounded-md"
+                            />
+                          ) : (
+                            <div>
+                              <p className="text-xs">{''}</p>
+                            </div>
+                          )}
 
                           {fabric.attributes?.weave_of_fabrics?.data?.[0]
                             ?.attributes?.name || 'Nom non disponible'}
@@ -517,7 +525,7 @@ const OneFabricScreen: React.FC = () => {
               </h4>
               {fabric.attributes?.products?.data?.length === 0 ? (
                 <div className="text-center text-sm mt-3">
-                  <p>Aucun Projet associé pour le moment</p>
+                  <p>{t('oneFabric.none')}</p>
                 </div>
               ) : (
                 <ul className="flex flex-row flex-wrap justify-center">

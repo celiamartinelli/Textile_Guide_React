@@ -103,7 +103,7 @@ const ProductScreen: React.FC = () => {
             {filteredProducts.map((product) => (
               <li
                 key={product.id}
-                className="w-18 h-18 flex flex-col justify-center items-center border rounded-lg p-3 shadow-lg m-3 bg-lightBackground hover:bg-lightBackgroundLightHover dark:bg-darkPruneLogo hover:dark:bg-darkPruneBG transition-colors duration-500"
+                className="w-18 h-18 flex flex-col justify-start items-center border rounded-lg p-3 shadow-lg m-3 bg-lightBackground hover:bg-lightBackgroundLightHover dark:bg-darkPruneLogo hover:dark:bg-darkPruneBG transition-colors duration-500"
               >
                 <Link
                   to={`/products/${product.id}`}

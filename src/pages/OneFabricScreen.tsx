@@ -220,7 +220,7 @@ const OneFabricScreen: React.FC = () => {
                 />
               )}
               <div className="w-2/3 justify-center items-center ">
-                <h1 className="text-center text-2xl font-medium mt-2">
+                <h1 className="font-bold text-3xl text-white mb-4 text-center">
                   {fabric.attributes.name}
                 </h1>
                 <p className="m-2 sm:pt-2 lg:pt-2 text-justify">
@@ -338,7 +338,7 @@ const OneFabricScreen: React.FC = () => {
             )}
 
             <div className="text-center flex flex-col m-6">
-              <h4 className="m-2 text-center text-xl font-medium">
+              <h4 className="font-bold text-3xl text-white mb-4 text-center">
                 {' '}
                 {t('oneFabric.h49')}
               </h4>
@@ -394,14 +394,16 @@ const OneFabricScreen: React.FC = () => {
                           {fabric.attributes?.weave_of_fabrics?.data?.[0]
                             ?.attributes?.category ||
                             'Catégorie non disponible'}
-
-                          <img
-                            // src={`http://localhost:1337${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
-                            src={`${getBaseUrl}${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
-                            alt="weave-icone"
-                            className="w-32 h-32 p-1 rounded-md"
-                          />
-
+                          {fabric?.attributes?.weave_of_fabrics?.data?.[0]
+                            ?.attributes?.icone_weave?.data?.[0]?.attributes
+                            ?.url && (
+                            <img
+                              // src={`http://localhost:1337${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
+                              src={`${getBaseUrl}${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
+                              alt="weave-icone"
+                              className="w-32 h-32 p-1 rounded-md"
+                            />
+                          )}
                           {fabric.attributes?.weave_of_fabrics?.data?.[0]
                             ?.attributes?.name || 'Nom non disponible'}
                         </div>
@@ -471,7 +473,7 @@ const OneFabricScreen: React.FC = () => {
           </div>
 
           <div className="text-center m-4 ">
-            <h4 className="m-2 text-center text-xl font-medium">
+            <h4 className="font-bold text-3xl text-white mb-4 text-center">
               {t('oneFabric.h50')}
             </h4>
             <div className="w-full sm:w-2/3 md:2/3 lg:w-5/6 mx-auto border-2 rounded-md shadow-md">
@@ -481,7 +483,7 @@ const OneFabricScreen: React.FC = () => {
           </div>
           <div className="w-full">
             <div className=" my-2 w-full lg:my-0 ">
-              <h4 className="m-2 text-center text-xl font-medium">
+              <h4 className="font-bold text-3xl text-white mb-4 text-center">
                 {t('oneFabric.h51')}
               </h4>
               <ul className="flex flex-row flex-wrap justify-center">
@@ -510,7 +512,7 @@ const OneFabricScreen: React.FC = () => {
             </div>
 
             <div className=" w-full my-5 lg:my-0">
-              <h4 className="m-2 text-center text-xl font-medium">
+              <h4 className="font-bold text-3xl text-white mb-4 text-center">
                 {t('oneFabric.h52')}
               </h4>
               {fabric.attributes?.products?.data?.length === 0 ? (

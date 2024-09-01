@@ -351,7 +351,9 @@ const OneProductScreen: React.FC = () => {
     <div className="pb-20">
       <div className="flex flex-col min-h-screen mx-6 pt-12 mt-36 ">
         <div className="flex flex-col justify-center items-center ">
-          <h1 className="text-center">{product.attributes?.name}</h1>
+          <h1 className="font-bold text-3xl text-white mb-4 text-center">
+            {product.attributes?.name}
+          </h1>
           <div className="p-2 w-full">
             {product.attributes?.icone_product?.data &&
               product.attributes?.icone_product.data.length > 0 && (
@@ -424,14 +426,19 @@ const OneProductScreen: React.FC = () => {
               </div>
             </div>
             <div className="flex flex-col justify-center items-center my-6">
-              <h2 className="">{t('oneProduct.h2Fabric')}</h2>
-              <ul className="flex">
+              <h2 className="font-bold text-3xl text-white mb-4 text-center">
+                {t('oneProduct.h2Fabric')}
+              </h2>
+              <ul className="flex flex-wrap justify-center items-start">
                 {product.attributes?.fabrics?.data?.map((fabric) => (
                   <li
                     className="flex flex-col justify-center items-center mb-2"
                     key={fabric.id}
                   >
-                    <Link to={`/fabrics/${fabric.id}`} className="text-center">
+                    <Link
+                      to={`/fabrics/${fabric.id}`}
+                      className="flex flex-col justify-center items-center mx-2 w-24"
+                    >
                       <img
                         // src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
                         src={`${getBaseUrl}${fabric?.attributes?.picture_fabric?.data?.attributes?.url}`}
@@ -443,7 +450,9 @@ const OneProductScreen: React.FC = () => {
                   </li>
                 ))}
               </ul>
-              <h2 className="">{t('oneProduct.h2AssociatedSupply')}</h2>
+              <h2 className="font-bold text-3xl text-white mb-4 text-center">
+                {t('oneProduct.h2AssociatedSupply')}
+              </h2>
               <div className="flex">
                 {product.attributes?.supplies_quantities?.data?.map(
                   (supply) => (

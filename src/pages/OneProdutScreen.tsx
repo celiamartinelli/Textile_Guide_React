@@ -237,14 +237,20 @@ const OneProductScreen: React.FC = () => {
     | 'pocket_fabric'
     | 'pocket_closure';
 
+  const isDevelopment = process.env.REACT_APP_ENV === 'development';
+
   function getIconForCategory(category: CategoryType) {
+    const basePath = isDevelopment
+      ? '../../public/assets/icone_supply'
+      : '/assets/icone_supply';
+
     switch (category) {
       case 'main_fabric':
         return (
           <img
             className="w-16 h-16 sm:w-24 sm:h-24"
             alt="main_fabric"
-            src="/assets/icone_supply/main_fabric_black.png"
+            src={`${basePath}/main_fabric_black.png`}
           />
         );
       case 'interior_fabric':
@@ -252,7 +258,7 @@ const OneProductScreen: React.FC = () => {
           <img
             className="w-16 h-16 sm:w-24 sm:h-24"
             alt="interior_fabric"
-            src="../../public/assets/icone_supply/interior_fabric_black.png"
+            src={`${basePath}/interior_fabric_black.png`}
           />
         );
       case 'interling_fabric':
@@ -260,7 +266,7 @@ const OneProductScreen: React.FC = () => {
           <img
             className="w-16 h-16 sm:w-24 sm:h-24"
             alt="interling_fabric"
-            src="../../public/assets/icone_supply/interling_fabric_black.png"
+            src={`${basePath}/interling_fabric_black.png`}
           />
         );
       case 'closure':
@@ -268,15 +274,15 @@ const OneProductScreen: React.FC = () => {
           <img
             className="w-16 h-16 sm:w-24 sm:h-24"
             alt="closure"
-            src="../../public/assets/icone_supply/closure_black.png"
+            src={`${basePath}/closure_black.png`}
           />
         );
       case 'fastener':
         return (
           <img
             className="w-16 h-16 sm:w-24 sm:h-24"
-            alt="festener_fabric"
-            src="../../public/assets/icone_supply/fastener_black.png"
+            alt="fastener"
+            src={`${basePath}/fastener_black.png`}
           />
         );
       case 'ribbon':
@@ -284,7 +290,7 @@ const OneProductScreen: React.FC = () => {
           <img
             className="w-16 h-16 sm:w-24 sm:h-24"
             alt="ribbon"
-            src="../../public/assets/icone_supply/ribbons_black.png"
+            src={`${basePath}/ribbons_black.png`}
           />
         );
       case 'decoration':
@@ -292,7 +298,7 @@ const OneProductScreen: React.FC = () => {
           <img
             className="w-16 h-16 sm:w-24 sm:h-24"
             alt="decoration"
-            src="../../public/assets/icone_supply/decoration_black.png"
+            src={`${basePath}/decoration_black.png`}
           />
         );
       case 'accessory':
@@ -300,7 +306,7 @@ const OneProductScreen: React.FC = () => {
           <img
             className="w-16 h-16 sm:w-24 sm:h-24"
             alt="accessory"
-            src="../../public/assets/icone_supply/access_black.png"
+            src={`${basePath}/access_black.png`}
           />
         );
       case 'pocket_fabric':
@@ -308,7 +314,7 @@ const OneProductScreen: React.FC = () => {
           <img
             className="w-16 h-16 sm:w-24 sm:h-24"
             alt="pocket_fabric"
-            src="../../public/assets/icone_supply/pocket_fabric_black.png"
+            src={`${basePath}/pocket_fabric_black.png`}
           />
         );
       case 'pocket_closure':
@@ -316,7 +322,7 @@ const OneProductScreen: React.FC = () => {
           <img
             className="w-16 h-16 sm:w-24 sm:h-24"
             alt="pocket_closure"
-            src="../../public/assets/icone_supply/pocket_closure_black.png"
+            src={`${basePath}/pocket_closure_black.png`}
           />
         );
       default:

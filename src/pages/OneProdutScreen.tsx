@@ -152,7 +152,7 @@ const OneProductScreen: React.FC = () => {
         }
 
         setProduct(result.data);
-        console.log('Product:', result);
+        // console.log('Product:', result);
         if (result.data.attributes.supplies_quantities) {
           // console.log(
           //   'Supplies Quantities:',
@@ -351,23 +351,23 @@ const OneProductScreen: React.FC = () => {
     <div className="pb-20">
       <div className="flex flex-col min-h-screen mx-6 pt-12 mt-36 ">
         <div className="flex flex-col justify-center items-center ">
-          <h1 className="text-center">{product.attributes.name}</h1>
+          <h1 className="text-center">{product.attributes?.name}</h1>
           <div className="p-2 w-full">
-            {product.attributes.icone_product?.data &&
-              product.attributes.icone_product.data.length > 0 && (
+            {product.attributes?.icone_product?.data &&
+              product.attributes?.icone_product.data.length > 0 && (
                 <img
-                  src={`${getBaseUrl}${product.attributes.icone_product.data[0].attributes.url}`}
-                  alt={product.attributes.name}
+                  src={`${getBaseUrl}${product.attributes?.icone_product.data[0].attributes.url}`}
+                  alt={product.attributes?.name}
                   className="w-24 h-24 rounded-lg m-2 mx-auto"
                 />
               )}
             <div className="text-center">
               <div className="flex justify-center text-xs mb-6">
-                <p>{product.attributes.category}</p>
+                <p>{product.attributes?.category}</p>
                 <p> - </p>
-                <p>{product.attributes.second_category}</p>
+                <p>{product.attributes?.second_category}</p>
               </div>
-              <p>{product.attributes.description}</p>
+              <p>{product.attributes?.description}</p>
 
               <div className="flex justify-center my-6">
                 <div className="border-2 rounded-md">
@@ -380,7 +380,7 @@ const OneProductScreen: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {product.attributes.textile_quantity_required
+                      {product.attributes?.textile_quantity_required
                         .split(',')
                         .map((quantity, index) => {
                           const [size, amount] = quantity.split(':');
@@ -426,7 +426,7 @@ const OneProductScreen: React.FC = () => {
             <div className="flex flex-col justify-center items-center my-6">
               <h2 className="">{t('oneProduct.h2Fabric')}</h2>
               <ul className="flex">
-                {product.attributes.fabrics?.data?.map((fabric) => (
+                {product.attributes?.fabrics?.data?.map((fabric) => (
                   <li
                     className="flex flex-col justify-center items-center mb-2"
                     key={fabric.id}
@@ -434,79 +434,81 @@ const OneProductScreen: React.FC = () => {
                     <Link to={`/fabrics/${fabric.id}`} className="text-center">
                       <img
                         // src={`http://localhost:1337${fabric.attributes.picture_fabric.data.attributes.url}`}
-                        src={`${getBaseUrl}${fabric.attributes.picture_fabric.data.attributes.url}`}
-                        alt={fabric.attributes.name}
+                        src={`${getBaseUrl}${fabric.attributes?.picture_fabric.data.attributes.url}`}
+                        alt={fabric.attributes?.name}
                         className="w-20 h-20 rounded-lg m-2"
                       />
-                      <p className="text-center">{fabric.attributes.name}</p>
+                      <p className="text-center">{fabric.attributes?.name}</p>
                     </Link>
                   </li>
                 ))}
               </ul>
               <h2 className="">{t('oneProduct.h2AssociatedSupply')}</h2>
               <div className="flex">
-                {product.attributes.supplies_quantities?.data?.map((supply) => (
-                  <div
-                    className="flex flex-wrap justify-center items-center"
-                    key={supply.id}
-                  >
-                    {renderProductAttribute(
-                      'main_fabric',
-                      supply.attributes.main_fabric,
-                      'main_fabric'
-                    )}
-                    {renderProductAttribute(
-                      'interior_fabric',
-                      supply.attributes.interior_fabric,
-                      'interior_fabric'
-                    )}
-                    {renderProductAttribute(
-                      'interling_fabric',
-                      supply.attributes.interling_fabric,
-                      'interling_fabric'
-                    )}
-                    {renderProductAttribute(
-                      'closure',
-                      supply.attributes.closure,
-                      'closure'
-                    )}
-                    {renderProductAttribute(
-                      'fastener',
-                      supply.attributes.fastener,
-                      'fastener'
-                    )}
-                    {renderProductAttribute(
-                      'ribbon',
-                      supply.attributes.ribbon,
-                      'ribbon'
-                    )}
-                    {renderProductAttribute(
-                      'decoration',
-                      supply.attributes.decoration,
-                      'decoration'
-                    )}
-                    {renderProductAttribute(
-                      'accessory',
-                      supply.attributes.accessory,
-                      'accessory'
-                    )}
-                    {supply.attributes.pocket && (
-                      <>
-                        {renderProductAttribute(
-                          'pocket_fabric',
-                          supply.attributes.pocket_fabric,
-                          'pocket_fabric'
-                        )}
+                {product.attributes?.supplies_quantities?.data?.map(
+                  (supply) => (
+                    <div
+                      className="flex flex-wrap justify-center items-center"
+                      key={supply.id}
+                    >
+                      {renderProductAttribute(
+                        'main_fabric',
+                        supply.attributes?.main_fabric,
+                        'main_fabric'
+                      )}
+                      {renderProductAttribute(
+                        'interior_fabric',
+                        supply.attributes?.interior_fabric,
+                        'interior_fabric'
+                      )}
+                      {renderProductAttribute(
+                        'interling_fabric',
+                        supply.attributes?.interling_fabric,
+                        'interling_fabric'
+                      )}
+                      {renderProductAttribute(
+                        'closure',
+                        supply.attributes?.closure,
+                        'closure'
+                      )}
+                      {renderProductAttribute(
+                        'fastener',
+                        supply.attributes?.fastener,
+                        'fastener'
+                      )}
+                      {renderProductAttribute(
+                        'ribbon',
+                        supply.attributes?.ribbon,
+                        'ribbon'
+                      )}
+                      {renderProductAttribute(
+                        'decoration',
+                        supply.attributes?.decoration,
+                        'decoration'
+                      )}
+                      {renderProductAttribute(
+                        'accessory',
+                        supply.attributes?.accessory,
+                        'accessory'
+                      )}
+                      {supply.attributes?.pocket && (
+                        <>
+                          {renderProductAttribute(
+                            'pocket_fabric',
+                            supply.attributes?.pocket_fabric,
+                            'pocket_fabric'
+                          )}
 
-                        {renderProductAttribute(
-                          'pocket_closure',
-                          supply.attributes.pocket_closure,
-                          'pocket_closure'
-                        )}
-                      </>
-                    )}
-                  </div>
-                ))}
+                          {renderProductAttribute(
+                            'pocket_closure',
+                            supply.attributes?.pocket_closure,
+                            'pocket_closure'
+                          )}
+                        </>
+                      )}
+                    </div>
+                  )
+                )}
               </div>
             </div>
           </div>

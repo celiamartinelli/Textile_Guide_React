@@ -130,7 +130,7 @@ const OneFabricScreen: React.FC = () => {
         }
 
         setFabric(result.data);
-        console.log('Fabric:', result.data);
+        // console.log('Fabric:', result.data);
       } catch (error) {
         console.error(
           'Erreur lors du chargement des données du textile',
@@ -204,7 +204,7 @@ const OneFabricScreen: React.FC = () => {
     return <div>Chargement...</div>;
   }
 
-  const imageUrl = fabric?.attributes.picture_fabric?.data?.attributes.url;
+  const imageUrl = fabric?.attributes?.picture_fabric?.data?.attributes.url;
 
   return (
     <div className="pb-20">
@@ -240,8 +240,10 @@ const OneFabricScreen: React.FC = () => {
                     <tr>
                       {' '}
                       <td className="px-4 py-2 border-b">
-                        {fabric.attributes.composition &&
-                          renderTableCellContent(fabric.attributes.composition)}
+                        {fabric.attributes?.composition &&
+                          renderTableCellContent(
+                            fabric.attributes?.composition
+                          )}
                       </td>
                     </tr>
                     <tr>
@@ -252,9 +254,9 @@ const OneFabricScreen: React.FC = () => {
                     </tr>
                     <tr>
                       <td className="px-4 py-2 border-b">
-                        {fabric.attributes.characteristic &&
+                        {fabric.attributes?.characteristic &&
                           renderTableCellContent(
-                            fabric.attributes.characteristic
+                            fabric.attributes?.characteristic
                           )}
                       </td>
                     </tr>
@@ -265,9 +267,9 @@ const OneFabricScreen: React.FC = () => {
                     </tr>
                     <tr>
                       <td className="px-4 py-2 border-b ">
-                        {fabric.attributes.disadvantages &&
+                        {fabric.attributes?.disadvantages &&
                           renderTableCellContent(
-                            fabric.attributes.disadvantages
+                            fabric.attributes?.disadvantages
                           )}
                       </td>
                     </tr>
@@ -278,8 +280,8 @@ const OneFabricScreen: React.FC = () => {
                     </tr>
                     <tr>
                       <td className="px-4 py-2 ">
-                        {fabric.attributes.benefit &&
-                          renderTableCellContent(fabric.attributes.benefit)}
+                        {fabric.attributes?.benefit &&
+                          renderTableCellContent(fabric.attributes?.benefit)}
                       </td>
                     </tr>
                   </tbody>
@@ -308,24 +310,26 @@ const OneFabricScreen: React.FC = () => {
                   <tbody>
                     <tr>
                       <td className="px-4 py-2 border-r">
-                        {fabric.attributes.composition &&
-                          renderTableCellContent(fabric.attributes.composition)}
-                      </td>
-                      <td className="px-4 py-2 border-r">
-                        {fabric.attributes.characteristic &&
+                        {fabric.attributes?.composition &&
                           renderTableCellContent(
-                            fabric.attributes.characteristic
+                            fabric.attributes?.composition
                           )}
                       </td>
                       <td className="px-4 py-2 border-r">
-                        {fabric.attributes.disadvantages &&
+                        {fabric.attributes?.characteristic &&
                           renderTableCellContent(
-                            fabric.attributes.disadvantages
+                            fabric.attributes?.characteristic
+                          )}
+                      </td>
+                      <td className="px-4 py-2 border-r">
+                        {fabric.attributes?.disadvantages &&
+                          renderTableCellContent(
+                            fabric.attributes?.disadvantages
                           )}
                       </td>
                       <td className="px-4 py-2 ">
-                        {fabric.attributes.benefit &&
-                          renderTableCellContent(fabric.attributes.benefit)}
+                        {fabric.attributes?.benefit &&
+                          renderTableCellContent(fabric.attributes?.benefit)}
                       </td>
                     </tr>
                   </tbody>
@@ -338,7 +342,7 @@ const OneFabricScreen: React.FC = () => {
                 {' '}
                 {t('oneFabric.h49')}
               </h4>
-              <p>{fabric.attributes.origin}</p>
+              <p>{fabric.attributes?.origin}</p>
             </div>
             {isMobile ? (
               <div className="text-center flex flex-col justify-center border-2 rounded-md shadow-md">
@@ -352,7 +356,7 @@ const OneFabricScreen: React.FC = () => {
 
                     <tr>
                       <td className="px-4 py-2 border-b">
-                        {fabric.attributes.weight}
+                        {fabric.attributes?.weight}
                       </td>
                     </tr>
 
@@ -363,8 +367,8 @@ const OneFabricScreen: React.FC = () => {
                     </tr>
                     <tr>
                       <td className="px-4 py-2 border-b">
-                        {fabric.attributes.appearance &&
-                          renderTableCellContent(fabric.attributes.appearance)}
+                        {fabric.attributes?.appearance &&
+                          renderTableCellContent(fabric.attributes?.appearance)}
                       </td>
                     </tr>
                     <tr className="border-b">
@@ -432,11 +436,11 @@ const OneFabricScreen: React.FC = () => {
                   <tbody>
                     <tr>
                       <td className="px-4 py-2 border-r">
-                        {fabric.attributes.weight}
+                        {fabric.attributes?.weight}
                       </td>
                       <td className="px-4 py-2 border-r">
-                        {fabric.attributes.appearance &&
-                          renderTableCellContent(fabric.attributes.appearance)}
+                        {fabric.attributes?.appearance &&
+                          renderTableCellContent(fabric.attributes?.appearance)}
                       </td>
                       <td className="px-4 py-2 border-r">
                         {fabric.attributes?.level_sewing?.data?.[0]?.attributes
@@ -471,8 +475,8 @@ const OneFabricScreen: React.FC = () => {
               {t('oneFabric.h50')}
             </h4>
             <div className="w-full sm:w-2/3 md:2/3 lg:w-5/6 mx-auto border-2 rounded-md shadow-md">
-              {fabric.attributes.consumption &&
-                renderConsumptionCard(fabric.attributes.consumption)}
+              {fabric.attributes?.consumption &&
+                renderConsumptionCard(fabric.attributes?.consumption)}
             </div>
           </div>
           <div className="w-full">
@@ -481,24 +485,24 @@ const OneFabricScreen: React.FC = () => {
                 {t('oneFabric.h51')}
               </h4>
               <ul className="flex flex-row flex-wrap justify-center">
-                {fabric.attributes.washes?.data?.map((wash, washIndex) => (
+                {fabric.attributes?.washes?.data?.map((wash, washIndex) => (
                   <li
                     className="w-16 flex flex-col justify-start items-center m-1 sm:w-24"
                     key={wash.id}
                   >
-                    {wash.attributes.icone?.data?.map((icon, iconIndex) => (
+                    {wash.attributes?.icone?.data?.map((icon, iconIndex) => (
                       <div key={`${wash.id}-${iconIndex}`}>
                         <img
                           key={iconIndex}
                           // src={`http://localhost:1337${icon.attributes.url}`}
-                          src={`${getBaseUrl}${icon.attributes.url}`}
+                          src={`${getBaseUrl}${icon.attributes?.url}`}
                           alt="icone"
                           className="w-12 h-12 p-1 border rounded-md bg-cream shadow-md"
                         />
                       </div>
                     ))}
                     <p className="text-xs w-14 text-center flex pt-1 sm:w-24 justify-center">
-                      {wash.attributes.description}
+                      {wash.attributes?.description}
                     </p>
                   </li>
                 ))}
@@ -509,13 +513,13 @@ const OneFabricScreen: React.FC = () => {
               <h4 className="m-2 text-center text-xl font-medium">
                 {t('oneFabric.h52')}
               </h4>
-              {fabric.attributes.products?.data?.length === 0 ? (
+              {fabric.attributes?.products?.data?.length === 0 ? (
                 <div className="text-center text-sm mt-3">
                   <p>Aucun Projet associé pour le moment</p>
                 </div>
               ) : (
                 <ul className="flex flex-row flex-wrap justify-center">
-                  {fabric.attributes.products?.data?.map(
+                  {fabric.attributes?.products?.data?.map(
                     (product, productIndex) => (
                       <li
                         className="w-16 flex flex-col justify-start items-center m-1"
@@ -526,12 +530,12 @@ const OneFabricScreen: React.FC = () => {
                           className="text-center "
                         >
                           <div className="">
-                            {product.attributes.icone_product?.data?.map(
+                            {product.attributes?.icone_product?.data?.map(
                               (picture, picIndex) => (
                                 <img
                                   key={`${product.id}-${picIndex}`}
                                   // src={`http://localhost:1337${picture.attributes.url}`}
-                                  src={`${getBaseUrl}${picture.attributes.url}`}
+                                  src={`${getBaseUrl}${picture.attributes?.url}`}
                                   alt="project"
                                   className="w-18 h-18 p-2 rounded-full bg-white bg-opacity-30 shadow-md"
                                 />
@@ -539,7 +543,7 @@ const OneFabricScreen: React.FC = () => {
                             )}
                           </div>
                           <p className="text-xs pt-1 text-center">
-                            {product.attributes.name}
+                            {product.attributes?.name}
                           </p>
                         </Link>
                       </li>

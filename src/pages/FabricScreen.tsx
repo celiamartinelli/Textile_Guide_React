@@ -79,7 +79,7 @@ const FabricScreen: React.FC = () => {
       });
   };
 
-  console.log('projects:', projects);
+  // console.log('projects:', projects);
 
   useEffect(() => {
     // Affine les résultats de la recherche

@@ -244,7 +244,7 @@ const OneProductScreen: React.FC = () => {
           <img
             className="w-16 h-16 sm:w-24 sm:h-24"
             alt="main_fabric"
-            src="../../public/assets/icone_supply/main_fabric_black.png"
+            src="/assets/icone_supply/main_fabric_black.png"
           />
         );
       case 'interior_fabric':

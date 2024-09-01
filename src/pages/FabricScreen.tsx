@@ -145,7 +145,7 @@ const FabricScreen: React.FC = () => {
           </div>
         </div>
         <div>
-          <ul className="flex flex-row flex-wrap justify-center">
+          <ul className="flex flex-row flex-wrap justify-center items-start">
             {filteredFabrics.map((fabric: Fabric) => (
               <li key={fabric.id}>
                 <Link

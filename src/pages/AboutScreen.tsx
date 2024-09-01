@@ -69,20 +69,20 @@ const AboutScreen: React.FC = () => {
           </h3>
           <p className="text-justify lg:mx-20">{t('about.p9')}</p>
           <form
-            className="flex flex-col justify-center items-center p-8 rounded-lg bg-lightBackgroundCream dark:bg-darkBackgroundRosy shadow-md mt-4 sm:w-80"
+            className="flex flex-col justify-center items-center p-8 rounded-lg bg-lightBackgroundCream dark:bg-darkSage shadow-md mt-4 sm:w-80"
             id="contact-form"
           >
             <div className="">
               <label
                 htmlFor="name"
-                className="block text-brown dark:text-white font-bold mb-2"
+                className="block dark:text-white font-bold mb-2"
               >
                 {t('about.form1')}
               </label>
               <input
                 type="text"
                 id="name"
-                className="bg-white dark:bg-lightBackgroundCream rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-darkBackgroundCream focus:ring-brown dark:focus:ring-white caret-brown dark:caret-darkBackgroundRosy dark:text-brown sm:w-64"
+                className="bg-white dark:bg-sage rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-darkBackgroundCream focus:ring-brown dark:focus:ring-white caret-brown dark:text-black shadow-inner sm:w-64"
               />
             </div>
             <div className="mb-4">
@@ -95,7 +95,7 @@ const AboutScreen: React.FC = () => {
               <input
                 type="email"
                 id="email"
-                className="bg-white dark:bg-lightBackgroundCream rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-darkBackgroundCream focus:ring-brown dark:focus:ring-white caret-brown dark:caret-darkBackgrouondRosy dark:text-brown sm:w-64"
+                className="bg-white dark:bg-sage rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-darkBackgroundCream focus:ring-brown dark:focus:ring-white caret-brown dark:text-black shadow-inner sm:w-64"
               />
             </div>
             <div className="mb-4">
@@ -107,13 +107,13 @@ const AboutScreen: React.FC = () => {
               </label>
               <textarea
                 id="message"
-                className="bg-white dark:bg-lightBackgroundCream rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-darkBackgroundCream focus:ring-brown dark:focus:ring-white caret-brown dark:caret-darkBackgrouondRosy dark:text-brown sm:w-64"
+                className="bg-white dark:bg-sage rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-darkBackgroundCream focus:ring-brown dark:focus:ring-white caret-brown dark:text-black shadow-inner sm:w-64"
                 rows={4}
               />
             </div>
             <button
               type="submit"
-              className="bg-lightPink text-darkBrown py-2 px-4 rounded-md hover:bg-pink hover:text-white focus:outline-none shadow-md dark:text-white hover:dark:bg-cream hover:dark:text-brown"
+              className="hover:bg-lightPink hover:dark:bg-darkPrune text-darkBrown py-2 px-4 rounded-md bg-pink hover:text-white focus:outline-none shadow-md hover:dark:text-white dark:bg-cream dark:text-brown"
             >
               Envoyer
             </button>

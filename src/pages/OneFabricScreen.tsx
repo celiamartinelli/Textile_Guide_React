@@ -238,7 +238,6 @@ const OneFabricScreen: React.FC = () => {
                       </th>
                     </tr>
                     <tr>
-                      {' '}
                       <td className="px-4 py-2 border-b">
                         {fabric.attributes?.composition &&
                           renderTableCellContent(
@@ -247,7 +246,6 @@ const OneFabricScreen: React.FC = () => {
                       </td>
                     </tr>
                     <tr>
-                      {' '}
                       <th className="px-4 py-2 border-b bg-white bg-opacity-30">
                         {t('oneFabric.h42')}
                       </th>
@@ -353,13 +351,11 @@ const OneFabricScreen: React.FC = () => {
                         {t('oneFabric.h45')}
                       </th>
                     </tr>
-
                     <tr>
                       <td className="px-4 py-2 border-b">
                         {fabric.attributes?.weight}
                       </td>
                     </tr>
-
                     <tr className="border-b">
                       <th className="px-4 py-2 bg-white bg-opacity-30">
                         {t('oneFabric.h46')}
@@ -387,7 +383,6 @@ const OneFabricScreen: React.FC = () => {
                         {t('oneFabric.h48')}
                       </th>
                     </tr>
-
                     <tr>
                       <td className="px-4 py-2 text-center">
                         <div className="flex flex-col justify-center items-center">
@@ -421,15 +416,12 @@ const OneFabricScreen: React.FC = () => {
                   <thead className="border-b">
                     <tr className="bg-white bg-opacity-30">
                       <th className="px-4 py-2 border-r">
-                        {' '}
                         {t('oneFabric.h45')}
                       </th>
                       <th className="px-4 py-2 border-r">
-                        {' '}
                         {t('oneFabric.h46')}
                       </th>
                       <th className="px-4 py-2 border-r">
-                        {' '}
                         {t('oneFabric.h47')}
                       </th>
                       <th className="px-4 py-2"> {t('oneFabric.h48')}</th>
@@ -479,7 +471,6 @@ const OneFabricScreen: React.FC = () => {
               </div>
             )}
           </div>
-
           <div className="text-center m-4 ">
             <h4 className="font-bold text-3xl text-white mb-4 text-center">
               {t('oneFabric.h50')}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronLeft,
@@ -42,11 +42,15 @@ interface Project {
 }
 
 const FabricScreen: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const query = new URLSearchParams(location.search);
+  const initialPage = parseInt(query.get('page') || '1', 10);
   const [search, setSearch] = useState('');
   const [allFabrics, setAllFabrics] = useState<Fabric[]>([]);
   const [filteredFabrics, setFilteredFabrics] = useState<Fabric[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(initialPage);
   const [pageSize] = useState(25); // Nombre de résultats par page
   const [totalPages, setTotalPages] = useState(1);
 
@@ -121,6 +125,11 @@ const FabricScreen: React.FC = () => {
       });
   };
 
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    navigate(`/fabrics?page=${newPage}`);
+  };
+
   return (
     <div className="pb-20">
       <div className="flex flex-col min-h-screen text-white">
@@ -172,7 +181,7 @@ const FabricScreen: React.FC = () => {
           <button
             type="button"
             disabled={page <= 1}
-            onClick={() => setPage(page - 1)}
+            onClick={() => handlePageChange(page - 1)}
             className="mx-2 px-4 py-2 bg-lightBackground  rounded hover:bg-darkBackgroundLight hover:dark:bg-lightPrune  dark:bg-darkPruneBG transition-colors duration-500"
             aria-label="Précédent"
           >
@@ -184,7 +193,7 @@ const FabricScreen: React.FC = () => {
           <button
             type="button"
             disabled={page >= totalPages}
-            onClick={() => setPage(page + 1)}
+            onClick={() => handlePageChange(page + 1)}
             className="mx-2 px-4 py-2 bg-lightBackground hover:bg-darkBackgroundLight rounded hover:dark:bg-lightPrune  dark:bg-darkPruneBG transition-colors duration-500"
             aria-label="Suivant"
           >

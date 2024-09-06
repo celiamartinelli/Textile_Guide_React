@@ -41,41 +41,47 @@ const AboutScreen: React.FC = () => {
           <p className="text-justify lg:mx-20">{t('about.p5')}</p>
           <div className="flex flex-col text-center lg:mx-20">
             <div className="flex flex-col m-1 ">
-              <h2>{t('about.title4')}</h2>
-              <p
-                className="border-2 p-4 rounded-lg bg-lightBackground dark:bg-darkPruneBG
-              "
-              >
+              <h2 className="font-bold text-xl text-white my-4">
+                {t('about.title4')}
+              </h2>
+              <p className="border-2 p-4 text-white  rounded-lg bg-lightBackground dark:bg-darkPruneBG">
                 {t('about.p6')}
               </p>
             </div>
             <div className="flex flex-col m-1 ">
-              <h2>{t('about.title5')}</h2>
-              <p className="border-2 p-4 rounded-lg bg-lightBackground dark:bg-darkPruneBG">
+              <h2 className="font-bold text-xl text-white my-4">
+                {t('about.title5')}
+              </h2>
+              <p className="border-2 p-4 text-white  rounded-lg bg-lightBackground dark:bg-darkPruneBG">
                 {t('about.p7')}
               </p>
             </div>
             <div className="flex flex-col m-1 ">
-              <h2>{t('about.title6')}</h2>
-              <p className="border-2 p-4 rounded-lg bg-lightBackground dark:bg-darkPruneBG">
+              <h2 className="font-bold text-xl text-white my-4">
+                {t('about.title6')}
+              </h2>
+              <p className="border-2 p-4 rounded-lg text-white  bg-lightBackground dark:bg-darkPruneBG">
                 {t('about.p8')}
               </p>
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-center items-center">
+        <div
+          className="flex flex-col justify-center items-center"
+          id="contact-form"
+        >
           <h3 className="text-3xl font-bold my-4 text-white">
             {t('about.title7')}
           </h3>
           <p className="text-justify lg:mx-20">{t('about.p9')}</p>
           <form
             className="flex flex-col justify-center items-center p-8 rounded-lg bg-lightBackgroundCream dark:bg-darkSage shadow-md mt-4 sm:w-80"
-            id="contact-form"
+            id="form"
           >
             <div className="">
               <label
                 htmlFor="name"
-                className="block dark:text-white font-bold mb-2"
+                className="block text-brown dark:text-white font-bold mb-2"
               >
                 {t('about.form1')}
               </label>

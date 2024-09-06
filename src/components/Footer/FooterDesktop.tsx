@@ -5,10 +5,17 @@ import { IoMail } from 'react-icons/io5';
 import { TbApi } from 'react-icons/tb';
 import { useDarkMode } from '../App/DarkModeContext';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 export default function FooterDesktop() {
+  const navigate = useNavigate();
   const { isDarkMode, setIsDarkMode } = useDarkMode();
   const { t } = useTranslation();
+
+  const handleScrollToContact = () => {
+    navigate('/about', { state: { scrollToContact: true } }); // Navigue avec l'état
+  };
+
   return (
     <div className="bg-lightBackground flex justify-between p-5 fixed bottom-0 left-0 right-0 text-white dark:bg-darkPruneBG transition-colors duration-500">
       <div>
@@ -32,16 +39,13 @@ export default function FooterDesktop() {
             </Link>
           </li>
           <li className="px-2">
-            <Link
-              to={
-                {
-                  pathname: '/about',
-                  state: { scrollToContact: true },
-                } as any
-              }
+            <button
+              aria-label="Contact"
+              onClick={handleScrollToContact}
+              type="button"
             >
               <IoMail />
-            </Link>
+            </button>
           </li>
         </ul>
       </div>

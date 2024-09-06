@@ -77,6 +77,8 @@ const AboutScreen: React.FC = () => {
           <form
             className="flex flex-col justify-center items-center p-8 rounded-lg bg-lightBackgroundCream dark:bg-darkSage shadow-md mt-4 sm:w-80"
             id="form"
+            method="POST"
+            data-netlify="true"
           >
             <div className="">
               <label

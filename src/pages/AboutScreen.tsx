@@ -1,14 +1,13 @@
-import React from 'react';
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
-import { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-
 import { useTranslation } from 'react-i18next';
+import Modal from '../components/Modal/Modal';
 
 const AboutScreen: React.FC = () => {
   const location = useLocation();
   const { t } = useTranslation();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     if (location.state?.scrollToContact) {
@@ -18,6 +17,29 @@ const AboutScreen: React.FC = () => {
       }
     }
   }, [location]);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // Logique pour envoyer le formulaire
+    setIsModalOpen(true);
+    if (formRef.current) {
+      formRef.current.reset();
+    }
+    const formData = new FormData(event.currentTarget);
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(formData as any).toString(),
+    })
+      .then(() => {
+        setIsModalOpen(true);
+        if (formRef.current) {
+          formRef.current.reset();
+        }
+      })
+      .catch((error) => alert(error));
+  };
 
   return (
     <div className="pb-20">
@@ -77,9 +99,20 @@ const AboutScreen: React.FC = () => {
           <form
             className="flex flex-col justify-center items-center p-8 rounded-lg bg-lightBackgroundCream dark:bg-darkSage shadow-md mt-4 sm:w-80"
             id="form"
+            name="contact"
             method="POST"
+            action="/about" // URL de redirection après soumission
             data-netlify="true"
+            netlify-honeypot="bot-field"
+            onSubmit={handleSubmit}
+            ref={formRef}
           >
+            <input type="hidden" name="form-name" value="contact" />
+            <p className="hidden">
+              <label>
+                Ne pas remplir ce champ : <input name="bot-field" />
+              </label>
+            </p>
             <div className="">
               <label
                 htmlFor="name"
@@ -90,6 +123,8 @@ const AboutScreen: React.FC = () => {
               <input
                 type="text"
                 id="name"
+                name="name"
+                required
                 className="bg-white dark:bg-sage rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-darkBackgroundCream focus:ring-brown dark:focus:ring-white caret-brown dark:text-black shadow-inner sm:w-64"
               />
             </div>
@@ -103,6 +138,8 @@ const AboutScreen: React.FC = () => {
               <input
                 type="email"
                 id="email"
+                name="email"
+                required
                 className="bg-white dark:bg-sage rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-darkBackgroundCream focus:ring-brown dark:focus:ring-white caret-brown dark:text-black shadow-inner sm:w-64"
               />
             </div>
@@ -115,8 +152,10 @@ const AboutScreen: React.FC = () => {
               </label>
               <textarea
                 id="message"
+                name="message"
                 className="bg-white dark:bg-sage rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-darkBackgroundCream focus:ring-brown dark:focus:ring-white caret-brown dark:text-black shadow-inner sm:w-64"
                 rows={4}
+                required
               />
             </div>
             <button
@@ -128,6 +167,11 @@ const AboutScreen: React.FC = () => {
           </form>
         </div>
       </div>
+      {isModalOpen && (
+        <Modal onClose={() => setIsModalOpen(false)}>
+          <p>Votre message a été envoyé avec succès !</p>
+        </Modal>
+      )}
     </div>
   );
 };

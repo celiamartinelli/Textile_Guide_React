@@ -108,7 +108,8 @@ const AboutScreen: React.FC = () => {
             <input type="hidden" name="form-name" value="contact" />
             <p className="hidden">
               <label>
-                Ne pas remplir ce champ : <input name="bot-field" />
+                Ne pas remplir ce champ s'il vous plait :{' '}
+                <input name="bot-field" />
               </label>
             </p>
             <div className="">

@@ -1,6 +1,7 @@
 // src/config/i18n.ts
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { send } from 'vite';
 
 const resources = {
   en: {
@@ -83,6 +84,10 @@ const resources = {
         form1: 'Name',
         form2: 'Email',
         form3: 'Message',
+        send: 'Send',
+      },
+      modal: {
+        message: 'Your message has been sent successfully!',
       },
     },
   },
@@ -166,6 +171,10 @@ const resources = {
         form1: 'Nom',
         form2: 'Email',
         form3: 'Message',
+        send: 'Envoyer',
+      },
+      modal: {
+        message: 'Votre message a été envoyé avec succès !',
       },
     },
   },

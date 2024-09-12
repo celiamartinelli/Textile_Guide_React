@@ -161,14 +161,14 @@ const AboutScreen: React.FC = () => {
               type="submit"
               className="hover:bg-lightPink hover:dark:bg-darkPrune text-darkBrown py-2 px-4 rounded-md bg-pink hover:text-white focus:outline-none shadow-md hover:dark:text-white dark:bg-cream dark:text-brown"
             >
-              Envoyer
+              {t('about.send')}
             </button>
           </form>
         </div>
       </div>
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
-          <p>Votre message a été envoyé avec succès !</p>
+          <p> {t('modal.message')}</p>
         </Modal>
       )}
     </div>

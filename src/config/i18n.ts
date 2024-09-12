@@ -89,7 +89,8 @@ const resources = {
       modal: {
         h1modal: 'Message sent successfully!',
         pmodal:
-          'Thank you for your message. I will reply to you as soon as possible.',
+          'Thank you for your message. Our team will get back to you as soon as possible.',
+
         close: 'Close',
       },
     },
@@ -178,7 +179,8 @@ const resources = {
       },
       modal: {
         h1modal: 'Message envoyé avec succès!',
-        pmodal: 'Merci pour votre message. Je vous répondrai dès que possible.',
+        pmodal:
+          'Merci pour votre message. Notre équipe vous répondra dans les plus brefs délais.',
         close: 'Fermer',
       },
     },

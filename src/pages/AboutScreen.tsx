@@ -18,28 +18,28 @@ const AboutScreen: React.FC = () => {
     }
   }, [location]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // Logique pour envoyer le formulaire
-    setIsModalOpen(true);
-    if (formRef.current) {
-      formRef.current.reset();
-    }
-    const formData = new FormData(event.currentTarget);
+  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   // Logique pour envoyer le formulaire
+  //   setIsModalOpen(true);
+  //   if (formRef.current) {
+  //     formRef.current.reset();
+  //   }
+  //   const formData = new FormData(event.currentTarget);
 
-    fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(formData as any).toString(),
-    })
-      .then(() => {
-        setIsModalOpen(true);
-        if (formRef.current) {
-          formRef.current.reset();
-        }
-      })
-      .catch((error) => alert(error));
-  };
+  //   fetch('/', {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  //     body: new URLSearchParams(formData as any).toString(),
+  //   })
+  //     .then(() => {
+  //       setIsModalOpen(true);
+  //       if (formRef.current) {
+  //         formRef.current.reset();
+  //       }
+  //     })
+  //     .catch((error) => alert(error));
+  // };
 
   return (
     <div className="pb-20">
@@ -103,8 +103,8 @@ const AboutScreen: React.FC = () => {
             method="POST"
             action="/about" // URL de redirection après soumission
             data-netlify="true"
-            netlify-honeypot="bot-field"
-            onSubmit={handleSubmit}
+            data-netlify-honeypot="bot-field"
+            // onSubmit={handleSubmit}
             ref={formRef}
           >
             <input type="hidden" name="form-name" value="contact" />

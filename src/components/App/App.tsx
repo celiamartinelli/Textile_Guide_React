@@ -24,7 +24,7 @@ function App() {
           <Route path="/products/:productId" element={<OneProductScreen />} />
           <Route path="/about" element={<AboutScreen />} />
 
-          <Route path="*" element={<NotFound />} />
+          <Route path="/*" element={<NotFound />} />
         </Routes>
         <Footer />
       </div>

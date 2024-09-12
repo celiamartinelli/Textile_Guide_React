@@ -88,6 +88,7 @@ const resources = {
       },
       modal: {
         message: 'Your message has been sent successfully!',
+        close: 'Close',
       },
     },
   },
@@ -175,6 +176,7 @@ const resources = {
       },
       modal: {
         message: 'Votre message a été envoyé avec succès !',
+        close: 'Fermer',
       },
     },
   },

@@ -173,7 +173,8 @@ const AboutScreen: React.FC = () => {
       </div>
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
-          <p>{t('modal.message')}</p>
+          <h1>{t('modal.h1modal')}</h1>
+          <p>{t('modal.pmodal')}</p>
         </Modal>
       )}
     </div>

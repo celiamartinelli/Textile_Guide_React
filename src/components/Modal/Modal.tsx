@@ -14,7 +14,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, children }) => {
         {children}
         <button
           onClick={onClose}
-          className="mt-4 bg-pink text-white py-2 px-4 rounded-md"
+          className="mt-4 bg-pink dark:bg-vertFonce1 text-white  py-2 px-4 rounded-md"
         >
           {t('modal.close')}
         </button>

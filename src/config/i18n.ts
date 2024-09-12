@@ -87,7 +87,9 @@ const resources = {
         send: 'Send',
       },
       modal: {
-        message: 'Your message has been sent successfully!',
+        h1modal: 'Message sent successfully!',
+        pmodal:
+          'Thank you for your message. I will reply to you as soon as possible.',
         close: 'Close',
       },
     },
@@ -175,7 +177,8 @@ const resources = {
         send: 'Envoyer',
       },
       modal: {
-        message: 'Votre message a été envoyé avec succès !',
+        h1modal: 'Message envoyé avec succès!',
+        pmodal: 'Merci pour votre message. Je vous répondrai dès que possible.',
         close: 'Fermer',
       },
     },

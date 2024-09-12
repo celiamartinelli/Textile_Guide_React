@@ -101,7 +101,7 @@ const AboutScreen: React.FC = () => {
             id="form"
             name="contact"
             method="POST"
-            action="/about" // URL de redirection après soumission
+            action="/" // URL de redirection après soumission
             data-netlify="true"
             data-netlify-honeypot="bot-field"
             // onSubmit={handleSubmit}

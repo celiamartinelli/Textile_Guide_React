@@ -98,13 +98,11 @@ const AboutScreen: React.FC = () => {
           <p className="text-justify lg:mx-20">{t('about.p9')}</p>
           <form
             className="flex flex-col justify-center items-center p-8 rounded-lg bg-lightBackgroundCream dark:bg-darkSage shadow-md mt-4 sm:w-80"
-            id="form"
             name="contact"
             method="POST"
-            action="/" // URL de redirection après soumission
             data-netlify="true"
             data-netlify-honeypot="bot-field"
-            // onSubmit={handleSubmit}
+            action="/"
             ref={formRef}
           >
             <input type="hidden" name="form-name" value="contact" />

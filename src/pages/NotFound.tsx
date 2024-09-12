@@ -19,7 +19,7 @@ const NotFound: React.FC = () => {
           >
             Retour
           </button>
-          <img src={notFound} alt="404" className="w-1/2" />
+          <img src={notFound} alt="404" className="w-2/3" />
         </div>
       </div>
     </div>

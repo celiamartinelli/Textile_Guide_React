@@ -18,28 +18,33 @@ const AboutScreen: React.FC = () => {
     }
   }, [location]);
 
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   // Logique pour envoyer le formulaire
-  //   setIsModalOpen(true);
-  //   if (formRef.current) {
-  //     formRef.current.reset();
-  //   }
-  //   const formData = new FormData(event.currentTarget);
+  // Fonction pour gérer la soumission du formulaire
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Empêche le rechargement de la page
 
-  //   fetch('/', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-  //     body: new URLSearchParams(formData as any).toString(),
-  //   })
-  //     .then(() => {
-  //       setIsModalOpen(true);
-  //       if (formRef.current) {
-  //         formRef.current.reset();
-  //       }
-  //     })
-  //     .catch((error) => alert(error));
-  // };
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    // Envoyer les données au backend de Netlify
+    try {
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData as any).toString(),
+      });
+
+      if (response.ok) {
+        setIsModalOpen(true); // Ouvre la modal en cas de succès
+        if (formRef.current) {
+          formRef.current.reset(); // Réinitialise le formulaire
+        }
+      } else {
+        console.error('Erreur lors de la soumission du formulaire');
+      }
+    } catch (error) {
+      console.error('Erreur de soumission : ', error);
+    }
+  };
 
   return (
     <div className="pb-20">
@@ -102,14 +107,14 @@ const AboutScreen: React.FC = () => {
             method="POST"
             data-netlify="true"
             data-netlify-honeypot="bot-field"
-            action="/"
+            // action="/"
+            onSubmit={handleSubmit}
             ref={formRef}
           >
             <input type="hidden" name="form-name" value="contact" />
             <p className="hidden">
               <label>
-                Ne pas remplir ce champ s'il vous plait :{' '}
-                <input name="bot-field" />
+                Ne pas remplir ce champ : <input name="bot-field" />
               </label>
             </p>
             <div className="">

@@ -1,6 +1,7 @@
 // src/pages/HomeScreen.tsx
 import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import { supabase } from '@/supabaseClient.js';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDarkMode } from '@/components/App/DarkModeContext';
 import { Button } from '@mui/material';
@@ -8,13 +9,12 @@ import ButtonInfoLevelSewing from '@/components/Button/ButtonInfoLevelSewing';
 
 interface Level {
   id: string;
-  attributes: {
-    name_level: string;
-    description: string;
-  };
+  name_level: string;
+  description: string;
 }
 
 export default function HomeScreen() {
+  console.log(import.meta.env.VITE_SUPABASE_URL);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();

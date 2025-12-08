@@ -4,16 +4,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+// interface Level {
+//   id: string;
+//   attributes: {
+//     name_level: string;
+//     description: string;
+//     skills: string;
+//     typical_projects: string;
+//     technical: string;
+//     example: string;
+//   };
+// }
+
 interface Level {
   id: string;
-  attributes: {
-    name_level: string;
-    description: string;
-    skills: string;
-    typical_projects: string;
-    technical: string;
-    example: string;
-  };
+  name_level: string;
+  description: string;
+  typical_projects: string;
+  skills: string;
+  technical: string;
+  example: string;
 }
 
 interface ModalShowMoreInfosLevelProps {
@@ -48,10 +58,10 @@ const ModalShowMoreInfosLevel: React.FC<ModalShowMoreInfosLevelProps> = ({
             {levels.map((level) => (
               <li key={level.id} className="text-sm m-2">
                 <strong className="bg-sage dark:bg-darkPruneBG p-2 m-1 rounded-md">
-                  {level.attributes.name_level}
+                  {level.name_level}
                 </strong>
                 <div className="my-4">
-                  <p> {level.attributes.description}</p>
+                  <p> {level.description}</p>
                   <div className="border-2 border-brown rounded-lg my-6">
                     <table className="min-w-full">
                       <tbody>
@@ -59,27 +69,25 @@ const ModalShowMoreInfosLevel: React.FC<ModalShowMoreInfosLevelProps> = ({
                           <td className="border-r border-brown p-2 font-semibold bg-black bg-opacity-10 dark:bg-white dark:bg-opacity-10">
                             {t('modalInfoLevel.title1')}
                           </td>
-                          <td className=" p-2">{level.attributes.skills}</td>
+                          <td className=" p-2">{level.skills}</td>
                         </tr>
                         <tr className="border-b border-brown">
                           <td className="border-r border-brown p-2 font-semibold bg-black bg-opacity-10 dark:bg-white dark:bg-opacity-10">
                             {t('modalInfoLevel.title2')}
                           </td>
-                          <td className=" p-2">
-                            {level.attributes.typical_projects}
-                          </td>
+                          <td className=" p-2">{level.typical_projects}</td>
                         </tr>
                         <tr className="border-b border-brown">
                           <td className="border-r border-brown p-2 font-semibold bg-black bg-opacity-10 dark:bg-white dark:bg-opacity-10">
                             {t('modalInfoLevel.title3')}
                           </td>
-                          <td className="p-2">{level.attributes.technical}</td>
+                          <td className="p-2">{level.technical}</td>
                         </tr>
                         <tr>
                           <td className="border-r border-brown p-2 font-semibold bg-black bg-opacity-10 dark:bg-white dark:bg-opacity-10">
                             {t('modalInfoLevel.title4')}
                           </td>
-                          <td className=" p-2">{level.attributes.example}</td>
+                          <td className=" p-2">{level.example}</td>
                         </tr>
                       </tbody>
                     </table>

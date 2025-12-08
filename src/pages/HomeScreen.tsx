@@ -1,24 +1,42 @@
 // src/pages/HomeScreen.tsx
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/supabaseClient.js';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDarkMode } from '@/components/App/DarkModeContext';
-import { Button } from '@mui/material';
 import ButtonInfoLevelSewing from '@/components/Button/ButtonInfoLevelSewing';
+import { supabase } from '../../supabaseClient.js'; // Assurez-vous que le chemin est correct
 
 interface Level {
   id: string;
   name_level: string;
   description: string;
+  typical_projects: string;
+  skills: string;
+  technical: string;
+  example: string;
 }
 
 export default function HomeScreen() {
-  console.log(import.meta.env.VITE_SUPABASE_URL);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
+
   const [allLevels, setAllLevels] = useState<Level[]>([]);
+
+  useEffect(() => {
+    async function fetchLevels() {
+      const { data, error } = await supabase.from('level_sewings').select('*');
+
+      if (error) {
+        console.error('Erreur Supabase :', error);
+        return;
+      }
+
+      setAllLevels(data as Level[]);
+    }
+
+    fetchLevels();
+  }, []);
   const searchByProjectImg = isDarkMode
     ? '../../../assets/search_by_project_dark.png'
     : '../../../assets/search_by_project.png';

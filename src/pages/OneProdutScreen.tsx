@@ -2,27 +2,21 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import ButtonInfoLevelSewing from '@/components/Button/ButtonInfoLevelSewing';
 import ModalShowMoreInfosLevel from '@/components/Modal/OneProduct/ModalShowMoreInfosLevel';
-import { supabase } from '../../supabaseClient.js'; // Assurez-vous que le chemin est correct
+import { supabase } from '../../supabaseClient.js';
 
 interface Level {
   id: number | string;
   name_level?: string;
   description?: string;
-  // si ta table levels a plus de champs, ajoute-les ici
 }
 
 interface Fabric {
   id: number;
   name?: string;
-  picture_url?: string | null;
+  fabric_img_url?: string | null;
   description?: string;
-  benefit?: string;
-  characteristic?: string;
-  // etc.
 }
 
 interface SupplyQuantity {
@@ -38,7 +32,6 @@ interface SupplyQuantity {
   pocket?: boolean;
   pocket_fabric?: string;
   pocket_closure?: string;
-  // etc.
 }
 
 interface ProductRow {
@@ -48,11 +41,10 @@ interface ProductRow {
   second_category?: string;
   description?: string;
   textile_quantity_required?: string | null;
-  icon_url?: string | null; // si tu as une colonne icon_url
-  // relations possibles (peuvent être undefined si non renseignées)
+  product_img_url?: string | null;
   fabrics?: Fabric[];
   supplies_quantities?: SupplyQuantity[];
-  level_sewing?: Level[]; // ou level_sewings
+  level_sewing?: Level[];
 }
 
 const OneProductScreen: React.FC = () => {
@@ -62,245 +54,97 @@ const OneProductScreen: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [allLevels, setAllLevels] = useState<Level[]>([]);
-  const [levels, setLevels] = useState<Level[]>([]);
-
-  // si tu stockes des assets ailleurs, adapte la baseURL
-  // const storageBaseUrl = import.meta.env.VITE_SUPABASE_URL ?? '';
 
   useEffect(() => {
     if (!productId) return;
 
-    const idNum = isNaN(Number(productId)) ? productId : Number(productId);
-
-    async function fetchProduct() {
+    const fetchProduct = async () => {
       setLoading(true);
+      const idNum = isNaN(Number(productId)) ? productId : Number(productId);
 
-      // 1) tentative : récupérer le produit + relations en une requête (si FK/relations configurées)
       try {
+        // Récupère produit + relations via Supabase
         const { data, error } = await supabase
           .from('products')
           .select(
             `
-              id,
-              name,
-              category,
-              second_category,
-              description,
-              textile_quantity_required,
-              icon_url,
-              fabrics ( id, name, picture_url, description ),
-              supplies_quantities ( id, main_fabric, interior_fabric, interling_fabric, closure, fastener, ribbon, decoration, accessory, pocket, pocket_fabric, pocket_closure ),
-              level_sewing ( id, name_level, description )
-            `
+            *,
+            products_fabrics_links (
+              fabric: fabrics(*),
+              product_order,
+              fabric_order
+            ),
+         products_supplies_quantities_links(
+  supply: supplies_quantities(*)
+),
+            products_level_sewing_links (
+              level: level_sewings(*),
+              level_sewing_order
+            )
+          `
           )
           .eq('id', idNum)
           .single();
 
-        if (error && error.code !== 'PGRST116') {
-          // PGRST116 = maybe no relation or other; on log pour debug
-          console.error('Supabase select with relations error:', error);
-        }
-
-        if (data) {
-          // Data contient déjà la structure souhaitée si relations existantes
-          const mapped: ProductRow = {
-            id: data.id,
-            name: data.name,
-            category: data.category,
-            second_category: data.second_category,
-            description: data.description,
-            textile_quantity_required: data.textile_quantity_required,
-            icon_url: data.icon_url ?? null,
-            fabrics: Array.isArray(data.fabrics)
-              ? data.fabrics.map((f: any) => ({
-                  id: f.id,
-                  name: f.name,
-                  picture_url: f.picture_url ?? null,
-                  description: f.description,
-                }))
-              : [],
-            supplies_quantities: Array.isArray(data.supplies_quantities)
-              ? data.supplies_quantities
-              : [],
-            level_sewing: Array.isArray(data.level_sewing)
-              ? data.level_sewing
-              : [],
-          };
-
-          setProduct(mapped);
-          setLoading(false);
-
-          // si niveau présent et tu veux remplir allLevels pour le modal
-          if (mapped.level_sewing && mapped.level_sewing.length > 0) {
-            setAllLevels(mapped.level_sewing as Level[]);
-          }
-
-          return;
-        }
-      } catch (err) {
-        console.error('Erreur fetch produit (attempt relations):', err);
-      }
-
-      // 2) fallback si la requête ensembre n'a pas fonctionné : on récupère séparément
-      try {
-        const { data: productOnly, error: pErr } = await supabase
-          .from('products')
-          .select(
-            'id, name, category, second_category, description, textile_quantity_required, icon_url'
-          )
-          .eq('id', idNum)
-          .single();
-
-        if (pErr) {
-          console.error('Erreur fetch product only:', pErr);
+        if (error) {
+          console.error('Supabase fetch error:', error);
           setLoading(false);
           return;
         }
 
-        const mapped: ProductRow = {
-          id: productOnly.id,
-          name: productOnly.name,
-          category: productOnly.category,
-          second_category: productOnly.second_category,
-          description: productOnly.description,
-          textile_quantity_required: productOnly.textile_quantity_required,
-          icon_url: productOnly.icon_url ?? null,
-          fabrics: [],
-          supplies_quantities: [],
-          level_sewing: [],
+        // Formatage des données
+        const formatted: ProductRow = {
+          id: data.id,
+          name: data.name,
+          category: data.category,
+          second_category: data.second_category,
+          description: data.description,
+          textile_quantity_required: data.textile_quantity_required,
+          product_img_url: data.product_img_url ?? null,
+          fabrics:
+            data.products_fabrics_links?.map((link: any) => ({
+              id: link.fabric.id,
+              name: link.fabric.name,
+              fabric_img_url: link.fabric.fabric_img_url ?? null,
+              description: link.fabric.description,
+            })) || [],
+          supplies_quantities:
+            data.products_supplies_quantities_links?.map(
+              (link: any) => link.supply
+            ) || [],
+          level_sewing:
+            data.products_level_sewing_links?.map((link: any) => ({
+              id: link.level.id,
+              name_level: link.level.name_level,
+              description: link.level.description,
+            })) || [],
         };
 
-        // Récupérer fabrics : on tente un filtre direct product_id
-        try {
-          const { data: fabricsData, error: fErr } = await supabase
-            .from('fabrics')
-            .select('id, name, picture_url, description')
-            .eq('product_id', idNum); // si tu as product_id dans fabrics
-
-          if (!fErr && Array.isArray(fabricsData) && fabricsData.length > 0) {
-            mapped.fabrics = fabricsData.map((f: any) => ({
-              id: f.id,
-              name: f.name,
-              picture_url: f.picture_url ?? null,
-              description: f.description,
-            }));
-          } else {
-            // si pas de product_id, peut-être relation via table pivot product_fabrics
-            const { data: pf, error: pfErr } = await supabase
-              .from('product_fabrics')
-              .select('fabric_id')
-              .eq('product_id', idNum);
-
-            if (!pfErr && Array.isArray(pf) && pf.length > 0) {
-              const fabricIds = pf.map((r: any) => r.fabric_id);
-              const { data: fabricsByIds } = await supabase
-                .from('fabrics')
-                .select('id, name, picture_url, description')
-                .in('id', fabricIds);
-
-              if (Array.isArray(fabricsByIds)) {
-                mapped.fabrics = fabricsByIds.map((f: any) => ({
-                  id: f.id,
-                  name: f.name,
-                  picture_url: f.picture_url ?? null,
-                  description: f.description,
-                }));
-              }
-            }
-          }
-        } catch (fabricErr) {
-          console.error('Erreur fetch fabrics fallback:', fabricErr);
-        }
-
-        // Récupérer supplies_quantities (on suppose product_id sur supplies_quantities)
-        try {
-          const { data: suppliesData, error: sErr } = await supabase
-            .from('supplies_quantities')
-            .select('*')
-            .eq('product_id', idNum);
-
-          if (!sErr && Array.isArray(suppliesData)) {
-            mapped.supplies_quantities = suppliesData;
-          }
-        } catch (sErr2) {
-          console.error('Erreur fetch supplies fallback:', sErr2);
-        }
-
-        // Récupérer level(s) lié(s)
-        try {
-          // cas: table level_sewing avec product_id
-          const { data: lvData, error: lvErr } = await supabase
-            .from('level_sewings')
-            .select('*')
-            .eq('product_id', idNum);
-
-          if (!lvErr && Array.isArray(lvData) && lvData.length > 0) {
-            mapped.level_sewing = lvData.map((l: any) => ({
-              id: l.id,
-              name_level: l.name_level ?? l.name,
-              description: l.description ?? null,
-            })) as any;
-            setAllLevels(mapped.level_sewing as Level[]);
-          } else {
-            // cas pivot product_level_sewing ou colonne level_id
-            const { data: productLevel, error: plErr } = await supabase
-              .from('product_level_sewings')
-              .select('level_sewing_id')
-              .eq('product_id', idNum);
-
-            if (
-              !plErr &&
-              Array.isArray(productLevel) &&
-              productLevel.length > 0
-            ) {
-              const levelIds = productLevel.map((r: any) => r.level_sewing_id);
-              const { data: levels } = await supabase
-                .from('level_sewings')
-                .select('*')
-                .in('id', levelIds);
-
-              if (Array.isArray(levels)) {
-                mapped.level_sewing = levels.map((l: any) => ({
-                  id: l.id,
-                  name_level: l.name_level ?? l.name,
-                  description: l.description ?? null,
-                })) as any;
-                setAllLevels(mapped.level_sewing as Level[]);
-              }
-            }
-          }
-        } catch (lvErr2) {
-          console.error('Erreur fetch levels fallback:', lvErr2);
-        }
-
-        setProduct(mapped);
-      } catch (err2) {
-        console.error('Erreur fetch product fallback:', err2);
+        setProduct(formatted);
+        setAllLevels(formatted.level_sewing || []);
+      } catch (err) {
+        console.error('Erreur fetch product:', err);
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     fetchProduct();
   }, [productId]);
 
-  if (loading) return <div>Chargement...</div>;
-  if (!product) return <div>Produit introuvable</div>;
+  if (loading) return <div>{t('loading')}</div>;
+  if (!product) return <div>{t('oneProduct.notFound')}</div>;
 
-  // helper pour afficher l'image (gère url absolue ou chemin enregistré)
   const renderIcon = () => {
-    if (product.icon_url) {
-      // si icon_url est déjà une URL publique
+    if (product.product_img_url) {
       return (
         <img
-          src={product.icon_url}
+          src={product.product_img_url}
           alt={product.name}
           className="w-24 h-24 rounded-lg m-2 mx-auto"
         />
       );
     }
-    // si tu utilises Supabase Storage et que tu as saved path, adapte ici
-    // example: storage path "icons/filename.png" => `${storageBaseUrl}/storage/v1/object/public/icons/filename.png`
     return null;
   };
 
@@ -314,14 +158,67 @@ const OneProductScreen: React.FC = () => {
   };
 
   const renderProductSupply = (supply: SupplyQuantity) => {
-    // exemple simple pour afficher les champs non null
+    const isValid = (value: string | undefined) =>
+      value && value.trim() !== '' && value !== 'N/A';
     return (
-      <div key={supply.id} className="m-2">
-        {supply.main_fabric && <div>Main: {supply.main_fabric}</div>}
-        {supply.interior_fabric && (
-          <div>Interior: {supply.interior_fabric}</div>
+      <div key={supply.id} className="m-2 border p-2 rounded-md">
+        {isValid(supply.main_fabric) && (
+          <div>
+            {t('oneProduct.supply_category.main_fabric')}: {supply.main_fabric}
+          </div>
         )}
-        {/* ajoute le reste */}
+        {isValid(supply.interior_fabric) && (
+          <div>
+            {t('oneProduct.supply_category.interior_fabric')}:{' '}
+            {supply.interior_fabric}
+          </div>
+        )}
+        {isValid(supply.interling_fabric) && (
+          <div>
+            {t('oneProduct.supply_category.interling_fabric')}:{' '}
+            {supply.interling_fabric}
+          </div>
+        )}
+        {isValid(supply.closure) && (
+          <div>
+            {t('oneProduct.supply_category.closure')}: {supply.closure}
+          </div>
+        )}
+        {isValid(supply.fastener) && (
+          <div>
+            {t('oneProduct.supply_category.fastener')}: {supply.fastener}
+          </div>
+        )}
+        {isValid(supply.ribbon) && (
+          <div>
+            {t('oneProduct.supply_category.ribbon')}: {supply.ribbon}
+          </div>
+        )}
+        {isValid(supply.decoration) && (
+          <div>
+            {t('oneProduct.supply_category.decoration')}: {supply.decoration}
+          </div>
+        )}
+        {isValid(supply.accessory) && (
+          <div>
+            {t('oneProduct.supply_category.accessory')}: {supply.accessory}
+          </div>
+        )}
+        {supply.pocket && (
+          <div>{t('oneProduct.supply_category.pocket_fabric')}</div>
+        )}
+        {isValid(supply.pocket_fabric) && (
+          <div>
+            {t('oneProduct.supply_category.pocket_fabric')}:{' '}
+            {supply.pocket_fabric}
+          </div>
+        )}
+        {isValid(supply.pocket_closure) && (
+          <div>
+            {t('oneProduct.supply_category.pocket_closure')}:{' '}
+            {supply.pocket_closure}
+          </div>
+        )}
       </div>
     );
   };
@@ -335,11 +232,17 @@ const OneProductScreen: React.FC = () => {
 
         <div className="text-center">
           {renderIcon()}
+
           <div className="flex justify-center text-xs mb-6">
             <p>{product.category}</p>
-            <p> - </p>
-            <p>{product.second_category}</p>
+            {product.second_category && (
+              <>
+                <p> - </p>
+                <p>{product.second_category}</p>
+              </>
+            )}
           </div>
+
           <p>{product.description}</p>
 
           {/* textile quantities */}
@@ -362,6 +265,7 @@ const OneProductScreen: React.FC = () => {
             </div>
           )}
 
+          {/* Level */}
           <div className="my-6 flex justify-center items-center">
             <div className="border-2 rounded-lg p-5 pr-2">
               <div className="flex flex-col mr-2">
@@ -386,9 +290,9 @@ const OneProductScreen: React.FC = () => {
                     to={`/fabrics/${f.id}`}
                     className="flex flex-col items-center"
                   >
-                    {f.picture_url ? (
+                    {f.fabric_img_url ? (
                       <img
-                        src={f.picture_url}
+                        src={f.fabric_img_url}
                         alt={f.name}
                         className="w-20 h-20 rounded-lg m-2"
                       />
@@ -409,7 +313,7 @@ const OneProductScreen: React.FC = () => {
             </h2>
             <div className="flex flex-wrap justify-center">
               {(product.supplies_quantities || []).map((supply) =>
-                renderProductSupply(supply as SupplyQuantity)
+                renderProductSupply(supply)
               )}
             </div>
           </div>

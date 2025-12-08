@@ -1,559 +1,163 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
-import { Button } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import React, { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { supabase } from '../../supabaseClient';
 import ButtonInfoLevelSewing from '@/components/Button/ButtonInfoLevelSewing';
-import { getBaseUrl } from '@/config/api';
-
-interface RouteParams {
-  fabricId: string;
-}
-
-type Wash = {
-  id: number;
-  attributes: {
-    wash_name: string;
-    description: string;
-    icone: {
-      data: { attributes: { url: string } }[];
-    };
-  };
-};
-
-interface ProductIcon {
-  id: number;
-  attributes: {
-    url: string;
-  };
-}
-
-type Products = {
-  id: number;
-  attributes: {
-    name: string;
-    category: string;
-    description: string;
-    icone_product: {
-      data: ProductIcon[];
-    };
-  };
-};
-
-type Fabric = {
-  id: number;
-  attributes: {
-    name: string;
-    description: string;
-    picture_fabric: {
-      data: {
-        attributes: {
-          url: string;
-        };
-      };
-    };
-    benefit: string;
-    characteristic: string;
-    composition: string | null;
-    origin: string;
-    temperature: string | null;
-    advantages: string;
-    disadvantages: string;
-    weight: string;
-    consumption: string;
-    appearance: string;
-    washes: {
-      data: Wash[];
-    };
-    products: {
-      data: Products[];
-    };
-    level_sewing: {
-      data: Level[];
-    };
-    weave_of_fabrics: {
-      data: Weave[];
-    };
-  };
-};
-
-interface Weave {
-  id: string;
-  attributes: {
-    category: string;
-    name: string;
-    icone_weave: {
-      data: {
-        attributes: {
-          url: string;
-        };
-      }[];
-    };
-  };
-}
-
-interface Level {
-  id: string;
-  attributes: {
-    name_level: string;
-    description: string;
-  };
-}
+import { useTranslation } from 'react-i18next';
 
 const OneFabricScreen: React.FC = () => {
   const { t } = useTranslation();
-  const { fabricId } = useParams() as unknown as RouteParams;
-  const [fabric, setFabric] = useState<Fabric | null>(null);
-  const [allLevels, setAllLevels] = useState<Level[]>([]);
+  const { fabricId } = useParams();
+  const [fabric, setFabric] = useState<any>(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  const getBaseUrl = 'https://textile-guide-srv.fr';
-
   useEffect(() => {
-    const fetchFabricData = async () => {
-      try {
-        const response = await fetch(
-          `${getBaseUrl}/api/fabrics/${fabricId}?populate[picture_fabric]=true&populate[washes][populate]=icone&populate[products][populate]=icone_product&populate[weave_of_fabrics][populate]=icone_weave&populate[level_sewing]=true`
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
-
-        if (!result || !result.data) {
-          console.error("La réponse de l'API ne contient pas de données");
-          return; // Sortie anticipée si pas de données
-        }
-
-        setFabric(result.data);
-        // console.log('Fabric:', result.data);
-      } catch (error) {
-        console.error(
-          'Erreur lors du chargement des données du textile',
-          error
-        );
-      }
-    };
-
-    fetchFabricData();
+    fetchFabric();
   }, [fabricId]);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+  const fetchFabric = async () => {
+    const { data, error } = await supabase
+      .from('fabrics')
+      .select(
+        `
+        *,
+        fabrics_washes_links(
+          wash: washes(*),
+          wash_order,
+          fabric_order
+        ),
+        products_fabrics_links(
+          product: products(*),
+          product_order,
+          fabric_order
+        ),
+        fabrics_level_sewing_links(
+          level: level_sewings(*),
+          level_sewing_order
+        ),
+        weave_of_fabrics_fabrics_links(
+          weave: weave_of_fabrics(*),
+          weave_of_fabric_order,
+          fabric_order
+        ),
+        fabrics_categories_links(
+          category: categories(*),
+          category_order,
+          fabric_order
+        )
+      `
+      )
+      .eq('id', fabricId)
+      .single();
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    // Reformate les données pour simplifier l'affichage
+    const formattedData = {
+      ...data,
+      washes: data.fabrics_washes_links?.map((link: any) => link.wash) || [],
+      products:
+        data.products_fabrics_links?.map((link: any) => link.product) || [],
+      level_sewing: data.fabrics_level_sewing_links?.[0]?.level || null,
+      weave_of_fabrics: data.weave_of_fabrics_fabrics_links?.[0]?.weave || null,
+      categories:
+        data.fabrics_categories_links?.map((link: any) => link.category) || [],
     };
 
-    window.addEventListener('resize', handleResize);
+    setFabric(formattedData);
+  };
 
-    return () => window.removeEventListener('resize', handleResize);
+  useEffect(() => {
+    const resize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', resize);
+    return () => window.removeEventListener('resize', resize);
   }, []);
 
-  const renderTableCellContent = (content: string) => {
-    return content.split(',').map((item, index) => (
-      <div key={index} className="">
-        {item.trim()}
-      </div>
-    ));
-  };
-
-  const renderConsumptionCard = (consumption: string) => {
-    const titles = ['💧 Eau', '💡 Electricité'];
-
-    const values = consumption.split(',').map((value) => value.trim());
-
-    return (
-      <table className="table-auto w-full">
-        <thead className="border-b bg-white bg-opacity-30">
-          <tr>
-            {titles.map((title, index) => (
-              <th
-                key={index}
-                className={`px-4 py-2 text-center ${
-                  index === 0 ? 'border-r' : ''
-                }`}
-              >
-                {title}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            {values.map((value, index) => (
-              <td
-                key={index}
-                className={`px-4 py-2 text-center ${
-                  index === 0 ? 'border-r' : ''
-                }`}
-              >
-                {value}
-              </td>
-            ))}
-          </tr>
-        </tbody>
-        <caption className="border-b">Pour un 1 m² de tissu</caption>
-      </table>
-    );
-  };
-
-  if (!fabric || !fabric.attributes) {
-    return <div>Chargement...</div>;
-  }
-
-  const imageUrl = fabric?.attributes?.picture_fabric?.data?.attributes.url;
+  if (!fabric) return <div>{t('loading')}</div>;
 
   return (
     <div className="pb-20">
-      <div className="flex flex-col h-full mx-3 pt-12 mt-24 md:mt-32 lg:min-h-screen">
-        <div className="flex flex-col justify-center items-center">
-          <div className=" p-2">
-            <div className="flex flex-col justify-center items-center mb-6 sm:m-4 sm:flex-row md:m-6 lg:m-2">
-              {imageUrl && (
+      <div className="flex flex-col h-full mx-3 pt-12 mt-24 md:mt-32">
+        {/* Image et nom */}
+        <img
+          src={fabric.fabric_img_url || '/no-image.png'}
+          alt={fabric.name}
+          className="w-40 h-40 rounded-lg mx-auto"
+        />
+        <h1 className="text-white text-3xl font-bold text-center mt-4">
+          {fabric.name}
+        </h1>
+        <p className="text-center">{fabric.description}</p>
+
+        {/* Composition */}
+        <div className="mt-6 text-center">
+          <h3 className="font-bold text-xl mb-2">{t('oneFabric.h41')}</h3>
+          <p>{fabric.composition}</p>
+        </div>
+
+        {/* Caractéristiques */}
+        <div className="mt-6 text-center">
+          <h3 className="font-bold text-xl mb-2">{t('oneFabric.h42')}</h3>
+          <p>{fabric.characteristic}</p>
+        </div>
+
+        {/* Niveau de couture */}
+        <div className="mt-6 text-center">
+          <h3 className="font-bold text-xl mb-2">
+            {t('oneFabric.h47')} <ButtonInfoLevelSewing />
+          </h3>
+          <p>{fabric.level_sewing?.name_level || t('oneFabric.noLevel')}</p>
+        </div>
+
+        {/* Armure */}
+        <div className="mt-6 text-center">
+          <h3 className="font-bold text-xl mb-2">{t('oneFabric.h48')}</h3>
+          <p>
+            {fabric.weave_of_fabrics?.category || t('oneFabric.noCategory')}
+          </p>
+          <p>{fabric.weave_of_fabrics?.name || t('oneFabric.noName')}</p>
+        </div>
+
+        {/* Washes */}
+        <div className="mt-6 text-center">
+          <h3 className="font-bold text-xl mb-4">{t('oneFabric.h51')}</h3>
+          <ul className="flex justify-center flex-wrap">
+            {fabric.washes.map((wash: any) => (
+              <li key={wash.id} className="m-2 text-center">
                 <img
-                  src={`${getBaseUrl}${imageUrl}`}
-                  alt={fabric.attributes.name}
-                  className="w-38 h-38 rounded-lg m-2 md:w-26 h-26 sm:mr-6 lg:w-44 h-44"
+                  src={wash.washe_img_url || '/no-image.png'}
+                  className="w-12 h-12 mx-auto"
+                  alt={wash.name || 'wash'}
                 />
-              )}
-              <div className="w-2/3 justify-center items-center ">
-                <h1 className="font-bold text-3xl text-white mb-4 text-center">
-                  {fabric.attributes.name}
-                </h1>
-                <p className="m-2 sm:pt-2 lg:pt-2 text-justify">
-                  {fabric.attributes.description}
-                </p>
-              </div>
-            </div>
-            {isMobile ? (
-              <div className="text-center flex flex-col justify-center border-2 rounded-md shadow-md">
-                <table className="table-auto ">
-                  <tbody>
-                    <tr className="border-b">
-                      <th className="px-4 py-2 bg-white bg-opacity-30">
-                        {t('oneFabric.h41')}
-                      </th>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-2 border-b">
-                        {fabric.attributes?.composition &&
-                          renderTableCellContent(
-                            fabric.attributes?.composition
-                          )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th className="px-4 py-2 border-b bg-white bg-opacity-30">
-                        {t('oneFabric.h42')}
-                      </th>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-2 border-b">
-                        {fabric.attributes?.characteristic &&
-                          renderTableCellContent(
-                            fabric.attributes?.characteristic
-                          )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th className="px-4 py-2 border-b bg-white bg-opacity-30">
-                        {t('oneFabric.h43')}
-                      </th>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-2 border-b ">
-                        {fabric.attributes?.disadvantages &&
-                          renderTableCellContent(
-                            fabric.attributes?.disadvantages
-                          )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th className="px-4 py-2 border-b bg-white bg-opacity-30">
-                        {t('oneFabric.h44')}
-                      </th>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-2 ">
-                        {fabric.attributes?.benefit &&
-                          renderTableCellContent(fabric.attributes?.benefit)}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <div
-                className="text-center mx-10
-             border-2 rounded-md shadow-md"
-              >
-                <table className="table-auto w-full ">
-                  <thead className="border-b">
-                    <tr className="bg-white bg-opacity-30">
-                      <th className="px-4 py-2 border-r ">
-                        {t('oneFabric.h41')}
-                      </th>
-                      <th className="px-4 py-2 border-r">
-                        {t('oneFabric.h42')}
-                      </th>
-                      <th className="px-4 py-2 border-r">
-                        {t('oneFabric.h43')}
-                      </th>
-                      <th className="px-4 py-2 ">{t('oneFabric.h44')}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="px-4 py-2 border-r">
-                        {fabric.attributes?.composition &&
-                          renderTableCellContent(
-                            fabric.attributes?.composition
-                          )}
-                      </td>
-                      <td className="px-4 py-2 border-r">
-                        {fabric.attributes?.characteristic &&
-                          renderTableCellContent(
-                            fabric.attributes?.characteristic
-                          )}
-                      </td>
-                      <td className="px-4 py-2 border-r">
-                        {fabric.attributes?.disadvantages &&
-                          renderTableCellContent(
-                            fabric.attributes?.disadvantages
-                          )}
-                      </td>
-                      <td className="px-4 py-2 ">
-                        {fabric.attributes?.benefit &&
-                          renderTableCellContent(fabric.attributes?.benefit)}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            )}
+                <p className="text-xs mt-1">{wash.description}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-            <div className="text-center flex flex-col m-6">
-              <h4 className="font-bold text-3xl text-white mb-4 text-center">
-                {' '}
-                {t('oneFabric.h49')}
-              </h4>
-              <p>{fabric.attributes?.origin}</p>
-            </div>
-            {isMobile ? (
-              <div className="text-center flex flex-col justify-center border-2 rounded-md shadow-md">
-                <table className="table-auto">
-                  <tbody>
-                    <tr className="border-b">
-                      <th className="px-4 py-2 bg-white bg-opacity-30">
-                        {t('oneFabric.h45')}
-                      </th>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-2 border-b">
-                        {fabric.attributes?.weight}
-                      </td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-4 py-2 bg-white bg-opacity-30">
-                        {t('oneFabric.h46')}
-                      </th>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-2 border-b">
-                        {fabric.attributes?.appearance &&
-                          renderTableCellContent(fabric.attributes?.appearance)}
-                      </td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-4 py-2 bg-white bg-opacity-30 flex justify-evenly">
-                        {t('oneFabric.h47')} <ButtonInfoLevelSewing />
-                      </th>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-4 border-b">
-                        {fabric.attributes?.level_sewing?.data?.[0]?.attributes
-                          ?.name_level || 'Niveau non disponible'}
-                      </td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-4 py-2 bg-white bg-opacity-30">
-                        {t('oneFabric.h48')}
-                      </th>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-2 text-center">
-                        <div className="flex flex-col justify-center items-center">
-                          {fabric.attributes?.weave_of_fabrics?.data?.[0]
-                            ?.attributes?.category ||
-                            'Catégorie non disponible'}
-                          {fabric?.attributes?.weave_of_fabrics?.data?.[0]
-                            ?.attributes?.icone_weave?.data?.[0]?.attributes
-                            ?.url ? (
-                            <img
-                              // src={`http://localhost:1337${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
-                              src={`${getBaseUrl}${fabric?.attributes?.weave_of_fabrics?.data?.[0]?.attributes?.icone_weave?.data?.[0]?.attributes?.url}`}
-                              alt="weave-icone"
-                              className="w-32 h-32 p-1 rounded-md"
-                            />
-                          ) : null}
-                          {fabric.attributes?.weave_of_fabrics?.data?.[0]
-                            ?.attributes?.name || 'Nom non disponible'}
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <div
-                className="text-center mx-10
-           border-2 rounded-md shadow-md"
-              >
-                <table className="table-auto w-full">
-                  <thead className="border-b">
-                    <tr className="bg-white bg-opacity-30">
-                      <th className="px-4 py-2 border-r">
-                        {t('oneFabric.h45')}
-                      </th>
-                      <th className="px-4 py-2 border-r">
-                        {t('oneFabric.h46')}
-                      </th>
-                      <th className="px-4 py-2 border-r">
-                        {t('oneFabric.h47')}
-                      </th>
-                      <th className="px-4 py-2"> {t('oneFabric.h48')}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="px-4 py-2 border-r">
-                        {fabric.attributes?.weight}
-                      </td>
-                      <td className="px-4 py-2 border-r">
-                        {fabric.attributes?.appearance &&
-                          renderTableCellContent(fabric.attributes?.appearance)}
-                      </td>
-                      <td className="px-4 py-2 border-r">
-                        {fabric.attributes?.level_sewing?.data?.[0]?.attributes
-                          ?.name_level || 'Niveau non disponible'}
-                      </td>
-                      <td className="px-4 py-2 text-center">
-                        <div className="flex flex-col justify-center items-center">
-                          {
-                            fabric.attributes?.weave_of_fabrics?.data?.[0]
-                              ?.attributes?.category
-                          }
-
-                          {fabric.attributes?.weave_of_fabrics?.data?.[0]
-                            ?.attributes?.icone_weave?.data?.[0]?.attributes
-                            ?.url ? (
-                            <img
-                              src={`${getBaseUrl}${fabric.attributes.weave_of_fabrics.data[0].attributes.icone_weave.data[0].attributes.url}`}
-                              alt="weave-icone"
-                              className="w-32 h-32 p-1 rounded-md"
-                            />
-                          ) : (
-                            <div>
-                              <p className="text-xs">{''}</p>
-                            </div>
-                          )}
-
-                          {fabric.attributes?.weave_of_fabrics?.data?.[0]
-                            ?.attributes?.name || 'Nom non disponible'}
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-          <div className="text-center m-4 ">
-            <h4 className="font-bold text-3xl text-white mb-4 text-center">
-              {t('oneFabric.h50')}
-            </h4>
-            <div className="w-full sm:w-2/3 md:2/3 lg:w-5/6 mx-auto border-2 rounded-md shadow-md">
-              {fabric.attributes?.consumption &&
-                renderConsumptionCard(fabric.attributes?.consumption)}
-            </div>
-          </div>
-          <div className="w-full">
-            <div className=" my-2 w-full lg:my-0 ">
-              <h4 className="font-bold text-3xl text-white mb-4 text-center">
-                {t('oneFabric.h51')}
-              </h4>
-              <ul className="flex flex-row flex-wrap justify-center">
-                {fabric.attributes?.washes?.data?.map((wash, washIndex) => (
-                  <li
-                    className="w-16 flex flex-col justify-start items-center m-1 sm:w-24"
-                    key={wash.id}
-                  >
-                    {wash.attributes?.icone?.data?.map((icon, iconIndex) => (
-                      <div key={`${wash.id}-${iconIndex}`}>
-                        <img
-                          key={iconIndex}
-                          // src={`http://localhost:1337${icon.attributes.url}`}
-                          src={`${getBaseUrl}${icon.attributes?.url}`}
-                          alt="icone"
-                          className="w-12 h-12 p-1 border rounded-md bg-cream shadow-md"
-                        />
-                      </div>
-                    ))}
-                    <p className="text-xs w-14 text-center flex pt-1 sm:w-24 justify-center">
-                      {wash.attributes?.description}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className=" w-full my-5 lg:my-0">
-              <h4 className="font-bold text-3xl text-white mb-4 text-center">
-                {t('oneFabric.h52')}
-              </h4>
-              {fabric.attributes?.products?.data?.length === 0 ? (
-                <div className="text-center text-sm mt-3">
-                  <p>{t('oneFabric.none')}</p>
-                </div>
-              ) : (
-                <ul className="flex flex-row flex-wrap justify-center">
-                  {fabric.attributes?.products?.data?.map(
-                    (product, productIndex) => (
-                      <li
-                        className="w-16 flex flex-col justify-start items-center m-1"
-                        key={product.id}
-                      >
-                        <Link
-                          to={`/products/${product.id}`}
-                          className="text-center "
-                        >
-                          <div className="">
-                            {product.attributes?.icone_product?.data?.map(
-                              (picture, picIndex) => (
-                                <img
-                                  key={`${product.id}-${picIndex}`}
-                                  // src={`http://localhost:1337${picture.attributes.url}`}
-                                  src={`${getBaseUrl}${picture.attributes?.url}`}
-                                  alt="project"
-                                  className="w-18 h-18 p-2 rounded-full bg-white bg-opacity-30 shadow-md"
-                                />
-                              )
-                            )}
-                          </div>
-                          <p className="text-xs pt-1 text-center">
-                            {product.attributes?.name}
-                          </p>
-                        </Link>
-                      </li>
-                    )
-                  )}
-                </ul>
-              )}
-            </div>
-          </div>
+        {/* Produits liés */}
+        <div className="mt-6 text-center">
+          <h3 className="font-bold text-xl mb-4">{t('oneFabric.h52')}</h3>
+          {fabric.products.length === 0 ? (
+            <p>{t('oneFabric.none')}</p>
+          ) : (
+            <ul className="flex flex-wrap justify-center">
+              {fabric.products.map((p: any) => (
+                <li key={p.id} className="m-2 text-center">
+                  <Link to={`/products/${p.id}`}>
+                    <img
+                      src={p.product_img_url || '/no-image.png'}
+                      alt={p.name}
+                      className="w-14 h-14 mx-auto rounded-full"
+                    />
+                    <p className="mt-1 text-xs">{p.name}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </div>

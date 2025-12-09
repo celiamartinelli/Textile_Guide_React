@@ -20,50 +20,26 @@ const OneFabricScreen: React.FC = () => {
       .select(
         `
         *,
-        fabrics_washes_links(
-          wash: washes(*),
-          wash_order,
-          fabric_order
-        ),
-        products_fabrics_links(
-          product: products(*),
-          product_order,
-          fabric_order
-        ),
-        fabrics_level_sewing_links(
-          level: level_sewings(*),
-          level_sewing_order
-        ),
-        weave_of_fabrics_fabrics_links(
-          weave: weave_of_fabrics(*),
-          weave_of_fabric_order,
-          fabric_order
-        ),
-        fabrics_categories_links(
-          category: categories(*),
-          category_order,
-          fabric_order
-        )
+        fabrics_washes_links(wash:washes(*)),
+        products_fabrics_links(product:products(*)),
+        fabrics_level_sewing_links(level:level_sewings(*)),
+        weave_of_fabrics_fabrics_links(weave:weave_of_fabrics(*)),
+        fabrics_categories_links(category:categories(*))
       `
       )
       .eq('id', fabricId)
       .single();
 
-    if (error) {
-      console.error(error);
-      return;
-    }
+    if (error) return console.error(error);
 
-    // Reformate les données pour simplifier l'affichage
     const formattedData = {
       ...data,
-      washes: data.fabrics_washes_links?.map((link: any) => link.wash) || [],
-      products:
-        data.products_fabrics_links?.map((link: any) => link.product) || [],
+      washes: data.fabrics_washes_links?.map((l: any) => l.wash) || [],
+      products: data.products_fabrics_links?.map((l: any) => l.product) || [],
       level_sewing: data.fabrics_level_sewing_links?.[0]?.level || null,
       weave_of_fabrics: data.weave_of_fabrics_fabrics_links?.[0]?.weave || null,
       categories:
-        data.fabrics_categories_links?.map((link: any) => link.category) || [],
+        data.fabrics_categories_links?.map((l: any) => l.category) || [],
     };
 
     setFabric(formattedData);
@@ -77,82 +53,223 @@ const OneFabricScreen: React.FC = () => {
 
   if (!fabric) return <div>{t('loading')}</div>;
 
+  // Small utility
+  const renderList = (content?: string) =>
+    content?.split(',').map((v, i) => <div key={i}>{v.trim()}</div>);
+
   return (
     <div className="pb-20">
-      <div className="flex flex-col h-full mx-3 pt-12 mt-24 md:mt-32">
-        {/* Image et nom */}
-        <img
-          src={fabric.fabric_img_url || '/no-image.png'}
-          alt={fabric.name}
-          className="w-40 h-40 rounded-lg mx-auto"
-        />
-        <h1 className="text-white text-3xl font-bold text-center mt-4">
-          {fabric.name}
-        </h1>
-        <p className="text-center">{fabric.description}</p>
-
-        {/* Composition */}
-        <div className="mt-6 text-center">
-          <h3 className="font-bold text-xl mb-2">{t('oneFabric.h41')}</h3>
-          <p>{fabric.composition}</p>
+      <div className="flex flex-col mx-3 pt-12 mt-24 md:mt-32">
+        {/* IMAGE + TITLE + DESCRIPTION */}
+        <div className="flex flex-col items-center mb-8 sm:flex-row sm:justify-center sm:gap-6">
+          <img
+            src={fabric.fabric_img_url || '/no-image.png'}
+            className="w-36 h-36 rounded-lg shadow-md"
+            alt={fabric.name}
+          />
+          <div className="sm:w-1/2 text-center sm:text-left">
+            <h1 className="font-bold text-3xl text-white mt-4 sm:mt-0">
+              {fabric.name}
+            </h1>
+            <p className="mt-3">{fabric.description}</p>
+          </div>
         </div>
 
-        {/* Caractéristiques */}
-        <div className="mt-6 text-center">
-          <h3 className="font-bold text-xl mb-2">{t('oneFabric.h42')}</h3>
-          <p>{fabric.characteristic}</p>
+        {/* TABLE: Composition — Caractéristiques — Défauts — Avantages */}
+        <div
+          className={`border-2 rounded-md shadow-md ${isMobile ? '' : 'mx-6'}`}
+        >
+          {isMobile ? (
+            <table className="table-auto w-full">
+              <tbody>
+                <tr className="border-b bg-white bg-opacity-30">
+                  <th className="px-4 py-2">{t('oneFabric.h41')}</th>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 border-b">
+                    {renderList(fabric.composition)}
+                  </td>
+                </tr>
+
+                <tr className="border-b bg-white bg-opacity-30">
+                  <th className="px-4 py-2">{t('oneFabric.h42')}</th>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 border-b">
+                    {renderList(fabric.characteristic)}
+                  </td>
+                </tr>
+
+                <tr className="border-b bg-white bg-opacity-30">
+                  <th className="px-4 py-2">{t('oneFabric.h43')}</th>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 border-b">
+                    {renderList(fabric.disadvantages)}
+                  </td>
+                </tr>
+
+                <tr className="border-b bg-white bg-opacity-30">
+                  <th className="px-4 py-2">{t('oneFabric.h44')}</th>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2">{renderList(fabric.benefit)}</td>
+                </tr>
+              </tbody>
+            </table>
+          ) : (
+            <table className="table-auto w-full">
+              <thead>
+                <tr className="bg-white bg-opacity-30 border-b">
+                  <th className="px-4 py-2 border-r">{t('oneFabric.h41')}</th>
+                  <th className="px-4 py-2 border-r">{t('oneFabric.h42')}</th>
+                  <th className="px-4 py-2 border-r">{t('oneFabric.h43')}</th>
+                  <th className="px-4 py-2">{t('oneFabric.h44')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="px-4 py-2 border-r">
+                    {renderList(fabric.composition)}
+                  </td>
+                  <td className="px-4 py-2 border-r">
+                    {renderList(fabric.characteristic)}
+                  </td>
+                  <td className="px-4 py-2 border-r">
+                    {renderList(fabric.disadvantages)}
+                  </td>
+                  <td className="px-4 py-2">{renderList(fabric.benefit)}</td>
+                </tr>
+              </tbody>
+            </table>
+          )}
         </div>
 
-        {/* Niveau de couture */}
-        <div className="mt-6 text-center">
-          <h3 className="font-bold text-xl mb-2">
-            {t('oneFabric.h47')} <ButtonInfoLevelSewing />
-          </h3>
-          <p>{fabric.level_sewing?.name_level || t('oneFabric.noLevel')}</p>
+        {/* ORIGINE */}
+        <div className="text-center mt-8">
+          <h4 className="font-bold text-3xl text-white mb-4">
+            {t('oneFabric.h49')}
+          </h4>
+          <p>{fabric.origin}</p>
         </div>
 
-        {/* Armure */}
-        <div className="mt-6 text-center">
-          <h3 className="font-bold text-xl mb-2">{t('oneFabric.h48')}</h3>
-          <p>
-            {fabric.weave_of_fabrics?.category || t('oneFabric.noCategory')}
-          </p>
-          <p>{fabric.weave_of_fabrics?.name || t('oneFabric.noName')}</p>
+        {/* TABLE: Poids — Apparence — Niveau — Armure */}
+        <div
+          className={`border-2 rounded-md shadow-md mt-6 ${
+            isMobile ? '' : 'mx-6'
+          }`}
+        >
+          {isMobile ? (
+            <table className="table-auto w-full">
+              <tbody>
+                <tr className="border-b bg-white bg-opacity-30">
+                  <th className="px-4 py-2">{t('oneFabric.h45')}</th>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 border-b">{fabric.weight}</td>
+                </tr>
+
+                <tr className="border-b bg-white bg-opacity-30">
+                  <th className="px-4 py-2">{t('oneFabric.h46')}</th>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 border-b">
+                    {renderList(fabric.appearance)}
+                  </td>
+                </tr>
+
+                <tr className="border-b bg-white bg-opacity-30 flex justify-evenly">
+                  <th className="px-4 py-2">
+                    {t('oneFabric.h47')} <ButtonInfoLevelSewing />
+                  </th>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 border-b">
+                    {fabric.level_sewing?.name_level}
+                  </td>
+                </tr>
+
+                <tr className="border-b bg-white bg-opacity-30">
+                  <th className="px-4 py-2">{t('oneFabric.h48')}</th>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 text-center">
+                    <div className="flex flex-col items-center">
+                      {fabric.weave_of_fabrics?.category}
+                      <p className="mt-1">{fabric.weave_of_fabrics?.name}</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          ) : (
+            <table className="table-auto w-full">
+              <thead className="border-b bg-white bg-opacity-30">
+                <tr>
+                  <th className="px-4 py-2 border-r">{t('oneFabric.h45')}</th>
+                  <th className="px-4 py-2 border-r">{t('oneFabric.h46')}</th>
+                  <th className="px-4 py-2 border-r">{t('oneFabric.h47')}</th>
+                  <th className="px-4 py-2">{t('oneFabric.h48')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="px-4 py-2 border-r">{fabric.weight}</td>
+                  <td className="px-4 py-2 border-r">
+                    {renderList(fabric.appearance)}
+                  </td>
+                  <td className="px-4 py-2 border-r">
+                    {fabric.level_sewing?.name_level}
+                  </td>
+                  <td className="px-4 py-2 text-center">
+                    <div className="flex flex-col items-center">
+                      {fabric.weave_of_fabrics?.category}
+                      <p className="mt-1">{fabric.weave_of_fabrics?.name}</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          )}
         </div>
 
-        {/* Washes */}
-        <div className="mt-6 text-center">
-          <h3 className="font-bold text-xl mb-4">{t('oneFabric.h51')}</h3>
-          <ul className="flex justify-center flex-wrap">
+        {/* WASHES */}
+        <div className="mt-10 text-center">
+          <h4 className="font-bold text-3xl text-white mb-4">
+            {t('oneFabric.h51')}
+          </h4>
+          <ul className="flex flex-wrap justify-center">
             {fabric.washes.map((wash: any) => (
-              <li key={wash.id} className="m-2 text-center">
+              <li key={wash.id} className="w-20 flex flex-col items-center m-2">
                 <img
                   src={wash.washe_img_url || '/no-image.png'}
-                  className="w-12 h-12 mx-auto"
-                  alt={wash.name || 'wash'}
+                  className="w-12 h-12 p-1 border rounded-md bg-white bg-opacity-30 shadow-md"
+                  alt={wash.name}
                 />
-                <p className="text-xs mt-1">{wash.description}</p>
+                <p className="text-xs mt-1 text-center">{wash.description}</p>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Produits liés */}
-        <div className="mt-6 text-center">
-          <h3 className="font-bold text-xl mb-4">{t('oneFabric.h52')}</h3>
+        {/* PRODUCTS */}
+        <div className="mt-10 text-center">
+          <h4 className="font-bold text-3xl text-white mb-4">
+            {t('oneFabric.h52')}
+          </h4>
           {fabric.products.length === 0 ? (
-            <p>{t('oneFabric.none')}</p>
+            <p className="text-sm">{t('oneFabric.none')}</p>
           ) : (
             <ul className="flex flex-wrap justify-center">
               {fabric.products.map((p: any) => (
-                <li key={p.id} className="m-2 text-center">
+                <li key={p.id} className="w-20 flex flex-col items-center m-2">
                   <Link to={`/products/${p.id}`}>
                     <img
                       src={p.product_img_url || '/no-image.png'}
+                      className="w-16 h-16 p-2 rounded-full bg-white bg-opacity-30 shadow-md"
                       alt={p.name}
-                      className="w-14 h-14 mx-auto rounded-full"
                     />
-                    <p className="mt-1 text-xs">{p.name}</p>
+                    <p className="text-xs mt-1">{p.name}</p>
                   </Link>
                 </li>
               ))}

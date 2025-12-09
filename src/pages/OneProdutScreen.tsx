@@ -1,10 +1,18 @@
 // src/pages/OneProductScreen.tsx
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { AiOutlineColumnWidth } from 'react-icons/ai';
 import { useTranslation } from 'react-i18next';
-import ButtonInfoLevelSewing from '@/components/Button/ButtonInfoLevelSewing';
+import { faInfo } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ModalShowMoreInfosLevel from '@/components/Modal/OneProduct/ModalShowMoreInfosLevel';
+import ButtonInfoLevelSewing from '@/components/Button/ButtonInfoLevelSewing';
 import { supabase } from '../../supabaseClient.js';
+import { useDarkMode } from '@/components/App/DarkModeContext';
+
+interface RouteParams {
+  productId: string;
+}
 
 interface Level {
   id: number | string;
@@ -26,7 +34,7 @@ interface SupplyQuantity {
   interling_fabric?: string;
   closure?: string;
   fastener?: string;
-  ribbon?: string;
+  ribbons?: string;
   decoration?: string;
   accessory?: string;
   pocket?: boolean;
@@ -49,6 +57,7 @@ interface ProductRow {
 
 const OneProductScreen: React.FC = () => {
   const { t } = useTranslation();
+  const { isDarkMode } = useDarkMode(); // récupère le dark mode
   const { productId } = useParams<{ productId: string }>();
   const [product, setProduct] = useState<ProductRow | null>(null);
   const [loading, setLoading] = useState(true);
@@ -63,7 +72,6 @@ const OneProductScreen: React.FC = () => {
       const idNum = isNaN(Number(productId)) ? productId : Number(productId);
 
       try {
-        // Récupère produit + relations via Supabase
         const { data, error } = await supabase
           .from('products')
           .select(
@@ -74,9 +82,9 @@ const OneProductScreen: React.FC = () => {
               product_order,
               fabric_order
             ),
-         products_supplies_quantities_links(
-  supply: supplies_quantities(*)
-),
+            products_supplies_quantities_links(
+              supply: supplies_quantities(*)
+            ),
             products_level_sewing_links (
               level: level_sewings(*),
               level_sewing_order
@@ -92,7 +100,6 @@ const OneProductScreen: React.FC = () => {
           return;
         }
 
-        // Formatage des données
         const formatted: ProductRow = {
           id: data.id,
           name: data.name,
@@ -148,76 +155,140 @@ const OneProductScreen: React.FC = () => {
     return null;
   };
 
-  const formatListText = (text: string | undefined) => {
+  // format supply text splitting by '(l)' like dans l'ancien code
+  const formatSupplyText = (text: string) => {
+    return text.split('(l)').map((part, index) => {
+      if (index === 0) {
+        return part;
+      }
+      return (
+        <React.Fragment key={index}>
+          <div className="flex items-center justify-center">
+            <span className="inline-flex items-center">
+              <AiOutlineColumnWidth className="mx-2" />
+            </span>
+            {part}
+          </div>
+        </React.Fragment>
+      );
+    });
+  };
+
+  const formatListText = (text?: string | null) => {
     if (!text) return null;
-    return text.split(',').map((it, idx) => (
-      <li key={idx} className="text-xs">
-        {it.trim()}
+    return text.split(',').map((item, index) => (
+      <li className="text-xs flex flex-col" key={index}>
+        {formatSupplyText(item.trim())}
       </li>
     ));
   };
 
-  const renderProductSupply = (supply: SupplyQuantity) => {
-    const isValid = (value: string | undefined) =>
-      value && value.trim() !== '' && value !== 'N/A';
+  type CategoryType =
+    | 'main_fabric'
+    | 'interior_fabric'
+    | 'interling_fabric'
+    | 'closure'
+    | 'fastener'
+    | 'ribbon'
+    | 'decoration'
+    | 'accessory'
+    | 'pocket_fabric'
+    | 'pocket_closure';
+
+  // const isDevelopment = (import.meta as any).env?.VITE_ENV === 'development';
+
+  function getIconForCategory(category: CategoryType) {
+    const basePath = '/assets/Icone_supply'; // chemin depuis public/
+
+    const iconMap: Record<CategoryType, string> = {
+      main_fabric: 'main_fabric_black.png',
+      interior_fabric: 'interior_fabric_black.png',
+      interling_fabric: 'interling_fabric_black.png',
+      closure: 'closure_black.png',
+      fastener: 'fastener_black.png',
+      ribbon: 'ribbons_black.png',
+      decoration: 'decoration_black.png',
+      accessory: 'access_black.png',
+      pocket_fabric: 'pocket_fabric_black.png',
+      pocket_closure: 'pocket_closure_black.png',
+    };
+
+    const iconFile = iconMap[category];
+    if (!iconFile) return null;
+
     return (
-      <div key={supply.id} className="m-2 border p-2 rounded-md">
-        {isValid(supply.main_fabric) && (
-          <div>
-            {t('oneProduct.supply_category.main_fabric')}: {supply.main_fabric}
-          </div>
+      <img
+        className="w-16 h-16 sm:w-24 sm:h-24"
+        alt={category}
+        src={`${basePath}/${iconFile}`}
+      />
+    );
+  }
+
+  function renderProductAttribute(
+    _title: string,
+    value: string | undefined | null,
+    category: CategoryType
+  ) {
+    if (!value || value === 'N/A') {
+      return null;
+    }
+    const Icon = getIconForCategory(category);
+    const translatedCategory = t(`oneProduct.supply_category.${category}`);
+    const formattedText = formatListText(value);
+
+    return (
+      <div
+        className="w-full border-2 rounded-lg p-4 bg-lightBackground dark:bg-darkPruneLogo flex flex-row items-center my-3 justify-center"
+        aria-hidden="false"
+      >
+        <div className="mx-1">{Icon}</div>
+        <div className="text-center w-2/3 mx-1">
+          <h5 className="mb-2">{translatedCategory}:</h5> {formattedText}
+        </div>
+      </div>
+    );
+  }
+
+  const renderProductSupply = (supply: SupplyQuantity) => {
+    return (
+      <div
+        key={supply.id}
+        className="flex flex-wrap justify-center items-center"
+      >
+        {renderProductAttribute(
+          'main_fabric',
+          supply.main_fabric,
+          'main_fabric'
         )}
-        {isValid(supply.interior_fabric) && (
-          <div>
-            {t('oneProduct.supply_category.interior_fabric')}:{' '}
-            {supply.interior_fabric}
-          </div>
+        {renderProductAttribute(
+          'interior_fabric',
+          supply.interior_fabric,
+          'interior_fabric'
         )}
-        {isValid(supply.interling_fabric) && (
-          <div>
-            {t('oneProduct.supply_category.interling_fabric')}:{' '}
-            {supply.interling_fabric}
-          </div>
+        {renderProductAttribute(
+          'interling_fabric',
+          supply.interling_fabric,
+          'interling_fabric'
         )}
-        {isValid(supply.closure) && (
-          <div>
-            {t('oneProduct.supply_category.closure')}: {supply.closure}
-          </div>
-        )}
-        {isValid(supply.fastener) && (
-          <div>
-            {t('oneProduct.supply_category.fastener')}: {supply.fastener}
-          </div>
-        )}
-        {isValid(supply.ribbon) && (
-          <div>
-            {t('oneProduct.supply_category.ribbon')}: {supply.ribbon}
-          </div>
-        )}
-        {isValid(supply.decoration) && (
-          <div>
-            {t('oneProduct.supply_category.decoration')}: {supply.decoration}
-          </div>
-        )}
-        {isValid(supply.accessory) && (
-          <div>
-            {t('oneProduct.supply_category.accessory')}: {supply.accessory}
-          </div>
-        )}
+        {renderProductAttribute('closure', supply.closure, 'closure')}
+        {renderProductAttribute('fastener', supply.fastener, 'fastener')}
+        {renderProductAttribute('ribbons', supply.ribbons, 'ribbon')}
+        {renderProductAttribute('decoration', supply.decoration, 'decoration')}
+        {renderProductAttribute('accessory', supply.accessory, 'accessory')}
         {supply.pocket && (
-          <div>{t('oneProduct.supply_category.pocket_fabric')}</div>
-        )}
-        {isValid(supply.pocket_fabric) && (
-          <div>
-            {t('oneProduct.supply_category.pocket_fabric')}:{' '}
-            {supply.pocket_fabric}
-          </div>
-        )}
-        {isValid(supply.pocket_closure) && (
-          <div>
-            {t('oneProduct.supply_category.pocket_closure')}:{' '}
-            {supply.pocket_closure}
-          </div>
+          <>
+            {renderProductAttribute(
+              'pocket_fabric',
+              supply.pocket_fabric,
+              'pocket_fabric'
+            )}
+            {renderProductAttribute(
+              'pocket_closure',
+              supply.pocket_closure,
+              'pocket_closure'
+            )}
+          </>
         )}
       </div>
     );
@@ -248,28 +319,54 @@ const OneProductScreen: React.FC = () => {
           {/* textile quantities */}
           {product.textile_quantity_required && (
             <div className="my-6">
-              <h3>{t('oneProduct.quantity_textile_required')}</h3>
-              <table className="table-auto mx-auto">
-                <tbody>
-                  {product.textile_quantity_required.split(',').map((q, i) => {
-                    const [size, amount] = q.split(':');
-                    return (
-                      <tr key={i}>
-                        <th className="px-4 py-2">{size}</th>
-                        <td className="px-4 py-2">{amount}</td>
+              <div className="flex justify-center my-6">
+                <div className="border-2 rounded-md">
+                  <table className="table-auto w-full">
+                    <thead className="border-b">
+                      <tr>
+                        <th className="px-4 py-2 text-center" colSpan={2}>
+                          {t('oneProduct.quantity_textile_required')}
+                        </th>
                       </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                    </thead>
+                    <tbody>
+                      {product.textile_quantity_required
+                        .split(',')
+                        .map((quantity, index) => {
+                          const [sizeRaw, amountRaw] = quantity.split(':');
+                          const size = sizeRaw?.trim();
+                          const amount = amountRaw?.trim();
+                          return (
+                            <tr
+                              key={index}
+                              className="border-b border-gray-200"
+                            >
+                              <th className="px-4 py-2 text-left border-r border-gray-200">
+                                {size}
+                              </th>
+                              <td className="px-4 py-2 text-left">{amount}</td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td className="px-4 py-2 text-center" colSpan={2}>
+                          {t('oneProduct.laize')}
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
             </div>
           )}
 
           {/* Level */}
           <div className="my-6 flex justify-center items-center">
-            <div className="border-2 rounded-lg p-5 pr-2">
+            <div className="flex border-2 rounded-lg items-center p-5 pr-2">
               <div className="flex flex-col mr-2">
-                <h2 className="mb-2">{t('oneProduct.h2level')}</h2>
+                <h2 className="mb-2"> {t('oneProduct.h2level')}</h2>
                 <p className="bg-cream rounded-full p-2 dark:bg-darkSage">
                   {product.level_sewing && product.level_sewing[0]?.name_level}
                 </p>
@@ -283,12 +380,15 @@ const OneProductScreen: React.FC = () => {
             <h2 className="font-bold text-3xl text-white mb-4 text-center">
               {t('oneProduct.h2Fabric')}
             </h2>
-            <ul className="flex flex-wrap justify-center">
+            <ul className="flex flex-wrap justify-center items-start">
               {(product.fabrics || []).map((f) => (
-                <li key={f.id} className="mx-2 w-24">
+                <li
+                  className="flex flex-col justify-center items-center mb-2"
+                  key={f.id}
+                >
                   <Link
                     to={`/fabrics/${f.id}`}
-                    className="flex flex-col items-center"
+                    className="flex flex-col justify-center items-center mx-2 w-24"
                   >
                     {f.fabric_img_url ? (
                       <img

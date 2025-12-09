@@ -48,7 +48,9 @@ export default function HomeScreen() {
     <div className="pb-20">
       <div className="flex flex-col justify-center items-center min-h-screen mt-16">
         <div className="mb-5 text-center">
-          <h1 className="pb-8 text-2xl font-bold">{t('home.welcome')}</h1>
+          <h1 className="pb-8 text-2xl text-white font-bold">
+            {t('home.welcome')}
+          </h1>
           <h2>{t('home.intro')}</h2>
         </div>
         <div className="flex flex-col justify-center items-center">

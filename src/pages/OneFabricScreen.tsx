@@ -24,7 +24,8 @@ const OneFabricScreen: React.FC = () => {
         products_fabrics_links(product:products(*)),
         fabrics_level_sewing_links(level:level_sewings(*)),
         weave_of_fabrics_fabrics_links(weave:weave_of_fabrics(*)),
-        fabrics_categories_links(category:categories(*))
+        fabrics_categories_links(category:categories(*)),
+   needle_type_fabrics_links(needle_type:needle_type(*))
       `
       )
       .eq('id', fabricId)
@@ -40,9 +41,22 @@ const OneFabricScreen: React.FC = () => {
       weave_of_fabrics: data.weave_of_fabrics_fabrics_links?.[0]?.weave || null,
       categories:
         data.fabrics_categories_links?.map((l: any) => l.category) || [],
+      name_type:
+        data.needle_type_fabrics_links?.[0]?.needle_type?.name_type || '',
+      needle_img_url:
+        data.needle_type_fabrics_links?.[0]?.needle_type?.needle_img_url || '',
+      needle_size:
+        data.needle_type_fabrics_links?.[0]?.needle_type?.needle_size || '',
+      needle_description:
+        data.needle_type_fabrics_links?.[0]?.needle_type?.needle_description ||
+        '',
     };
 
     setFabric(formattedData);
+    console.log(
+      'Fabric data:',
+      data.needle_type_fabrics_links?.[0]?.needle_type
+    );
   };
 
   useEffect(() => {
@@ -251,7 +265,42 @@ const OneFabricScreen: React.FC = () => {
             ))}
           </ul>
         </div>
+        {/* NEEDLE */}
+        {fabric.needle_type_fabrics_links?.[0]?.needle_type && (
+          <div className="mt-12 text-center">
+            <h4 className="font-bold text-3xl text-white mb-6">
+              {t('oneFabric.h53')}
+            </h4>
 
+            <div className="flex justify-center mx-3">
+              <div className="">
+                <img
+                  src={fabric.needle_img_url || '/no-image.png'}
+                  alt={fabric.name_type}
+                  className="mx-auto mb-3 w-60 h-60 object-contain bg-white bg-opacity-20 p-4 rounded-xl shadow-md backdrop-blur-sm"
+                />{' '}
+                {/* Crédit des images */}
+                <p className="text-xs opacity-60 mt-3 italic">
+                  Images provenant du site{' '}
+                  <a
+                    href="https://www.mondialtissus.fr/tutos-et-inspiration/mon-guide-couture/connaitre-toutes-les-techniques-de-couture/quelle-aiguille-utiliser-pour-quel-tissu.html?srsltid=AfmBOorNZHLBP1--9c47GGEi73CPNt0HnraiJRHDF2G8A8JFctmyJxBZ"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Mondial Tissus
+                  </a>
+                </p>
+              </div>
+              <div className="items-center ml-8 flex flex-col justify-center w-64">
+                <p className="font-semibold text-2xl">
+                  Aiguilles {fabric.name_type}
+                </p>
+                <p className="text-xl font-bold mt-1">{fabric.needle_size}</p>
+                <p className="text-lg ">{fabric.needle_description}</p>
+              </div>
+            </div>
+          </div>
+        )}
         {/* PRODUCTS */}
         <div className="mt-10 text-center">
           <h4 className="font-bold text-3xl text-white mb-4">

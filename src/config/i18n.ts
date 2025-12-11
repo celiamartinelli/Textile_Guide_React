@@ -147,6 +147,7 @@ const resources = {
         h50: 'Consommation Energitique:',
         h51: 'Entretien',
         h52: 'Projets Associés',
+        h53: "Type d'aiguilles recommandées",
       },
       modalInfoLevel: {
         title: 'Niveau de Couture',

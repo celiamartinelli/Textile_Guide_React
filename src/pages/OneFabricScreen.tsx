@@ -50,6 +50,8 @@ const OneFabricScreen: React.FC = () => {
       needle_description:
         data.needle_type_fabrics_links?.[0]?.needle_type?.needle_description ||
         '',
+      needle_color:
+        data.needle_type_fabrics_links?.[0]?.needle_type?.needle_color || '',
     };
 
     setFabric(formattedData);
@@ -295,7 +297,14 @@ const OneFabricScreen: React.FC = () => {
                 <p className="font-semibold text-2xl">
                   Aiguilles {fabric.name_type}
                 </p>
+                <span
+                  className="w-6 h-6 rounded-full mt-2 border border-gray-300"
+                  style={{ backgroundColor: fabric.needle_color }}
+                  title={fabric.needle_color}
+                />
+
                 <p className="text-xl font-bold mt-1">{fabric.needle_size}</p>
+
                 <p className="text-lg ">{fabric.needle_description}</p>
               </div>
             </div>
